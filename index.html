@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My 'Scape</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+</head>
+<body>
+  <div id="customcursor"></div>
+  <div class="debug" id="debug">Move mouse to rotate • Click icons to open windows</div>
+  <div class="space" id="space">
+    <div class="universe" id="universe">
+      <!-- Grid floor -->
+      <div class="grid"></div>
+
+      <!-- Visual 3D icons -->
+      <div class="icon" id="icon1" style="top:30%; left:30%; transform: translateZ(-300px);">0x41</div>
+      <div class="icon" id="icon2" style="top:50%; left:60%; transform: translateZ(-600px);">0x4A</div>
+      <div class="icon" id="icon3" style="top:70%; left:40%; transform: translateZ(-900px);">0x50</div>
+      <div class="icon" id="icon4" style="top:20%; left:70%; transform: translateZ(-1200px);">0x41</div>
+      <div class="icon" id="icon5" style="top:95%; left:95%; transform: translateZ(-150px);">0x43</div>
+      <div class="icon" id="icon6" style="top:95%; left:5%; transform: translateZ(-450px);">0x2E</div>
+    </div>
+  </div>
+
+  <!-- Background: creed cross + ark + floating icons -->
+  <div class="background-icons" id="backgroundIcons"></div>
+  <div class="creed-cross" id="creedCross"></div>
+  <div class="ark-drawing" id="arkDrawing"></div>
+
+  <!-- Floating dropdown menu (same aesthetic) -->
+  <div class="dropdown-menu" id="dropdownMenu">
+    <button type="button" class="dropdown-trigger" id="dropdownTrigger" aria-label="Menu">≡</button>
+    <button type="button" class="dropdown-action" id="alphaBtn" aria-label="Open all sections">A</button>
+    <button type="button" class="dropdown-action" id="omegaBtn" aria-label="Close window">Ω</button>
+    <button type="button" class="dropdown-action" id="travelBtn" aria-label="Toggle Travel Mode">∴</button>
+    <div class="dropdown-panel" id="dropdownPanel">
+      <div class="dropdown-item" data-content="about">About Me</div>
+      <div class="dropdown-item" data-content="journey">Journey</div>
+      <div class="dropdown-item" data-content="projects">Projects</div>
+      <div class="dropdown-item" data-content="achievements">Achievements</div>
+      <div class="dropdown-item" data-content="contact">Contact</div>
+      <div class="dropdown-item" data-content="dot">.</div>
+    </div>
+  </div>
+
+  <!-- 2D Clickable overlay -->
+  <div class="click-overlay" id="clickOverlay">
+    <div class="click-button" id="btn1" data-content="about" data-title="About Me">A</div>
+    <div class="click-button" id="btn2" data-content="journey" data-title="Journey">J</div>
+    <div class="click-button" id="btn3" data-content="projects" data-title="Projects">P</div>
+    <div class="click-button" id="btn4" data-content="achievements" data-title="Achievements">A</div>
+    <div class="click-button" id="btn5" data-content="contact" data-title="Contact">C</div>
+    <div class="click-button" id="btn6" data-content="dot" data-title=".">.</div>
+  </div>
+
+  <!-- Window -->
+  <div class="window" id="infoWindow">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <div id="windowContent"></div>
+  </div>
+
+  <!-- Load data first, then main script -->
+  <script src="pd.js"></script>
+  <script src="creed-data.js"></script>
+  <script src="ark-data.js"></script>
+  <script src="bo.js"></script>
+
+</body>
+</html>
+
