@@ -90,28 +90,33 @@ body:has(.dragging) #customcursor {
   position: absolute;
   top: 60%;
   left: 50%;
-  /* Large enough to cover the view during rotation, but not 2000px+ */
-  width: 150vw; 
+  width: 150vw;
   height: 150vh;
-  
-  /* Use a single background-image with two gradients */
-  background-image: 
-    linear-gradient(to right, rgba(0, 255, 200, 0.30) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 255, 200, 0.45) 1px, transparent 1px);
-  
-  /* Match your GRID_SIZE constant */
-  background-size: 100px 100px;
-  
-  /* The "Magic" variables we will update via JS */
-  background-position: var(--grid-x, 0px) var(--grid-y, 0px);
-  
+
   /* Flat orientation on the floor */
   transform: translate(-50%, -50%) rotateX(90deg) translateZ(-150px);
-  transform-style: preserve-3d;
-  will-change: background-position; /* Hint to the GPU */
+  overflow: hidden;
 
   -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
   mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
+}
+
+/* Grid lines on a GPU-composited layer — translate instead of background-position */
+.grid::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  right: -100px;
+  bottom: -100px;
+
+  background-image:
+    linear-gradient(to right, rgba(0, 255, 200, 0.30) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 200, 0.45) 1px, transparent 1px);
+  background-size: 100px 100px;
+
+  transform: translate(var(--grid-x, 0px), var(--grid-y, 0px));
+  will-change: transform;
 }
 
 #travelBtn.active {
@@ -711,10 +716,12 @@ body:has(.dragging) #customcursor {
   }
 
   .grid {
-    /* Scale the grid up so the lines aren't too tiny on high-DPI phone screens */
-    background-size: 80px 80px;
-    width: 250vw; /* Wider to account for phone rotation */
+    width: 250vw;
     height: 250vh;
+  }
+
+  .grid::before {
+    background-size: 80px 80px;
   }
 }
 
@@ -777,4 +784,3 @@ body:has(.dragging) #customcursor {
   }
 
 }
-
