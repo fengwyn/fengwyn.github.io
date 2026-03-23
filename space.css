@@ -1,0 +1,165 @@
+/* =============================================
+   SPACE.CSS — NASA Punk / Starchart Theme
+   ============================================= */
+
+/* Grid Pattern Background */
+.bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(160, 32, 240, 0.08) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(160, 32, 240, 0.08) 1px, transparent 1px);
+    background-attachment: fixed;
+}
+
+/* Flicker on hover */
+.flicker-animation:hover {
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.9; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+/* Corner bracket decorations */
+.corner-bracket {
+    position: relative;
+}
+
+.corner-bracket::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #a020f0;
+    border-left: 2px solid #a020f0;
+}
+
+.corner-bracket::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid #a020f0;
+    border-right: 2px solid #a020f0;
+}
+
+/* Starfield Canvas */
+#stars-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* =============================================
+   Custom Cursor — NASA Punk Double-Circle
+   ============================================= */
+
+*, *::before, *::after {
+    cursor: none !important;
+}
+
+#space-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+
+/* Outer ring — blue */
+#space-cursor .cursor-outer {
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid #4da6ff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 6px rgba(77, 166, 255, 0.4),
+                inset 0 0 4px rgba(77, 166, 255, 0.1);
+    transition: width 0.2s, height 0.2s, border-color 0.15s, box-shadow 0.15s;
+}
+
+/* Inner dot — white */
+#space-cursor .cursor-inner {
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    transition: width 0.15s, height 0.15s, background 0.15s;
+}
+
+/* Crosshair tick marks */
+#space-cursor .cursor-tick {
+    position: absolute;
+    background: rgba(77, 166, 255, 0.5);
+}
+
+#space-cursor .cursor-tick-top {
+    width: 1px;
+    height: 4px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#space-cursor .cursor-tick-bottom {
+    width: 1px;
+    height: 4px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#space-cursor .cursor-tick-left {
+    width: 4px;
+    height: 1px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#space-cursor .cursor-tick-right {
+    width: 4px;
+    height: 1px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Click state */
+#space-cursor.clicking .cursor-outer {
+    width: 22px;
+    height: 22px;
+    border-color: #a020f0;
+    box-shadow: 0 0 12px rgba(160, 32, 240, 0.6),
+                inset 0 0 6px rgba(160, 32, 240, 0.2);
+}
+
+#space-cursor.clicking .cursor-inner {
+    width: 4px;
+    height: 4px;
+    background: rgba(160, 32, 240, 0.5);
+    border-color: #e3b5ff;
+}
+
+/* Material Symbols baseline */
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}

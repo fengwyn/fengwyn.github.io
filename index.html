@@ -70,56 +70,22 @@
         },
       }
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-      .bg-grid-pattern {
-        background-size: 40px 40px;
-        background-image: linear-gradient(to right, rgba(160, 32, 240, 0.08) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(160, 32, 240, 0.08) 1px, transparent 1px);
-        background-attachment: fixed;
-      }
-      .flicker-animation:hover {
-        animation: flicker 0.15s infinite;
-      }
-      @keyframes flicker {
-        0% { opacity: 0.9; } 50% { opacity: 1; } 100% { opacity: 0.8; }
-      }
-      .corner-bracket::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 10px;
-        height: 10px;
-        border-top: 2px solid #a020f0;
-        border-left: 2px solid #a020f0;
-      }
-      .corner-bracket::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 10px;
-        height: 10px;
-        border-bottom: 2px solid #a020f0;
-        border-right: 2px solid #a020f0;
-      }
-      #stars-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-      }
-    </style>
+<link rel="stylesheet" href="space.css"/>
+<link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen bg-grid-pattern">
 <!-- Starfield Interactive Layer -->
 <canvas id="stars-canvas"></canvas>
+<!-- Custom Cursor -->
+<div id="space-cursor">
+<div class="cursor-outer"></div>
+<div class="cursor-inner"></div>
+<div class="cursor-tick cursor-tick-top"></div>
+<div class="cursor-tick cursor-tick-bottom"></div>
+<div class="cursor-tick cursor-tick-left"></div>
+<div class="cursor-tick cursor-tick-right"></div>
+</div>
+
 <!-- NAVIGATION SHELL: SideNavBar -->
 <nav class="fixed left-0 top-0 h-full flex flex-col z-40 bg-[#1b1b1b] border-r border-[#c6c6c6]/10 w-64 hidden md:flex">
 <div class="p-6">
@@ -127,29 +93,21 @@
 <div class="text-[#c6c6c6] opacity-70 font-mono text-[10px] tracking-[0.2em] mt-1">OPERATOR: $USER</div>
 </div>
 <div class="flex-1 mt-8">
-<a class="flex items-center gap-4 px-6 py-4 bg-[#a020f0] text-[#131313] font-black font-label text-xs tracking-widest active:translate-x-1 transition-all" href="index.html">
+<a class="flex items-center gap-4 px-6 py-4 bg-[#a020f0] text-[#131313] font-black font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#core">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">memory</span>
                 CORE
             </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="network.html">
-<span class="material-symbols-outlined">lan</span>
-                NETWORK
-            </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="embedded.html">
-<span class="material-symbols-outlined">developer_board</span>
-                EMBEDDED
-            </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="reverse.html">
-<span class="material-symbols-outlined">biotech</span>
-                CYBERSEC
-            </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="system.html">
-<span class="material-symbols-outlined">settings_ethernet</span>
-                SYSTEM
-            </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="directory.html">
+<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#directory">
 <span class="material-symbols-outlined">folder</span>
                 DIRECTORY
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#classified">
+<span class="material-symbols-outlined">lock</span>
+                CLASSIFIED
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#about">
+<span class="material-symbols-outlined">person</span>
+                ABOUT
             </a>
 </div>
 <div class="p-6 border-t border-[#c6c6c6]/10">
@@ -162,24 +120,14 @@
 </div>
 </div>
 </nav>
-<!-- NAVIGATION SHELL: TopAppBar -->
-<!-- <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313]/60 backdrop-blur-xl border-b border-[#c6c6c6]/20 md:pl-72"> -->
-<!-- <div class="text-2xl font-black tracking-tighter text-[#e3b5ff] font-headline">FENGWYN_V1.0</div> -->
-<!-- <div class="hidden lg:flex items-center gap-8"> -->
-<!-- <a class="text-[#e3b5ff] border-b-2 border-[#a020f0] pb-1 font-headline tracking-tight uppercase font-bold text-sm" href="index.html">CORE</a> -->
-<!-- <a class="text-[#c6c6c6] hover:text-[#e3b5ff] transition-colors font-headline tracking-tight uppercase font-bold text-sm" href="network.html">NETWORK</a> -->
-<!-- <a class="text-[#c6c6c6] hover:text-[#e3b5ff] transition-colors font-headline tracking-tight uppercase font-bold text-sm" href="embedded.html">EMBEDDED</a> -->
-<!-- <a class="text-[#c6c6c6] hover:text-[#e3b5ff] transition-colors font-headline tracking-tight uppercase font-bold text-sm" href="reverse.html">REVERSE</a> -->
-<!-- <a class="text-[#c6c6c6] hover:text-[#e3b5ff] transition-colors font-headline tracking-tight uppercase font-bold text-sm" href="system.html">SYSTEM</a> -->
-<!-- </div> -->
-<div class="flex items-center gap-4">
-<a href="https://github.com/fengwyn" target="_blank"><span class="material-symbols-outlined text-[#e3b5ff] scale-95 transition-transform duration-75 cursor-pointer">terminal</span></a>
-</div>
-</header>
+
 <!-- MAIN CONTENT CANVAS -->
 <main class="md:pl-64 pt-16 min-h-screen relative overflow-hidden">
-<!-- HERO: Control Center -->
-<section class="relative px-8 py-16 lg:py-24 max-w-7xl mx-auto z-10">
+
+<!-- ======================================== -->
+<!-- SECTION 01: CORE — Hero + Featured       -->
+<!-- ======================================== -->
+<section id="core" class="relative px-8 py-16 lg:py-24 max-w-7xl mx-auto z-10">
 <div class="flex flex-col lg:flex-row gap-12 items-start">
 <div class="flex-1 space-y-8">
 <div class="inline-flex items-center gap-3 px-3 py-1 bg-primary-container/10 border-l-4 border-primary-container">
@@ -194,7 +142,7 @@
                         <span class="text-white font-bold">cybersecurity</span>,
                         <span class="text-white font-bold">networks</span>, and
                         <span class="text-white font-bold">embedded systems</span>.
-                        From low-level silicon to distributed architectures, I'm building across the full spectrum.
+                        From low-level silicon to distributed architectures, building across the full spectrum.
                     </p>
 <div class="flex flex-wrap gap-4">
 <a href="mailto:krzfrancesc@gmail.com" class="px-8 py-4 bg-primary text-on-primary font-headline font-black text-sm tracking-widest flicker-animation transition-all inline-block">
@@ -238,15 +186,16 @@
 </div>
 </div>
 </section>
-<!-- FEATURED PROJECTS: Best 3 -->
+
+<!-- FEATURED SCHEMATICS: Best 3 -->
 <section class="px-8 py-20 bg-surface-container-lowest/50 relative z-10 border-y border-outline-variant/10">
 <div class="max-w-7xl mx-auto">
 <div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6">
 <div>
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 02</span>
+<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 01</span>
 <h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">Featured Schematics</h2>
 </div>
-<a href="network.html" class="hidden md:block font-mono text-xs text-primary hover:text-white transition-colors">
+<a href="#directory" class="hidden md:block font-mono text-xs text-primary hover:text-white transition-colors">
                         VIEW_ALL_PROJECTS &rarr;
                     </a>
 </div>
@@ -285,7 +234,7 @@
 </div>
 <span class="material-symbols-outlined text-primary-container text-4xl mb-4">developer_board</span>
 <h3 class="text-xl font-bold font-headline uppercase leading-tight text-white">Hardware Network Security</h3>
-<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Hardware-accelerated network security using Field Programmable Gate Arrays for real-time packet inspection. Ethernet parser and checksum verifier on Artix-7 FPGA.</p>
+<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Hardware-accelerated network security using FPGA for real-time packet inspection. Ethernet parser and checksum verifier on Artix-7 FPGA.</p>
 <div class="flex flex-wrap gap-1 mt-3">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
@@ -312,7 +261,7 @@
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
 </div>
 </div>
-<a class="mt-6 flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="embedded.html">
+<a class="mt-6 flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="#directory">
                             View_Details <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </a>
 </div>
@@ -352,11 +301,12 @@
 </div>
 </div>
 </section>
+
 <!-- SKILLS: Capabilities Grid -->
 <section class="px-8 py-20 relative z-10">
 <div class="max-w-7xl mx-auto">
 <div class="mb-12">
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 03</span>
+<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 02</span>
 <h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">Core Capabilities</h2>
 </div>
 <div class="flex flex-wrap gap-3">
@@ -379,21 +329,429 @@
 </div>
 </section>
 
+<!-- PROJECTS SECTION -->
+<section class="px-8 py-05 relative z-10 border-y border-outline-variant/10">
+<div class="max-w-7xl mx-auto">
+<!-- <div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6"> -->
 
-<!-- DIRECTORY -->
+</section>
+<!-- HARDWARE_SPECS: Bento Grid -->
+<!-- <section class="px-8 py-20 relative z-10"> -->
+<div class="max-w-7xl mx-auto">
+<div class="mb-12">
+<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Submodule: 02.1</span>
+<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">HARDWARE_SPECS</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Platforms -->
+<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-container text-2xl">memory</span>
+<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Platforms</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">STM32</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">ESP32</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Arduino</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Raspberry Pi</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">BeaglePlay</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Artix-7 FPGA</span>
+</div>
+</div>
+<!-- Protocols -->
+<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-container text-2xl">cable</span>
+<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Protocols</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">TCP/IP</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">RF</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SDR</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Ethernet</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SPI</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">I2C</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">UART</span>
+</div>
+</div>
+<!-- Tools -->
+<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-container text-2xl">build</span>
+<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Tools</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">FreeRTOS</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Yocto</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Vivado</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">STM32Cube</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SEGGER</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">GDB</span>
+<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">J-Link</span>
+</div>
+</div>
+</div>
+</div>
+</section>
 
 
 
-<!-- ABOUT BLURB -->
-<section class="px-8 py-16 relative z-10 border-t border-outline-variant/10">
+<!-- ======================================== -->
+<!-- SECTION 02: DIRECTORY — All Projects     -->
+<!-- ======================================== -->
+<section id="directory" class="px-8 py-20 bg-surface-container-lowest/50 relative z-10 border-y border-outline-variant/10">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6">
+<div>
+<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 03</span>
+<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">All Project Nodes</h2>
+</div>
+<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">9 ENTRIES</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+<!-- eIRC -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">DISTRIBUTED</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">eIRC</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Networked node system. Hubs, Nodes, Endpoints with modular command handlers. IoT interoperability across platforms. Implementing Redis and ClickHouse.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CLICKHOUSE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LINUX</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">OPENMP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">REDIS</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/eIRC" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+<!-- Distributed Systems -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-secondary px-2 py-0.5 border border-secondary/30">COMPLETED</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">DISTRIBUTED</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Distributed Systems</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Scalable distributed file system for University. Built prior to AI advent.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SCALABILITY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MYSQL</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JSON</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/DistributedFileSystem" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+<!-- Embedded Systems -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Embedded Systems</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Built gadgets to functional walking robots. Temperature/movement sensors, network access points, RF modules, satellite imagery, TCP/IP via RF.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ROBOTICS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARDUINO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ESP32</span>
+</div>
+<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
+<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
+</div>
+</div>
+
+<!-- Embedded Linux IoT Node -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Embedded Linux IoT Node</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Custom Yocto Linux image for BeaglePlay, SDR radio stack and Node Relay. BSP configuration, custom layers, cross-compilation for ARM. Experimenting with FPGA MicroBlaze.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BEAGLEBOARD</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL V3</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">OPENMP</span>
+</div>
+<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
+<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
+</div>
+</div>
+
+<!-- Hardware Network Security -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">FPGA</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">HW Net Security</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Hardware-accelerated network security using FPGA for real-time packet inspection. Self-taught Digital Systems. Identified LFSR cipher algorithm.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DIGITAL SYSTEMS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ETHERNET</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK SECURITY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">W5500</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/PacketProcessor" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+<!-- Embedded Security -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">SECURITY</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Embedded Security</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">STM32 ARM CPU on-board security architecture study. FreeRTOS deep dive with STM32Cube and SEGGER utilities. Dynamic debugging with J-Link.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32CUBE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SEGGER</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TASK SCHEDULING</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32F767ZI</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">J-LINK</span>
+</div>
+<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
+<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
+</div>
+</div>
+
+<!-- Reverse Engineering -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">SECURITY</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Reverse Engineering</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Binary analysis, exploitation, cryptography. University lab + hackathons. Hands-on binary exploitation experience.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ASSEMBLY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BINARY ANALYSIS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EXPLOITATION</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PERL</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/Reverse-Engineering" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+<!-- Other Projects -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-secondary px-2 py-0.5 border border-secondary/30">COMPLETED</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">MISC</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Other Projects</h3>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Java Rummy Card Game, NLP social engineering password tool, RF surveillance project powered by eIRC Node-Relay.</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NLP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ======================================== -->
+<!-- SECTION 03: CLASSIFIED — Cyberpunk Zone  -->
+<!-- ======================================== -->
+<section id="classified" class="classified-zone relative py-20 z-10 overflow-hidden" style="background: #0a0a0a;">
+<!-- Cyberpunk backdrop layers -->
+<div class="crt-overlay"></div>
+<div class="cyber-grid"></div>
+<div class="pixel-cloud" style="width: 400px; height: 400px; top: 5%; left: -5%;"></div>
+<div class="pixel-cloud" style="width: 300px; height: 300px; bottom: 10%; right: -5%;"></div>
+
+<div class="max-w-7xl mx-auto px-8 relative z-20">
+<!-- Section Header — Cyberpunk styled -->
+<div class="mb-16">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-px flex-1 bg-gradient-to-r from-transparent to-[#00ff41]"></div>
+<span class="font-mono text-[10px] text-[#008F11] tracking-[0.3em]">// MODULE 04 :: RESTRICTED_ACCESS </span>
+<div class="h-px flex-1 bg-gradient-to-l from-transparent to-[#00ff41]"></div>
+</div>
+<h2 class="glitch font-headline font-black text-5xl md:text-7xl tracking-tighter leading-none text-[#00ff41]" style="text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);">CLASSIFIED</h2>
+<p class="font-mono text-xs text-[#008F11] mt-4 tracking-wider typing-cursor">Offensive security research, encryption engines, and signal intelligence</p>
+</div>
+
+<!-- Card 1: Malware Analysis & Development -->
+<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">RESEARCH // ACTIVE</div>
+<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">Malware Analysis & Development</h3>
+</div>
+<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">shield</span>
+</div>
+<p class="text-[#b9ccb2] text-sm leading-relaxed mb-4">
+Polymorphic and metamorphic malware research in homelab environment. Focused on understanding evasion techniques and detection methodologies. With ever-evolving pattern matching tools, being able to analyze at this depth will be key.
+</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-[#1b1b1b] border border-[#3b4b37] p-4">
+<div class="font-mono text-[10px] text-[#00ff41] tracking-wider mb-2">> POLYMORPHIC</div>
+<p class="text-[#b9ccb2] text-xs leading-relaxed">Same core behavior, encrypts/reshuffles outer shell. The payload remains functionally identical while the wrapper mutates on each iteration to evade signature-based detection.</p>
+</div>
+<div class="bg-[#1b1b1b] border border-[#3b4b37] p-4">
+<div class="font-mono text-[10px] text-[#00ff41] tracking-wider mb-2">> METAMORPHIC</div>
+<p class="text-[#b9ccb2] text-xs leading-relaxed">Rewrites own logic entirely. Each generation produces functionally equivalent but structurally distinct code, defeating both signature and heuristic analysis.</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="tech-tag font-mono text-[10px] px-3 py-1">GDB</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">x64DBG</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Immunity Debugger</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Malware</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Reverse Engineering</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Entropy</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Dynamic Analysis</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Static Analysis</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">ROP</span>
+</div>
+<div class="inline-flex items-center gap-2 text-[#008F11] font-mono text-xs tracking-wider opacity-60">
+<span class="material-symbols-outlined text-base">lock</span>
+<span>REPOSITORY_RESTRICTED</span>
+</div>
+</div>
+
+<!-- Card 2: FPGA Encryption Engine -->
+<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">RESEARCH // HARDWARE</div>
+<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">FPGA Encryption Engine</h3>
+</div>
+<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">developer_board</span>
+</div>
+<p class="text-[#b9ccb2] text-sm leading-relaxed mb-6">
+Hardware-accelerated network security on FPGA. Real-time packet inspection, Ethernet parser and checksum verifier on Artix-7. Self-taught Digital Systems from old textbooks. Identified an algorithm used by a cipher: a block linear feedback shift register applied on plaintext to obtain ciphertext.
+</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Verilog</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Digital Systems Design</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Ethernet</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">FPGA</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Network Security</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">TCP/IP</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">W5500</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Artix-7</span>
+</div>
+<a href="https://github.com/fengwyn/PacketProcessor" target="_blank" class="inline-flex items-center gap-2 text-[#00ff41] font-mono text-xs tracking-wider hover:text-[#e2e2e2] transition-colors group">
+<span class="material-symbols-outlined text-base">link</span>
+<span class="group-hover:underline">VIEW_REPOSITORY</span>
+<span class="material-symbols-outlined text-sm opacity-50 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+
+<!-- Card 3: RF Signal Relay -->
+<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">ACTIVE // SIGINT</div>
+<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">RF Signal Relay</h3>
+</div>
+<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">cell_tower</span>
+</div>
+<p class="text-[#b9ccb2] text-sm leading-relaxed mb-6">
+Radio-Frequency based surveillance project powered by eIRC's Node-Relay groundwork. Leveraging SDR capabilities and embedded systems for signal intelligence and networked sensor platforms. Combines RF engineering with distributed systems architecture.
+</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="tech-tag font-mono text-[10px] px-3 py-1">SDR</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Radio Frequency</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">eIRC Node-Relay</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Embedded Systems</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">Surveillance</span>
+<span class="tech-tag font-mono text-[10px] px-3 py-1">TCP/IP</span>
+</div>
+<div class="inline-flex items-center gap-2 text-[#008F11] font-mono text-xs tracking-wider opacity-60">
+<span class="material-symbols-outlined text-base">lock</span>
+<span>REPOSITORY_RESTRICTED</span>
+</div>
+</div>
+
+<!-- Hackathon Achievements -->
+<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">ACHIEVEMENTS // VERIFIED</div>
+<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">Field Operations</h3>
+</div>
+<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">emoji_events</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-[#3b4b37] p-6 hover:border-[#00ff41]/50 transition-colors">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-2 h-2 bg-[#00ff41] shadow-[0_0_8px_rgba(0,255,65,0.5)]"></div>
+<h4 class="font-headline font-semibold text-lg text-[#e2e2e2]">GMiS Hackathon 2024</h4>
+</div>
+<div class="font-mono text-xs text-[#00ff41] tracking-wider mb-3">3RD PLACE // EXPERT DIVISION</div>
+<p class="text-[#b9ccb2] text-sm leading-relaxed">Binary analysis, reverse engineering, cryptography, and forensics. Taught a workshop on Binary Analysis and Reverse Engineering.</p>
+</div>
+<div class="border border-[#3b4b37] p-6 hover:border-[#00ff41]/50 transition-colors">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-2 h-2 bg-[#00ff41] shadow-[0_0_8px_rgba(0,255,65,0.5)]"></div>
+<h4 class="font-headline font-semibold text-lg text-[#e2e2e2]">NJIT CyberSec 2025</h4>
+</div>
+<div class="font-mono text-xs text-[#00ff41] tracking-wider mb-3">TOP 10 // INTERNATIONAL</div>
+<p class="text-[#b9ccb2] text-sm leading-relaxed">Identified LFSR cipher from FPGA Digital Systems research, applying cross-domain knowledge from embedded systems and reverse engineering.</p>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- ======================================== -->
+<!-- SECTION 04: ABOUT                        -->
+<!-- ======================================== -->
+<section id="about" class="px-8 py-16 relative z-10 border-t border-outline-variant/10">
 <div class="max-w-7xl mx-auto">
 <div class="max-w-2xl">
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 04</span>
+<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 05</span>
 <h2 class="text-2xl font-black font-headline tracking-tighter uppercase mt-2 mb-6 text-white">About_Operator</h2>
 <p class="text-on-surface-variant leading-relaxed">
-                        Welcome, fellow Netizen. I'm navigating the digital frontier, exploring the intersection of
+                        Welcome, fellow Netizen. Navigating the digital frontier, exploring the intersection of
                         cybersecurity, networks, and embedded systems. This terminal serves as my log of progress
-                        through cyberspace.
+                        through cyberspace. As thou may have noticed, I like the 80's aesthetic&mdash;yes I read Neuromancer... yes I read Diaspora too.
                     </p>
 <div class="mt-6 flex gap-6">
 <a href="mailto:krzfrancesc@gmail.com" class="text-primary font-mono text-xs hover:text-white transition-colors">krzfrancesc@gmail.com</a>
@@ -402,24 +760,25 @@
 </div>
 </div>
 </section>
+
 <!-- FOOTER -->
 <footer class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center bg-[#131313]/90 backdrop-blur-md border-t border-[#c6c6c6]/20 mt-20 relative z-10">
 <div class="flex flex-col gap-2 mb-8 md:mb-0">
-<div class="font-mono text-[10px] tracking-widest uppercase text-[#a020f0]">© 20XX FENGWYN // ALL SYSTEMS NOMINAL</div>
+<div class="font-mono text-[10px] tracking-widest uppercase text-[#a020f0]">&copy; 20XX FENGWYN // ALL SYSTEMS NOMINAL</div>
 <div class="font-mono text-[8px] tracking-[0.4em] text-secondary/40">STARCHART_BUILD: V1.0_ALPHA</div>
 </div>
 <div class="flex gap-8">
-<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="network.html">NETWORK</a>
-<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="embedded.html">EMBEDDED</a>
-<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="reverse.html">CYBERSEC</a>
-<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="system.html">SYSTEM</a>
-<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="directory.html">DIRECTORY</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="#core">CORE</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="#directory">DIRECTORY</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="#classified">CLASSIFIED</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#353535] hover:text-[#e3b5ff] transition-colors" href="#about">ABOUT</a>
 </div>
 <div class="flex items-center gap-4 mt-8 md:mt-0">
 <div class="w-2 h-2 bg-primary rounded-full animate-ping"></div>
 <span class="font-mono text-[10px] text-primary">CONNECTION: STABLE</span>
 </div>
 </footer>
+
 <!-- Signature Status HUD -->
 <div class="fixed bottom-6 right-6 z-50 pointer-events-none hidden lg:block">
 <div class="p-4 bg-background/80 backdrop-blur-md border border-primary/20 flex flex-col gap-1">
@@ -432,37 +791,29 @@
 </div>
 </div>
 
-
-
-
 </main>
+
 <!-- MOBILE NAVIGATION: BottomNavBar -->
 <nav class="md:hidden fixed bottom-0 w-full bg-[#1b1b1b]/95 backdrop-blur-md border-t border-[#c6c6c6]/10 flex justify-around items-center h-16 z-50">
-<a class="flex flex-col items-center gap-1 text-[#a020f0]" href="index.html">
+<a class="flex flex-col items-center gap-1 text-[#a020f0]" href="#core">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">memory</span>
 <span class="text-[8px] font-mono tracking-widest">CORE</span>
 </a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="network.html">
-<span class="material-symbols-outlined">lan</span>
-<span class="text-[8px] font-mono tracking-widest">NET</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="embedded.html">
-<span class="material-symbols-outlined">developer_board</span>
-<span class="text-[8px] font-mono tracking-widest">EMB</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="reverse.html">
-<span class="material-symbols-outlined">biotech</span>
-<span class="text-[8px] font-mono tracking-widest">CYB</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="system.html">
-<span class="material-symbols-outlined">settings_ethernet</span>
-<span class="text-[8px] font-mono tracking-widest">SYS</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="directory.html">
+<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#directory">
 <span class="material-symbols-outlined">folder</span>
 <span class="text-[8px] font-mono tracking-widest">DIR</span>
 </a>
+<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#classified">
+<span class="material-symbols-outlined">lock</span>
+<span class="text-[8px] font-mono tracking-widest">CLASS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#about">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[8px] font-mono tracking-widest">ABOUT</span>
+</a>
 </nav>
+
+<!-- Starfield Script -->
 <script>
       const canvas = document.getElementById('stars-canvas');
       const ctx = canvas.getContext('2d');
@@ -573,5 +924,19 @@
 
       initStars();
       animate();
+    </script>
+<!-- Cursor Tracking Script -->
+<script>
+      const cursor = document.getElementById('space-cursor');
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+      document.addEventListener('mousedown', () => {
+        cursor.classList.add('clicking');
+      });
+      document.addEventListener('mouseup', () => {
+        cursor.classList.remove('clicking');
+      });
     </script>
 </body></html>

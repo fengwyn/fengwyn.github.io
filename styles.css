@@ -1,18 +1,14 @@
-*, *::before, *::after {
-    cursor: none !important;
-}
+/* =============================================
+   STYLES.CSS — Cyberpunk Theme (scoped to .classified-zone)
+   ============================================= */
 
-body {
-    background-color: #000000;
-    overflow-x: hidden;
-}
-
-.crt-overlay {
-    position: fixed;
+/* CRT Scanline overlay — scoped to classified section */
+.classified-zone .crt-overlay {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: repeating-linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.15),
@@ -21,25 +17,26 @@ body {
         transparent 2px
     );
     pointer-events: none;
-    z-index: 100;
+    z-index: 10;
 }
 
-.grid-background {
-    position: fixed;
+/* Cyberpunk grid backdrop */
+.classified-zone .cyber-grid {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-image:
-        linear-gradient(to right, rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 255, 65, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 65, 0.06) 1px, transparent 1px);
     background-size: 40px 40px;
-    perspective: 1000px;
-    transform: rotateX(60deg) translateY(-20%) scale(2);
-    z-index: -1;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.glitch:hover {
+/* Glitch text effect */
+.classified-zone .glitch:hover {
     text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
     animation: glitch-anim 0.2s infinite;
 }
@@ -53,45 +50,7 @@ body {
     100% { transform: translate(0); }
 }
 
-.pixel-cloud {
-    position: absolute;
-    background: rgba(0, 255, 65, 0.03);
-    filter: blur(40px);
-    border-radius: 50%;
-    z-index: -2;
-}
-
-#customcursor {
-    width: 15px;
-    height: 15px;
-    border: 1px solid #00ffff;
-    position: fixed;
-    pointer-events: none;
-    z-index: 999999;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s, border-color 0.15s, box-shadow 0.15s;
-}
-
-.grid-glow-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #00ff41 0%, transparent 100%);
-    pointer-events: none;
-    z-index: -1;
-    mask-image:
-        linear-gradient(to right, white 1px, transparent 1px),
-        linear-gradient(to bottom, white 1px, transparent 1px);
-    mask-size: 40px 40px;
-    -webkit-mask-image:
-        linear-gradient(to right, white 1px, transparent 1px),
-        linear-gradient(to bottom, white 1px, transparent 1px);
-    -webkit-mask-size: 40px 40px;
-    opacity: 0.8;
-}
-
+/* Glitch click feedback */
 @keyframes glitch-click {
     0% { transform: translate(0) scale(1); filter: hue-rotate(0deg); text-shadow: 2px 0 #00ff41, -2px 0 #ff00ff; }
     20% { transform: translate(-3px, 2px) scale(1.05); filter: hue-rotate(90deg); text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
@@ -101,8 +60,75 @@ body {
     100% { transform: translate(0) scale(1); filter: hue-rotate(0deg); text-shadow: none; }
 }
 
-.glitch-active {
+.classified-zone .glitch-active {
     animation: glitch-click 0.2s ease-in-out !important;
     position: relative;
     z-index: 10;
+}
+
+/* Neon glow pixel clouds */
+.classified-zone .pixel-cloud {
+    position: absolute;
+    background: rgba(0, 255, 65, 0.03);
+    filter: blur(40px);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Cyber card hover effects */
+.classified-zone .cyber-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.classified-zone .cyber-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 255, 65, 0.02) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.classified-zone .cyber-card:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 15px rgba(0, 255, 65, 0.03);
+}
+
+.classified-zone .cyber-card:hover .cyber-card-title {
+    text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
+    animation: glitch-anim 0.2s infinite;
+}
+
+/* Tech tags — neon green */
+.classified-zone .tech-tag {
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: #69df5c;
+    transition: all 0.15s;
+}
+
+.classified-zone .tech-tag:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+    color: #00ff41;
+}
+
+/* Typing cursor blink */
+.classified-zone .typing-cursor::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+    color: #00ff41;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Neon border glow */
+.classified-zone .neon-border {
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.2), inset 0 0 5px rgba(0, 255, 65, 0.05);
 }
