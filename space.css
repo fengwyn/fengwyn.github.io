@@ -255,8 +255,16 @@
    Custom Cursor — NASA Punk Double-Circle
    ============================================= */
 
-*, *::before, *::after {
-    cursor: none !important;
+@media (pointer: fine) {
+    *, *::before, *::after {
+        cursor: none !important;
+    }
+}
+
+@media (pointer: coarse) {
+    #space-cursor {
+        display: none !important;
+    }
 }
 
 #space-cursor {
@@ -349,6 +357,31 @@
     height: 4px;
     background: rgba(160, 32, 240, 0.5);
     border-color: #e3b5ff;
+}
+
+/* =============================================
+   Sidebar Nav — Active Section Highlight
+   ============================================= */
+
+.nav-link {
+    color: #c6c6c6;
+    opacity: 0.7;
+}
+
+.nav-link:hover {
+    opacity: 1;
+    background-color: #2a2a2a;
+}
+
+.nav-link.active {
+    background-color: #a020f0;
+    color: #131313;
+    font-weight: 900;
+    opacity: 1;
+}
+
+.nav-link.active .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 /* Material Symbols baseline */

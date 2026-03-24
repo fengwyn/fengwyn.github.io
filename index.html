@@ -104,19 +104,19 @@
 <div class="text-[#c6c6c6] opacity-70 font-mono text-[10px] tracking-[0.2em] mt-1">OPERATOR: $USER</div>
 </div>
 <div class="flex-1 mt-8">
-<a class="flex items-center gap-4 px-6 py-4 bg-[#a020f0] text-[#131313] font-black font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#core">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">memory</span>
+<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#core" data-section="core">
+<span class="material-symbols-outlined">memory</span>
                 CORE
             </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#directory">
+<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#directory" data-section="directory">
 <span class="material-symbols-outlined">folder</span>
                 DIRECTORY
             </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#classified">
+<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#classified" data-section="classified">
 <span class="material-symbols-outlined">lock</span>
                 CYBER
             </a>
-<a class="flex items-center gap-4 px-6 py-4 text-[#c6c6c6] opacity-70 hover:opacity-100 hover:bg-[#2a2a2a] font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#about">
+<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#about" data-section="about">
 <span class="material-symbols-outlined">person</span>
                 ABOUT
             </a>
@@ -229,7 +229,7 @@
 <span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-primary">C++</span>
 <span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">REDIS</span>
 <span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">CLICKHOUSE</span>
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">DISTRIBUTED</span>
+<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">DISTRIBUTED SYSTEMS</span>
 <span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">OPENMP</span>
 </div>
 <a class="mt-4 inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/eIRC" target="_blank">
@@ -351,7 +351,7 @@
 <div class="max-w-7xl mx-auto">
 <div class="mb-12">
 <span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Submodule: 02.1</span>
-<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">HARDWARE_SPECS</h2>
+<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">HARDWARE SPECS</h2>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Platforms -->
@@ -425,7 +425,7 @@
 <div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
 <div class="flex justify-between items-start mb-4">
 <span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">DISTRIBUTED</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">NETWORK</span>
 </div>
 <h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">eIRC</h3>
 <p class="text-on-surface-variant text-xs leading-relaxed mb-4">Networked node system. Hubs, Nodes, Endpoints with modular command handlers. IoT interoperability across platforms. Implementing Redis and ClickHouse.</p>
@@ -449,7 +449,7 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
 <div class="flex justify-between items-start mb-4">
 <span class="font-mono text-[10px] text-secondary px-2 py-0.5 border border-secondary/30">COMPLETED</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">DISTRIBUTED</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">NETWORK</span>
 </div>
 <h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Distributed Systems</h3>
 <p class="text-on-surface-variant text-xs leading-relaxed mb-4">Scalable distributed file system for University. Built prior to AI advent.</p>
@@ -501,7 +501,6 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BEAGLEBOARD</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
@@ -520,13 +519,14 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
 <span class="font-mono text-[9px] text-secondary/50 tracking-wider">FPGA</span>
 </div>
-<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">HW Net Security</h3>
+<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Hardware Network Security</h3>
 <p class="text-on-surface-variant text-xs leading-relaxed mb-4">Hardware-accelerated network security using FPGA for real-time packet inspection. Self-taught Digital Systems. Identified LFSR cipher algorithm.</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DIGITAL SYSTEMS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ETHERNET</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MICROBLAZE</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK SECURITY</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">W5500</span>
@@ -685,7 +685,7 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="font-mono text-[10px] text-[#008F11] tracking-[0.3em]">// MODULE 04 :: RESTRICTED_ACCESS </span>
 <div class="h-px flex-1 bg-gradient-to-l from-transparent to-[#00ff41]"></div>
 </div>
-<h2 class="glitch font-headline font-black text-5xl md:text-7xl tracking-tighter leading-none text-[#00ff41]" style="text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);">CYBERSEC</h2>
+<h2 class="glitch font-headline font-black text-5xl md:text-7xl tracking-tighter leading-none text-[#00ff41]" style="text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);">CYBER//SECURITY</h2>
 <p class="font-mono text-xs text-[#008F11] mt-4 tracking-wider typing-cursor">Offensive security research, encryption engines, and signal intelligence</p>
 </div>
 
@@ -832,7 +832,7 @@ Radio-Frequency based surveillance project powered by eIRC's Node-Relay groundwo
 <div class="max-w-7xl mx-auto">
 <div class="max-w-2xl">
 <span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 05</span>
-<h2 class="text-2xl font-black font-headline tracking-tighter uppercase mt-2 mb-6 text-white">About_Operator</h2>
+<h2 class="text-2xl font-black font-headline tracking-tighter uppercase mt-2 mb-6 text-white">About: &nbsp; Operator</h2>
 <p class="text-on-surface-variant leading-relaxed">
                         Welcome, fellow Netizen. Navigating the digital frontier, exploring the intersection of
                         cybersecurity, networks, and embedded systems. This terminal serves as my log of progress
@@ -1022,6 +1022,54 @@ Radio-Frequency based surveillance project powered by eIRC's Node-Relay groundwo
       document.addEventListener('mouseup', () => {
         cursor.classList.remove('clicking');
       });
+    </script>
+
+    <!-- Scroll-based nav highlight -->
+    <script>
+    (() => {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link[data-section]');
+      const visible = new Set();
+      let current = '';
+
+      function update() {
+        // At bottom of page, always highlight about
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 50) {
+          if (current !== 'about') {
+            current = 'about';
+            navLinks.forEach(l => l.classList.remove('active'));
+            document.querySelector('.nav-link[data-section="about"]')?.classList.add('active');
+          }
+          return;
+        }
+        // Pick the topmost visible section
+        let topId = '';
+        let topY = Infinity;
+        visible.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            const y = el.getBoundingClientRect().top;
+            if (y < topY) { topY = y; topId = id; }
+          }
+        });
+        if (topId && topId !== current) {
+          current = topId;
+          navLinks.forEach(l => l.classList.remove('active'));
+          document.querySelector(`.nav-link[data-section="${topId}"]`)?.classList.add('active');
+        }
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        });
+        update();
+      }, { threshold: 0 });
+
+      sections.forEach(s => observer.observe(s));
+      window.addEventListener('scroll', update, { passive: true });
+    })();
     </script>
 </body>
 
