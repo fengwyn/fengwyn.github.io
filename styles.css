@@ -1,786 +1,223 @@
-/* ( o > o)/ */
-
-
-
-body {
-  margin: 0;
-  background: black;
-  overflow: hidden;
-  font-family: 'Share Tech Mono', monospace;
-  color: #0f0;
-  cursor: none;
-  user-select: none;
-}
-
-
-/* 1. Global override for every element and pseudo-element */
-*, *::before, *::after {
-  cursor: none !important;
-}
-
-/* 2. Target the root levels specifically */
-html, body {
-  cursor: none !important;
-  height: 100%;
-  overflow: hidden; /* Keeps the main page from scrolling */
-}
-
-/* 3. The most important part: The Scrollbar states */
-/* This forces the browser to hide the cursor even when clicking/dragging the bar */
-.window::-webkit-scrollbar,
-.window::-webkit-scrollbar-thumb,
-.window::-webkit-scrollbar-track,
-.window::-webkit-scrollbar-button,
-.window::-webkit-scrollbar-corner {
-  cursor: none !important;
-}
-
-/* 4. Prevent the "I-beam" cursor when passing over text */
-* {
-  user-select: none; /* Prevents text selection which often forces a cursor */
-  -webkit-user-select: none;
-}
-
-
-
-body:has(.click-button:hover, .close-btn:hover, #dropdownTrigger:hover, dropdown-item:hover) #customcursor {
-  transform: translate(-50%, -50%) scale(1.5);
-  background: rgba(0, 255, 255, 0.4);
-  border-width: 1px;
-}
-
-body:has(.dragging) #customcursor {
-  border-color: #ff0055;
-  box-shadow: 0 0 15px #ff0055;
-  background: rgba(255, 0, 05, 0.2);
-}
-
-#customcursor {
-  width: 15px;
-  height: 15px;
-  border: 1px solid #0ff;
-  position: fixed;
-  pointer-events: none;
-  z-index: 999999;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px #0ff;
-  transition: width 0.2s, height 0.2s;
-}
-
-.space {
-  perspective: 1200px;
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-.universe {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.1s linear;
-  position: relative;
-  pointer-events: none; /* Disable clicks on 3D elements */
-}
-
-/* Transparent cyberspace grid floor */
-/* --- Optimized Infinite Grid --- */
-.grid {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  width: 150vw;
-  height: 150vh;
-
-  /* Flat orientation on the floor */
-  transform: translate(-50%, -50%) rotateX(90deg) translateZ(-150px);
-  overflow: hidden;
-
-  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
-  mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
-}
-
-/* Grid lines on a GPU-composited layer — translate instead of background-position */
-.grid::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  right: -100px;
-  bottom: -100px;
-
-  background-image:
-    linear-gradient(to right, rgba(0, 255, 200, 0.30) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 255, 200, 0.45) 1px, transparent 1px);
-  background-size: 100px 100px;
-
-  transform: translate(var(--grid-x, 0px), var(--grid-y, 0px));
-  will-change: transform;
-}
-
-#travelBtn.active {
-  background: rgba(0, 255, 200, 0.3);
-  box-shadow: 0 0 20px cyan;
-  color: #fff;
-}
-
-/* --- Dimmed 3D Icons --- */
-.icon {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: rgba(0,255,200,0.05); /* much dimmer background */
-  border: 2px solid rgba(0,255,200,0.3);
-  border-radius: 10px;
-  text-align: center;
-  line-height: 80px;
-  color: rgba(0, 255, 200, 0.125);
-  font-size: 24px;
-  transform-style: preserve-3d;
-  box-shadow: none;  /* remove glow */
-  user-select: none;
-  transition: all 0.3s ease;
-}
-
-/* Background floating icons */
-.background-icons {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 50;
-  overflow: hidden;
-}
-
-/* Creed cross - Apostle's Creed in hex */
-.creed-cross {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 45;
-  white-space: pre;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  line-height: 1.1;
-  color: rgba(0, 255, 200, 0.12);
-  letter-spacing: 0.5px;
-  max-width: 95vw;
-  max-height: 95vh;
-  overflow: hidden;
-  opacity: 0.85;
-}
-
-.creed-cross .creed-line {
-  display: block;
-}
-
-.creed-cross .creed-line-movable {
-  display: block;
-  will-change: transform;
-  transform-origin: left center;
-}
-
-/* Ark of the Covenant drawing */
-.ark-drawing {
-  position: fixed;
-  bottom: 2vh;
-  left: 2vw;
-  pointer-events: auto;
-  cursor: pointer;
-  z-index: 46;
-  white-space: pre;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  line-height: 1.1;
-  color: rgba(0, 255, 200, 0.12);
-  max-width: 40vw;
-  max-height: 30vh;
-  overflow: hidden;
-  opacity: 0.9;
-  transform-origin: bottom left;
-  transition: transform 0.08s ease-out, color 0.2s ease, opacity 0.2s ease;
-}
-
-.ark-drawing:hover {
-  color: rgba(0, 255, 200, 0.25);
-  opacity: 1;
-}
-
-.floating-icon {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background: rgba(0, 255, 200, 0.03);
-  border: 1px solid rgba(0, 255, 200, 0.15);
-  border-radius: 8px;
-  color: rgba(0, 255, 200, 0.2);
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Share Tech Mono', monospace;
-  opacity: 0.3;
-  transition: opacity 0.3s ease;
-  will-change: transform;
-}
-
-.floating-icon:hover {
-  opacity: 0.5;
-}
-
-/* Floating dropdown menu */
-.dropdown-menu {
-  position: absolute;
-  top: 12px;
-  left: 36px;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Share Tech Mono', monospace;
-}
-
-.dropdown-trigger,
-.dropdown-action {
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid rgba(0, 255, 200, 0.6);
-  border-radius: 8px;
-  color: cyan;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.dropdown-trigger:hover,
-.dropdown-action:hover {
-  background: rgba(0, 255, 200, 0.15);
-  box-shadow: 0 0 15px rgba(0, 255, 200, 0.5);
-}
-
-.dropdown-panel {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 6px;
-  min-width: 160px;
-  background: rgba(0, 0, 0, 0.95);
-  border: 2px solid rgba(0, 255, 200, 0.6);
-  border-radius: 8px;
-  padding: 8px 0;
-  box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
-  display: none;
-}
-
-.dropdown-menu.open .dropdown-panel {
-  display: block;
-}
-
-.dropdown-item {
-  padding: 10px 16px;
-  color: rgba(0, 255, 200, 0.9);
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.15s ease;
-}
-
-.dropdown-item:hover {
-  background: rgba(0, 255, 200, 0.15);
-}
-
-/* 2D Clickable overlay buttons that follow the 3D icons */
-.click-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 100;
-}
-
-/* --- Glowing 2D Buttons --- */
-.click-button {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: rgba(0, 255, 200, 0.1);
-  border: 2px solid cyan;
-  border-radius: 10px;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: transform 0.08s ease-out, opacity 0.08s ease-out, box-shadow 0.2s ease;
-  box-shadow: 0 0 20px rgba(0,255,200,0.8); /* glow now here */
-  color: cyan;
-  transform-origin: center center;
-  /* Text center */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.click-button:hover {
-  background: rgba(0, 255, 200, 0.2);
-  border-color: cyan;
-  box-shadow: 0 0 30px rgba(0,255,200,1);
-}
-
-.click-button.dragging {
-  cursor: grabbing;
-  z-index: 101;
-}
-
-/* Info window */
-.window {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: rgba(0, 0, 0, 0.95);
-  border: 2px solid cyan;
-  border-radius: 10px;
-  padding: 30px;
-  color: #0f0;
-  width: 500px;
-  max-width: 90vw;
-  max-height: 80vh;
-  transition: transform 0.4s ease;
-  pointer-events: none;
-  z-index: 9999;
-  box-shadow: 0 0 50px rgba(0,255,200,0.5);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.window.active {
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: auto;
-}
-
-.window h2 {
-  color: cyan;
-  margin-top: 0;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px cyan;
-  font-size: 24px;
-  border-bottom: 1px solid rgba(0,255,200,0.3);
-  padding-bottom: 10px;
-}
-
-.window h3 {
-  color: #0ff;
-  margin-top: 15px;
-  margin-bottom: 8px;
-  font-size: 18px;
-  text-shadow: 0 0 5px rgba(0,255,255,0.5);
-}
-
-.window p {
-  margin: 10px 0;
-  line-height: 1.6;
-  color: #0f0;
-}
-
-.window a {
-  color: cyan;
-  text-decoration: none;
-  border-bottom: 1px dotted cyan;
-  transition: all 0.2s ease;
-}
-
-.window a:hover {
-  color: #fff;
-  border-bottom-color: #fff;
-  text-shadow: 0 0 5px cyan;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  color: cyan;
-  cursor: pointer;
-  font-size: 20px;
-  background: none;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-  color: #fff;
-  text-shadow: 0 0 10px cyan;
-}
-
-/* Tags */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 10px 0;
-}
-
-.tag {
-  display: inline-block;
-  padding: 4px 10px;
-  background: rgba(0,255,200,0.1);
-  border: 1px solid rgba(0,255,200,0.4);
-  border-radius: 4px;
-  font-size: 12px;
-  color: #0ff;
-  text-shadow: 0 0 3px rgba(0,255,255,0.5);
-}
-
-/* Skills Section */
-.skills-section {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(0,255,200,0.2);
-}
-
-.skills-section h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-/* Timeline (Journey) */
-.timeline {
-  position: relative;
-  padding-left: 30px;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 10px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, 
-    rgba(0,255,200,0.5) 0%, 
-    rgba(0,255,200,0.3) 50%, 
-    rgba(0,255,200,0.1) 100%);
-}
-
-.timeline-entry {
-  position: relative;
-  margin-bottom: 30px;
-  padding-left: 20px;
-}
-
-.timeline-entry::before {
-  content: '';
-  position: absolute;
-  left: -25px;
-  top: 5px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: cyan;
-  box-shadow: 0 0 10px cyan;
-  border: 2px solid rgba(0,0,0,0.8);
-}
-
-.timeline-year {
-  color: cyan;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 5px;
-  text-shadow: 0 0 5px cyan;
-}
-
-.timeline-content h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.timeline-content p {
-  margin: 8px 0;
-  color: #0f0;
-}
-
-/* Projects Grid */
-.projects-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.project-card {
-  background: rgba(0,255,200,0.05);
-  border: 1px solid rgba(0,255,200,0.3);
-  border-radius: 8px;
-  padding: 15px;
-  transition: all 0.3s ease;
-}
-
-.project-card:hover {
-  background: rgba(0,255,200,0.1);
-  border-color: rgba(0,255,200,0.6);
-  box-shadow: 0 0 15px rgba(0,255,200,0.3);
-}
-
-.project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.project-header h3 {
-  margin: 0;
-  flex: 1;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-  border: 1px solid;
-}
-
-.status-active {
-  background: rgba(0,255,0,0.2);
-  border-color: #0f0;
-  color: #0f0;
-}
-
-.status-in-progress {
-  background: rgba(255,255,0,0.2);
-  border-color: #ff0;
-  color: #ff0;
-}
-
-.status-research {
-  background: rgba(0,150,255,0.2);
-  border-color: #09f;
-  color: #09f;
-}
-
-.status-completed {
-  background: rgba(0,255,200,0.2);
-  border-color: cyan;
-  color: cyan;
-}
-
-.project-link {
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-/* Achievements List */
-.achievements-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.achievement-item {
-  display: flex;
-  gap: 15px;
-  padding: 15px;
-  background: rgba(0,255,200,0.05);
-  border-left: 3px solid cyan;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.achievement-item:hover {
-  background: rgba(0,255,200,0.1);
-  border-left-color: #0ff;
-  box-shadow: 0 0 10px rgba(0,255,200,0.2);
-}
-
-.achievement-date {
-  color: cyan;
-  font-weight: bold;
-  font-size: 14px;
-  min-width: 60px;
-  text-shadow: 0 0 5px cyan;
-}
-
-.achievement-content {
-  flex: 1;
-}
-
-.achievement-content h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.achievement-content p {
-  margin: 8px 0;
-}
-
-.category {
-  display: inline-block;
-  padding: 3px 8px;
-  background: rgba(0,255,200,0.15);
-  border: 1px solid rgba(0,255,200,0.4);
-  border-radius: 3px;
-  font-size: 11px;
-  color: #0ff;
-  margin-top: 5px;
-}
-
-/* Contact Info */
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.contact-item {
-  padding: 10px;
-  background: rgba(0,255,200,0.05);
-  border: 1px solid rgba(0,255,200,0.2);
-  border-radius: 6px;
-}
-
-.contact-label {
-  color: cyan;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-/* Empty State */
-.empty-state {
-  color: rgba(0,255,200,0.5);
-  font-style: italic;
-  text-align: center;
-  padding: 20px;
-  border: 1px dashed rgba(0,255,200,0.3);
-  border-radius: 6px;
-}
-
-.window .all-sections-block {
-  margin-bottom: 24px;
-}
-.window .all-sections-block:last-child {
-  margin-bottom: 0;
-}
-
-/* Scrollbar styling for window */
-.window::-webkit-scrollbar {
-  width: 8px;
-}
-
-.window::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.5);
-  border-radius: 4px;
-}
-
-.window::-webkit-scrollbar-thumb {
-  background: rgba(0,255,200,0.3);
-  border-radius: 4px;
-}
-
-.window::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,255,200,0.5);
-}
-
-.debug {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  color: cyan;
-  font-size: 12px;
-  z-index: 10000;
-}
-
-
-
-
-/* Mobile Layouts (Screens smaller than 768px) */
-@media (max-width: 768px) {
-  .space {
-    /* Bring the "camera" back so the 3D depth isn't as extreme */
-    perspective: 800px; 
-  }
-
-  .universe {
-    /* Tilt the floor slightly more upward so it's visible on a tall screen */
-    transform: rotateX(10deg); 
-  }
-
-  .grid {
-    width: 250vw;
-    height: 250vh;
-  }
-
-  .grid::before {
-    background-size: 80px 80px;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .window {
-    /* Remove left: 5vw and top: 15vh! */
-    /* By not defining left/top here, it inherits 50%/50% from the base class */
-    width: 85vw !important; 
-    height: 75vh !important;
-    padding: 20px;
-    font-size: 14px;
-    
-    /* Ensure internal content is easier to read on narrow screens */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center-aligns headers/text blocks */
-    text-align: center;
-  }
-
-  .window h2 {
-    font-size: 20px;
+/* =============================================
+   STYLES.CSS — Cyberspace Theme (scoped to .classified-zone)
+   ============================================= */
+
+/* CRT Scanline overlay — scoped to classified section */
+.classified-zone .crt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
 
-  /* Make sure lists (like projects) don't lean left */
-  .timeline, .projects-grid, .achievements-list {
-    padding-left: 0;
-    text-align: left; /* Keep body text readable but container centered */
+/* Cyberpunk grid backdrop */
+.classified-zone .cyber-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
-  
-  .dropdown-menu {
-    left: 50% !important;
-    transform: translateX(-50%);
-    top: 10px;
-    width: auto;
-  }
+    height: 100%;
+    background-image:
+        linear-gradient(to right, rgba(0, 255, 65, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 65, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+}
 
-  /* Center the panel relative to the trigger button */
-  .dropdown-panel {
-    right: 50% !important;
-    transform: translateX(50%);
-    min-width: 200px;
-  }
+/* Glitch text effect */
+.classified-zone .glitch:hover {
+    text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
+    animation: glitch-anim 0.2s infinite;
+}
 
-  .click-button:active, .dropdown-item:active {
-    background: rgba(0, 255, 200, 0.4);
-    box-shadow: 0 0 15px #0ff;
-  }
+@keyframes glitch-anim {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
 
-  /* Hide the custom cursor on mobile because it lags behind the finger */
-  #customcursor {
-    display: none !important;
-  }
+/* Glitch click feedback */
+@keyframes glitch-click {
+    0% { transform: translate(0) scale(1); filter: hue-rotate(0deg); text-shadow: 2px 0 #00ff41, -2px 0 #ff00ff; }
+    20% { transform: translate(-3px, 2px) scale(1.05); filter: hue-rotate(90deg); text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
+    40% { transform: translate(3px, -2px) scale(0.95); filter: hue-rotate(180deg); text-shadow: 2px 0 #00ff41, -2px 0 #00ffff; }
+    60% { transform: translate(-2px, -3px) scale(1.02); filter: hue-rotate(270deg); text-shadow: -2px 0 #ff00ff, 2px 0 #00ff41; }
+    80% { transform: translate(2px, 3px) scale(0.98); filter: hue-rotate(360deg); text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+    100% { transform: translate(0) scale(1); filter: hue-rotate(0deg); text-shadow: none; }
+}
 
-  /* Ensure the body allows a real cursor (finger) to interact */
-  html, body, * {
-    cursor: auto !important;
-  }
+.classified-zone .glitch-active {
+    animation: glitch-click 0.2s ease-in-out !important;
+    position: relative;
+    z-index: 10;
+}
 
+/* Neon glow pixel clouds */
+.classified-zone .pixel-cloud {
+    position: absolute;
+    background: rgba(0, 255, 65, 0.03);
+    filter: blur(40px);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Cyber card hover effects */
+.classified-zone .cyber-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.classified-zone .cyber-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 255, 65, 0.02) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.classified-zone .cyber-card:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 15px rgba(0, 255, 65, 0.03);
+}
+
+.classified-zone .cyber-card:hover .cyber-card-title {
+    text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
+    animation: glitch-anim 0.2s infinite;
+}
+
+/* Tech tags — neon green */
+.classified-zone .tech-tag {
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: #69df5c;
+    transition: all 0.15s;
+}
+
+.classified-zone .tech-tag:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+    color: #00ff41;
+}
+
+/* Typing cursor blink */
+.classified-zone .typing-cursor::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+    color: #00ff41;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Neon border glow */
+.classified-zone .neon-border {
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.2), inset 0 0 5px rgba(0, 255, 65, 0.05);
+}
+
+/* =============================================
+   CYBER OCTOPUS
+   ============================================= */
+.classified-zone .cyber-octopus {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 85%;
+    max-width: 1100px;
+    height: 90%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.6;
+}
+
+.classified-zone .cyber-octopus svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Tentacle sway animations */
+.classified-zone .tentacle {
+    transform-origin: right center;
+}
+
+.classified-zone .tentacle.t1 {
+    animation: sway-1 8s ease-in-out infinite;
+}
+.classified-zone .tentacle.t2 {
+    animation: sway-2 7s ease-in-out infinite;
+}
+.classified-zone .tentacle.t3 {
+    animation: sway-3 9s ease-in-out infinite;
+}
+.classified-zone .tentacle.t4 {
+    animation: sway-2 7.5s ease-in-out infinite reverse;
+}
+.classified-zone .tentacle.t5 {
+    animation: sway-1 8.5s ease-in-out infinite reverse;
+}
+.classified-zone .tentacle.t6 {
+    animation: sway-3 10s ease-in-out infinite;
+}
+
+@keyframes sway-1 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-6px) translateX(4px); }
+    50% { transform: translateY(4px) translateX(-3px); }
+    75% { transform: translateY(-3px) translateX(5px); }
+}
+
+@keyframes sway-2 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    30% { transform: translateY(5px) translateX(-5px); }
+    60% { transform: translateY(-4px) translateX(3px); }
+}
+
+@keyframes sway-3 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    20% { transform: translateY(-5px) translateX(6px); }
+    50% { transform: translateY(6px) translateX(-4px); }
+    80% { transform: translateY(-3px) translateX(2px); }
+}
+
+/* Data node pulse */
+.classified-zone .data-node {
+    animation: node-pulse 3s ease-in-out infinite;
+}
+.classified-zone .data-node.dn1 { animation-delay: 0s; }
+.classified-zone .data-node.dn2 { animation-delay: 0.6s; }
+.classified-zone .data-node.dn3 { animation-delay: 1.2s; }
+.classified-zone .data-node.dn4 { animation-delay: 1.8s; }
+.classified-zone .data-node.dn5 { animation-delay: 2.4s; }
+
+@keyframes node-pulse {
+    0%, 100% { opacity: 0.2; r: 2; }
+    50% { opacity: 0.8; r: 4; }
+}
+
+/* Responsive — smaller on mobile */
+@media (max-width: 768px) {
+    .classified-zone .cyber-octopus {
+        width: 80%;
+        right: -15%;
+        opacity: 0.3;
+    }
 }
