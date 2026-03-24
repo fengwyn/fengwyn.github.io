@@ -380,6 +380,14 @@
     opacity: 1;
 }
 
+.nav-link-cyber.active {
+    background-color: #f0205e;
+    color: #131313;
+    font-weight: 900;
+    opacity: 1;
+}
+
+
 .nav-link.active .material-symbols-outlined {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
