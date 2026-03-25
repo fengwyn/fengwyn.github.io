@@ -1,9 +1,9 @@
 /* =============================================
-   STYLES.CSS — Cyberspace Theme (scoped to .classified-zone)
+   STYLES.CSS — Cyberspace Theme (scoped to .cyber-zone)
    ============================================= */
 
-/* CRT Scanline overlay — scoped to classified section */
-.classified-zone .crt-overlay {
+/* CRT Scanline overlay — scoped to cyber section */
+.cyber-zone .crt-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -21,7 +21,7 @@
 }
 
 /* Cyberpunk grid backdrop */
-.classified-zone .cyber-grid {
+.cyber-zone .cyber-grid {
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +36,7 @@
 }
 
 /* Glitch text effect */
-.classified-zone .glitch:hover {
+.cyber-zone .glitch:hover {
     text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
     animation: glitch-anim 0.2s infinite;
 }
@@ -60,14 +60,14 @@
     100% { transform: translate(0) scale(1); filter: hue-rotate(0deg); text-shadow: none; }
 }
 
-.classified-zone .glitch-active {
+.cyber-zone .glitch-active {
     animation: glitch-click 0.2s ease-in-out !important;
     position: relative;
     z-index: 10;
 }
 
 /* Neon glow pixel clouds */
-.classified-zone .pixel-cloud {
+.cyber-zone .pixel-cloud {
     position: absolute;
     background: rgba(0, 255, 65, 0.03);
     filter: blur(40px);
@@ -76,13 +76,13 @@
 }
 
 /* Cyber card hover effects */
-.classified-zone .cyber-card {
+.cyber-zone .cyber-card {
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
 }
 
-.classified-zone .cyber-card::before {
+.cyber-zone .cyber-card::before {
     content: "";
     position: absolute;
     top: 0;
@@ -93,31 +93,31 @@
     pointer-events: none;
 }
 
-.classified-zone .cyber-card:hover {
+.cyber-zone .cyber-card:hover {
     border-color: #00ff41;
     box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 15px rgba(0, 255, 65, 0.03);
 }
 
-.classified-zone .cyber-card:hover .cyber-card-title {
+.cyber-zone .cyber-card:hover .cyber-card-title {
     text-shadow: 2px 0 #ffb4ab, -2px 0 #00ff41;
     animation: glitch-anim 0.2s infinite;
 }
 
 /* Tech tags — neon green */
-.classified-zone .tech-tag {
+.cyber-zone .tech-tag {
     border: 1px solid rgba(0, 255, 65, 0.3);
     color: #69df5c;
     transition: all 0.15s;
 }
 
-.classified-zone .tech-tag:hover {
+.cyber-zone .tech-tag:hover {
     border-color: #00ff41;
     box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
     color: #00ff41;
 }
 
 /* Typing cursor blink */
-.classified-zone .typing-cursor::after {
+.cyber-zone .typing-cursor::after {
     content: "_";
     animation: blink 1s step-end infinite;
     color: #00ff41;
@@ -129,14 +129,14 @@
 }
 
 /* Neon border glow */
-.classified-zone .neon-border {
+.cyber-zone .neon-border {
     box-shadow: 0 0 5px rgba(0, 255, 65, 0.2), inset 0 0 5px rgba(0, 255, 65, 0.05);
 }
 
 /* =============================================
    CYBER OCTOPUS
    ============================================= */
-.classified-zone .cyber-octopus {
+.cyber-zone .cyber-octopus {
     position: absolute;
     top: 50%;
     right: 0;
@@ -149,32 +149,32 @@
     opacity: 0.6;
 }
 
-.classified-zone .cyber-octopus svg {
+.cyber-zone .cyber-octopus svg {
     width: 100%;
     height: 100%;
 }
 
 /* Tentacle sway animations */
-.classified-zone .tentacle {
+.cyber-zone .tentacle {
     transform-origin: right center;
 }
 
-.classified-zone .tentacle.t1 {
+.cyber-zone .tentacle.t1 {
     animation: sway-1 8s ease-in-out infinite;
 }
-.classified-zone .tentacle.t2 {
+.cyber-zone .tentacle.t2 {
     animation: sway-2 7s ease-in-out infinite;
 }
-.classified-zone .tentacle.t3 {
+.cyber-zone .tentacle.t3 {
     animation: sway-3 9s ease-in-out infinite;
 }
-.classified-zone .tentacle.t4 {
+.cyber-zone .tentacle.t4 {
     animation: sway-2 7.5s ease-in-out infinite reverse;
 }
-.classified-zone .tentacle.t5 {
+.cyber-zone .tentacle.t5 {
     animation: sway-1 8.5s ease-in-out infinite reverse;
 }
-.classified-zone .tentacle.t6 {
+.cyber-zone .tentacle.t6 {
     animation: sway-3 10s ease-in-out infinite;
 }
 
@@ -199,14 +199,14 @@
 }
 
 /* Data node pulse */
-.classified-zone .data-node {
+.cyber-zone .data-node {
     animation: node-pulse 3s ease-in-out infinite;
 }
-.classified-zone .data-node.dn1 { animation-delay: 0s; }
-.classified-zone .data-node.dn2 { animation-delay: 0.6s; }
-.classified-zone .data-node.dn3 { animation-delay: 1.2s; }
-.classified-zone .data-node.dn4 { animation-delay: 1.8s; }
-.classified-zone .data-node.dn5 { animation-delay: 2.4s; }
+.cyber-zone .data-node.dn1 { animation-delay: 0s; }
+.cyber-zone .data-node.dn2 { animation-delay: 0.6s; }
+.cyber-zone .data-node.dn3 { animation-delay: 1.2s; }
+.cyber-zone .data-node.dn4 { animation-delay: 1.8s; }
+.cyber-zone .data-node.dn5 { animation-delay: 2.4s; }
 
 @keyframes node-pulse {
     0%, 100% { opacity: 0.2; r: 2; }
@@ -215,7 +215,7 @@
 
 /* Responsive — smaller on mobile */
 @media (max-width: 768px) {
-    .classified-zone .cyber-octopus {
+    .cyber-zone .cyber-octopus {
         width: 80%;
         right: -15%;
         opacity: 0.3;
