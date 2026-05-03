@@ -257,19 +257,21 @@
                             View_Schematic <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </a>
 </div>
-<!-- Project: Embedded Linux IoT Node -->
+<!-- Project: OSELOT — Satellite Ground Station -->
 <div class="md:col-span-4 group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 flex flex-col justify-between">
 <div>
 <div class="flex justify-between items-center mb-4">
 <div class="font-mono text-[10px] text-white/50">ACTIVE</div>
 </div>
-<span class="material-symbols-outlined text-primary-container text-4xl mb-4">memory</span>
-<h3 class="text-xl font-bold font-headline uppercase leading-tight text-white">Embedded Linux IoT Node</h3>
-<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Custom Yocto Linux image for BeaglePlay with SDR radio stack and Node Relay application layer. BSP configuration, cross-compilation for ARM.</p>
+<span class="material-symbols-outlined text-primary-container text-4xl mb-4">satellite_alt</span>
+<h3 class="text-xl font-bold font-headline uppercase leading-tight text-white">OSELOT</h3>
+<p class="font-mono text-[9px] text-secondary/60 mt-1 tracking-wider">Observational Satellite Embedded Linux Operations Terminal</p>
+<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Custom Yocto Linux distro on BeaglePlay coupling RTL-SDR with GOES LRIT demodulation at 1694&nbsp;MHz. Decoded telemetry pipes structured image metadata into a custom IRC infrastructure for real-time ground-station event distribution.</p>
 <div class="flex flex-wrap gap-1 mt-3">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL-SDR</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GOES</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">IRC</span>
 </div>
 </div>
 <a class="mt-6 flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="#directory">
@@ -491,27 +493,36 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </div>
 </div>
 
-<!-- Embedded Linux IoT Node -->
+<!-- OSELOT — Embedded Linux Satellite Ground Station -->
 <div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
 <div class="flex justify-between items-start mb-4">
 <span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED / SDR</span>
 </div>
-<h3 class="font-headline font-bold text-lg text-white mb-3 group-hover:text-primary transition-colors uppercase">Embedded Linux IoT Node</h3>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Custom Yocto Linux image for BeaglePlay, SDR radio stack and Node Relay. BSP configuration, custom layers, cross-compilation for ARM. Experimenting with FPGA MicroBlaze.</p>
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary-container text-2xl">satellite_alt</span>
+<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">OSELOT</h3>
+</div>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Observational Satellite Embedded Linux Operations Terminal</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Engineered an embedded satellite ground station on <span class="font-mono text-[10px] text-primary/80">BeaglePlay</span>, coupling RTL-SDR hardware with GOES LRIT demodulation tools to capture, demodulate, and persist live geostationary satellite imagery at 1694&nbsp;MHz with a sub-1&nbsp;W RF front-end.<br><br>
+Integrated decoded satellite telemetry with a custom Internet Relay Chat infrastructure, publishing structured image metadata and alerts to IRC channels as a lightweight, protocol-native transport layer for distributing real-time ground-station events across a network.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BEAGLEPLAY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL-SDR</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GOES LRIT</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BEAGLEBOARD</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL V3</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">OPENMP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SYSTEMD</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">IRC</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BSP</span>
 </div>
-<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
-<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
-</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/OSELOT" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
 </div>
 
 <!-- Radio Surveillance -->
