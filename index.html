@@ -421,7 +421,7 @@
 <span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 03</span>
 <h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">All Project Nodes</h2>
 </div>
-<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">10 ENTRIES</div>
+<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">9 ENTRIES</div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -435,7 +435,11 @@
 <span class="material-symbols-outlined text-primary-container text-2xl">hub</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">eIRC</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Networked node system. Hubs, Nodes, Endpoints with modular command handlers. IoT interoperability across platforms. Implementing Redis and ClickHouse.</p>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Internet Relay Channel · Tracker + Node Architecture</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Message-passing system for creating, administrating, and coordinating local and remote network nodes. A <span class="font-mono text-[10px] text-primary/80">Tracker</span> server hosts the master ledger for node registration; <span class="font-mono text-[10px] text-primary/80">Node</span> servers maintain their own client ledger and a hot-swappable command module for live runtime updates.<br><br>
+Strategic fit: bridges legacy systems to modern containerized stacks via lightweight message passing. Shared utilities (<span class="font-mono text-[10px] text-primary/80">packet</span>, <span class="font-mono text-[10px] text-primary/80">tracker</span>, <span class="font-mono text-[10px] text-primary/80">interface</span>) provide structured packets, tracker class hierarchy, and OS-shell ↔ IRC interface switching.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CLICKHOUSE</span>
@@ -443,6 +447,7 @@
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SOCKETS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LINUX</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">REDIS</span>
 </div>
@@ -461,45 +466,23 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="material-symbols-outlined text-primary-container text-2xl">dns</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Distributed Systems</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Scalable distributed file system for University. Built prior to AI advent.</p>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">DFS · Metadata + Data Node Architecture</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Scalable distributed file system built for University coursework, predating the AI era. A central <span class="font-mono text-[10px] text-primary/80">meta-data server</span> tracks inode metadata and the registry of connected data nodes; <span class="font-mono text-[10px] text-primary/80">data nodes</span> register on startup and serve block-level reads/writes to clients via unique block IDs. Clients can list (<span class="font-mono text-[10px] text-primary/80">ls</span>) or copy files (<span class="font-mono text-[10px] text-primary/80">DFScopy</span>) into and out of the DFS using simple <span class="font-mono text-[10px] text-primary/80">server:port</span> addressing.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">METADATA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DATA NODES</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SCALABILITY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SOCKETS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MYSQL</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JSON</span>
 </div>
 <a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/DistributedFileSystem" target="_blank">
 UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </a>
-</div>
-
-<!-- Embedded Systems -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">smart_toy</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Embedded Systems</h3>
-</div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Built gadgets to functional walking robots. Temperature/movement sensors, network access points, RF modules, satellite imagery, TCP/IP via RF.</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ROBOTICS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARDUINO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ESP32</span>
-</div>
-<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
-<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
-</div>
 </div>
 
 <!-- OSELOT — Embedded Linux Satellite Ground Station -->
@@ -515,7 +498,7 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Observational Satellite Embedded Linux Operations Terminal</p>
 <p class="text-on-surface-variant text-xs leading-relaxed mb-4">
 Engineered an embedded satellite ground station on <span class="font-mono text-[10px] text-primary/80">BeaglePlay</span>, coupling RTL-SDR hardware with GOES LRIT demodulation tools to capture, demodulate, and persist live geostationary satellite imagery at 1694&nbsp;MHz with a sub-1&nbsp;W RF front-end.<br><br>
-Integrated decoded satellite telemetry with a custom Internet Relay Chat infrastructure, publishing structured image metadata and alerts to IRC channels as a lightweight, protocol-native transport layer for distributing real-time ground-station events across a network.
+Integrated decoded satellite telemetry with a <span class="font-mono text-[10px] text-primary/80">IRC</span> infrastructure, publishing structured image metadata and alerts to IRC channels as a lightweight, protocol-native transport layer for distributing real-time ground-station events across a network.
 </p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
@@ -571,15 +554,24 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="material-symbols-outlined text-primary-container text-2xl">shield</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Hardware Network Security</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Hardware-accelerated network security using FPGA for real-time packet inspection. Self-taught Digital Systems. Identified LFSR cipher algorithm.</p>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Basys 3 Artix-7 · Packet Processor</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Hardware-accelerated network security on FPGA. Ingests serial UDP data from the Basys 3 Artix-7's <span class="font-mono text-[10px] text-primary/80">JB Pmod</span> port and gates packet egress to a W5500 Ethernet module behind a hardware checksum verifier.<br><br>
+<span class="font-mono text-[10px] text-primary/80">Pipeline:</span> a 64-bit shift register stabilizes the serial stream into a 16×4096 RAM-FIFO, the <span class="font-mono text-[10px] text-primary/80">check_checksum</span> module verifies the UDP checksum field, and valid packets are streamed to the W5500 while invalid ones flush the FIFO.<br>
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BASYS 3</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARTIX-7</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DIGITAL SYSTEMS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RAM-FIFO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">UDP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CHECKSUM</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ETHERNET</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK SECURITY</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PMOD</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">W5500</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LFSR</span>
 </div>
 <a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/PacketProcessor" target="_blank">
 UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -596,14 +588,23 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="material-symbols-outlined text-primary-container text-2xl">verified_user</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Embedded Security</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">STM32 ARM CPU on-board security architecture study. FreeRTOS deep dive with STM32Cube and SEGGER utilities. Dynamic debugging with J-Link.</p>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">STM32 ARM Cortex · On-Board Security Architecture</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Research into protecting STM32 (ARM Cortex) microcontrollers against software and hardware attacks, with FreeRTOS deep-dive on STM32Cube/SEGGER and dynamic debugging via J-Link.<br><br>
+<span class="font-mono text-[10px] text-primary/80">Software attacks:</span> buffer overflows, code injection, untrusted libraries, malware that disables protections or exfiltrates data — countered by safe coding practices and on-die features (RDP, MPU).<br><br>
+<span class="font-mono text-[10px] text-primary/80">Hardware attacks:</span> non-invasive (MCU interface and environmental side-channels), semi-invasive (debug port and serial-port exploitation), and invasive techniques requiring specialized equipment — countered with hardware-level security primitives.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32CUBE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM CORTEX</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SEGGER</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TASK SCHEDULING</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32F767ZI</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">J-LINK</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RDP</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MPU</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SIDE-CHANNEL</span>
 </div>
 <div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
 <span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
@@ -620,10 +621,20 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="material-symbols-outlined text-primary-container text-2xl">terminal</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Reverse Engineering</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Binary analysis, exploitation, cryptography. University lab + hackathons. Hands-on binary exploitation experience.</p>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">WASM Analysis · Binary Unpacking · Exploitation</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Binary analysis, exploitation, and cryptography from university labs and hackathons.<br><br>
+<span class="font-mono text-[10px] text-primary/80">WASM analysis:</span> reversing JS-invoked WebAssembly auth routines — locating string constants in linear memory, identifying input transforms (e.g. XOR masking against stored bytes), and inverting them to recover credentials and flags.<br><br>
+<span class="font-mono text-[10px] text-primary/80">Binary unpacking:</span> manually unwrapping packed executables via static inspection and dynamic debugging. Catching the original entry point with <span class="font-mono text-[10px] text-primary/80">pushad</span>/<span class="font-mono text-[10px] text-primary/80">popad</span> heuristics and stack-watch breakpoints, tracing API calls and reconstructing serial/key validators from EBP-relative stack slots.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">WASM</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">x86</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ASSEMBLY</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GHIDRA</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PESTUDIO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ASPACK</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">UNPACKING</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BINARY ANALYSIS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EXPLOITATION</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
@@ -647,16 +658,16 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </div>
 <p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Aerospace & Defense QA Tool</p>
 <p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Lightweight, front-end for documenting and navigating First Article Inspection (FAI) verification processes. 
-Turns the web of governing documents, hierarchies, decision flows, and AS9102 inspection forms into a clickable interface instead of a stack of PDFs.
-</p>
+Lightweight, front-end for documenting and navigating First Article Inspection (FAI) verification processes.<br><br>
+Turns the web of governing documents, hierarchies, decision flows, and inspection forms into a clickable interface instead of a stack of PDFs.<br><br>
+Sections include a top-down Hierarchy of governing docs, a Decision Flow for FAIR review, Interactive forms with field-level traceability, 
+a Findings Composer for generating turnback exports, and a client-side Trace tool that ingests FAIR packet PDFs (PDF.js + Tesseract.js OCR) for systemic validation<br><br></p>
 <div class="flex flex-wrap gap-1 mb-4">
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">HTML</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CSS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVASCRIPT</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PDF.JS</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TESSERACT.JS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">AS9102</span>
 </div>
 <a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
 UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -673,13 +684,24 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="material-symbols-outlined text-primary-container text-2xl">widgets</span>
 <h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Other Projects</h3>
 </div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Java Rummy Card Game, NLP social engineering password tool.
-      <br> A Rust implementation of Prisoner's Dilemma with a small twist inspired by The Dark Forest. 
-      <br> RF surveillance project powered by eIRC Node-Relay.</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Embedded Systems — gadgets through functional walking robots. Temperature and movement sensors, network access points, RF modules, satellite imagery, and TCP/IP over RF on STM32, Arduino, and ESP32.<br><br>
+Java Rummy card game, NLP social-engineering password tool.<br><br>
+Rust implementation of the Prisoner's Dilemma with a small twist inspired by The Dark Forest.
+</p>
 <div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ROBOTICS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARDUINO</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ESP32</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVA</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NLP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RUST</span>
 </div>
 <a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
