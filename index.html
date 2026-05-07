@@ -100,7 +100,7 @@
 <!-- NAVIGATION SHELL: SideNavBar -->
 <nav class="fixed left-0 top-0 h-full flex flex-col z-40 bg-[#1b1b1b] border-r border-[#c6c6c6]/10 w-64 hidden md:flex">
 <div class="p-6">
-<div class="text-[#e3b5ff] font-bold text-lg uppercase font-headline tracking-tighter">FENGWYN_V1.0_ALPHA</div>
+<div class="text-[#e3b5ff] font-bold text-lg uppercase font-headline tracking-tighter">FENGWYN_V1.2_ALPHA</div>
 <div class="text-[#c6c6c6] opacity-70 font-mono text-[10px] tracking-[0.2em] mt-1">OPERATOR: $USER</div>
 </div>
 <div class="flex-1 mt-8">
@@ -189,7 +189,7 @@
 </div>
 <div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
 <div class="font-mono text-[10px] text-primary mb-2">SYS_UPTIME</div>
-<div class="text-3xl font-black font-headline tracking-tighter text-white">99.38%</div>
+<div class="text-3xl font-black font-headline tracking-tighter text-white">99.78%</div>
 <div class="mt-2 h-1 bg-surface-container-highest overflow-hidden">
 <div class="h-full bg-primary-container w-[99%]"></div>
 </div>
@@ -421,7 +421,7 @@
 <span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 03</span>
 <h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">All Project Nodes</h2>
 </div>
-<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">9 ENTRIES</div>
+<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">10 ENTRIES</div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -610,6 +610,38 @@ UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 <span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PERL</span>
 </div>
 <a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/Reverse-Engineering" target="_blank">
+UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+
+<!-- FAIRWELL — FAI Verification Tool -->
+<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
+<span class="font-mono text-[9px] text-secondary/50 tracking-wider">TOOLING / QA</span>
+</div>
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary-container text-2xl">fact_check</span>
+<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">FAIRWELL</h3>
+</div>
+<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Version: Adelie 1.1</p>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+Lightweight, static front-end for documenting and navigating First Article Inspection (FAI) verification processes. Turns the web of governing documents, hierarchies, decision flows, and AS9102 inspection forms into a clickable interface instead of a stack of PDFs.<br><br>
+Sections include a top-down Hierarchy of governing docs, a Decision Flow for FAIR review, Interactive AS9102 forms with field-level traceability, a Findings Composer for generating turnback exports, and a client-side Trace tool that ingests FAIR packet PDFs (PDF.js + Tesseract.js OCR) to cross-reference part numbers, serials, heat/lot, and specs — all without leaving the browser.<br><br>
+Fully data-driven via JSON load/export, with optional File System Access API write-back on Chromium browsers. State persists in <span class="font-mono text-[10px] text-primary/80">localStorage</span>.
+</p>
+<div class="flex flex-wrap gap-1 mb-4">
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">HTML</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CSS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVASCRIPT</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PDF.JS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TESSERACT.JS</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">AS9102</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FAI</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LOCALSTORAGE</span>
+<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FS ACCESS API</span>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
 UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
 </a>
 </div>
@@ -897,7 +929,7 @@ Radio-Frequency based surveillance project powered by eIRC's Node-Relay groundwo
 <footer class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center bg-[#131313]/90 backdrop-blur-md border-t border-[#c6c6c6]/20 mt-20 relative z-10">
 <div class="flex flex-col gap-2 mb-8 md:mb-0">
 <div class="font-mono text-[10px] tracking-widest uppercase text-[#a020f0]">&copy; 20XX FENGWYN // ALL SYSTEMS NOMINAL</div>
-<div class="font-mono text-[8px] tracking-[0.4em] text-secondary/40">STARCHART_BUILD: V1.0_ALPHA</div>
+<div class="font-mono text-[8px] tracking-[0.4em] text-secondary/40">STARCHART_BUILD: V1.2_ALPHA</div>
 </div>
 <div class="flex gap-8">
 <a class="font-mono text-[13px] tracking-widest uppercase text-[#353535] hover:text-[#e3FFff] transition-colors" href="#">∴</a>
