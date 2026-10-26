@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>☧</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    html,body{margin:0;padding:0;background:#000;color:#A8B4F5;}
+    a{color:#A8B4F5;text-decoration:none;} a:hover{color:#E8E2CF;}
+    button{font:inherit;color:inherit;}
+    ::selection{background:#1F3BFF;color:#E8E2CF;}
+  </style>
+  <script src="sanctuary.js?v=3"></script>
+</helmet>
+<div ref="{{ rootRef }}" data-screen-label="Sanctuary" style="position:relative;min-height:100vh;background:#000;color:#A8B4F5;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;line-height:1.7;">
+  <canvas ref="{{ canvasRef }}" aria-hidden="true" style="position:fixed;left:0;top:0;z-index:0;display:block;image-rendering:pixelated;pointer-events:none;"></canvas>
+
+  <div style="position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:flex-start;">
+    <div ref="{{ skyRef }}" aria-hidden="true" style="position:sticky;top:0;flex:0 0 auto;width:clamp(50%, calc((860px - 100vw) * 1000), 100%);height:max(50vh, min(100vh, calc((100vw - 860px) * 1000)));">
+      <div ref="{{ crossRef }}" style="position:absolute;left:clamp(16px,4vw,64px);right:clamp(16px,4vw,64px);top:clamp(24px,8vh,96px);bottom:clamp(20px,8vh,96px);"></div>
+    </div>
+
+    <main ref="{{ textRef }}" style="flex:1 1 0;min-width:min(100%,340px);box-sizing:border-box;padding:0 clamp(20px,5vw,72px) 0 clamp(20px,3vw,40px);text-shadow:0 0 2px #000,1px 0 1px #000,-1px 0 1px #000,0 1px 1px #000,0 -1px 1px #000;">
+      <header style="min-height:max(30vh, min(74vh, calc((100vw - 860px) * 1000)));box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:40px 0;">
+        <span data-fade="" style="font-size:34px;line-height:1;color:#E8E2CF;">☧</span>
+        <p data-fade="" style="margin:0;font-size:clamp(17px,1.5vw,22px);line-height:1.4;color:#E8E2CF;">the signal is clean here.</p>
+        <p data-fade="" style="margin:0;max-width:44ch;color:#8f99d6;text-wrap:pretty;">nine stars hold verses. hover or tap to read them.</p>
+        <span data-fade="" style="margin-top:10px;font-size:12px;letter-spacing:0.06em;color:#6a74b0;">↓ scroll to decode</span>
+      </header>
+
+      <section aria-label="The Nicene Creed" style="display:flex;flex-direction:column;gap:clamp(26px,4.5vh,40px);max-width:60ch;font-size:clamp(14px,1.2vw,18px);line-height:1.75;">
+        <div data-fade="" style="display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:0.06em;color:#6a74b0;">
+          <span>the nicene creed</span>
+          <span style="flex:1;border-top:1px dotted #3b4799;"></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">I believe in one God,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">the Father almighty,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">maker of heaven and earth,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">of all things visible and invisible.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">I believe in one Lord Jesus Christ,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">the Only Begotten Son of God,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">born of the Father before all ages.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">God from God, Light from Light,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">true God from true God,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">begotten, not made, consubstantial with the Father;</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">through him all things were made.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">For us men and for our salvation</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">he came down from heaven,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and by the Holy Spirit was incarnate of the Virgin Mary,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and became man.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">For our sake he was crucified under Pontius Pilate,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">he suffered death and was buried,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and rose again on the third day</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">in accordance with the Scriptures.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">He ascended into heaven</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and is seated at the right hand of the Father.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">He will come again in glory</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">to judge the living and the dead</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and his kingdom will have no end.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">I believe in the Holy Spirit, the Lord, the giver of life,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">who proceeds from the Father and the Son,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">who with the Father and the Son is adored and glorified,</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">who has spoken through the prophets.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">I believe in one, holy, catholic and apostolic Church.</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">I confess one Baptism for the forgiveness of sins</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and I look forward to the resurrection of the dead</div>
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">and the life of the world to come.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div data-cl="" style="color:#6a74b0;overflow-wrap:anywhere;">Amen.</div>
+        </div>
+      </section>
+
+      <footer style="min-height:64vh;box-sizing:border-box;display:flex;flex-direction:column;align-items:flex-start;gap:22px;padding-top:clamp(56px,12vh,120px);">
+        <p data-fade="" style="margin:0;color:#8f99d6;">the signal was never lost.</p>
+        <a data-fade="" href="Fengwyn%20Portfolio.dc.html" style="font-size:12px;letter-spacing:0.06em;color:#6a74b0;" style-hover="color:#E8E2CF;">← return to downlink</a>
+      </footer>
+    </main>
+  </div>
+
+  <div ref="{{ starsRef }}" style="position:fixed;inset:0;z-index:2;pointer-events:none;">
+    <button data-star="0" aria-label="Psalm 91:1" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="1" aria-label="Psalm 42:11" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="2" aria-label="Psalm 141:3" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="3" aria-label="Proverbs 11:13" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="4" aria-label="Proverbs 3:5–6" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="5" aria-label="Psalm 118:8" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="6" aria-label="Psalm 127:1" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="7" aria-label="Psalm 130:6" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+    <button data-star="8" aria-label="Proverbs 28:1" aria-expanded="false" onPointerEnter="{{ starEnter }}" onPointerLeave="{{ starLeave }}" onFocus="{{ starFocus }}" onBlur="{{ starBlur }}" onClick="{{ starClick }}" style="position:absolute;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;transform:translate(-200px,-200px);outline-offset:-8px;" style-focus="outline:1px solid #1F3BFF;"></button>
+  </div>
+
+  <div ref="{{ cardRef }}" data-card="" role="dialog" aria-label="Verse" onPointerEnter="{{ cardEnter }}" onPointerLeave="{{ cardLeave }}" style="position:fixed;left:0;top:0;z-index:3;box-sizing:border-box;width:min(360px, calc(100vw - 28px));border:1px solid #1F3BFF;background:#000;visibility:hidden;opacity:0;transition:opacity 140ms steps(3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 0 12px;background:#1F3BFF;color:#E8E2CF;font-size:12px;letter-spacing:0.08em;">
+      <span data-ref="">psalm 42:11</span>
+      <span style="display:flex;align-items:center;gap:4px;">
+        <span>kjv</span>
+        <button onClick="{{ closeCard }}" aria-label="Close verse" style="width:40px;height:32px;margin:0;padding:0;border:0;background:transparent;color:#E8E2CF;cursor:pointer;font-size:15px;line-height:1;" style-hover="background:#000;">×</button>
+      </span>
+    </div>
+    <p data-verse="" style="margin:0;padding:14px 16px 16px;font-size:14px;line-height:1.7;color:#E8E2CF;text-wrap:pretty;overflow-wrap:anywhere;">Why art thou cast down, O my soul?</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;milkyWay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sky&quot;},&quot;shootingStars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sky&quot;},&quot;floatingGlyphs&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sky&quot;}}">
+class Component extends DCLogic {
+  rootRef = React.createRef(); canvasRef = React.createRef(); skyRef = React.createRef(); crossRef = React.createRef();
+  textRef = React.createRef(); starsRef = React.createRef(); cardRef = React.createRef();
+  open = -1; pinned = false; starPos = []; anim = new Map();
+  VERSES = [
+    { ref: 'psalm 91:1', text: 'He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty.' },
+    { ref: 'psalm 42:11', text: 'Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him, who is the health of my countenance, and my God.' },
+    { ref: 'psalm 141:3', text: 'Set a watch, O LORD, before my mouth; keep the door of my lips.' },
+    { ref: 'proverbs 11:13', text: 'A talebearer revealeth secrets: but he that is of a faithful spirit concealeth the matter.' },
+    { ref: 'proverbs 3:5–6', text: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.' },
+    { ref: 'psalm 118:8', text: 'It is better to trust in the LORD than to put confidence in man.' },
+    { ref: 'psalm 127:1', text: 'Except the LORD build the house, they labour in vain that build it: except the LORD keep the city, the watchman waketh but in vain.' },
+    { ref: 'psalm 130:6', text: 'My soul waiteth for the Lord more than they that watch for the morning: I say, more than they that watch for the morning.' },
+    { ref: 'proverbs 28:1', text: 'The wicked flee when no man pursueth: but the righteous are bold as a lion.' },
+  ];
+
+  hex(s) {
+    let o = '';
+    for (const ch of s) { const c = ch.codePointAt(0); o += c < 128 ? c.toString(16).padStart(2, '0') : encodeURIComponent(ch).replace(/%/g, ''); }
+    return o.toUpperCase();
+  }
+  mask(s) { const h = this.hex(s); let i = 0, o = ''; for (const ch of s) o += ch === ' ' ? ' ' : h[i++ % h.length]; return o; }
+  setText(el, s) { if (!el) return; const n = el.firstChild; if (n && n.nodeType === 3 && !n.nextSibling) n.nodeValue = s; else el.textContent = s; }
+  stopAnim(el) { const a = this.anim.get(el); if (a) { clearInterval(a); this.anim.delete(el); } }
+  scramble(el, s, steps, ms) {
+    this.stopAnim(el);
+    if (this.reduced) { this.setText(el, s); return; }
+    const HX = '0123456789ABCDEF';
+    let i = 0;
+    const tick = () => {
+      i++;
+      const k = Math.round((s.length * Math.max(0, i - 2)) / (steps - 2));
+      let o = s.slice(0, k);
+      for (let j = k; j < s.length; j++) o += s[j] === ' ' ? ' ' : HX[(Math.random() * 16) | 0];
+      this.setText(el, o);
+      if (i >= steps) { this.stopAnim(el); this.setText(el, s); }
+    };
+    tick();
+    this.anim.set(el, setInterval(tick, ms));
+  }
+
+  componentDidMount() {
+    this.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const text = this.textRef.current;
+    this.lines = Array.from(text.querySelectorAll('[data-cl]')).map((el) => { const en = el.textContent; return { el, en, hx: this.mask(en), on: true }; });
+    this.fades = Array.from(text.querySelectorAll('[data-cl],[data-fade]'));
+    this.lines.forEach((L) => this.encode(L));
+    this.onScroll = () => { if (this.sRaf) return; this.sRaf = requestAnimationFrame(() => { this.sRaf = 0; this.update(); }); };
+    this.onPtr = (e) => { if (this.art && e.pointerType !== 'touch') this.art.pointer(e.clientX, e.clientY); };
+    this.onOut = (e) => { if (!e.relatedTarget && this.art) this.art.pointer(null); };
+    this.onDown = (e) => {
+      if (this.open < 0 || !this.pinned) return;
+      const t = e.target;
+      if (t && t.closest && (t.closest('[data-star]') || t.closest('[data-card]'))) return;
+      this.close();
+    };
+    this.onKey = (e) => { if (e.key === 'Escape' && this.open >= 0) this.close(); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    window.addEventListener('pointermove', this.onPtr, { passive: true });
+    document.addEventListener('pointerout', this.onOut);
+    document.addEventListener('pointerdown', this.onDown);
+    window.addEventListener('keydown', this.onKey);
+    if (document.fonts) document.fonts.ready.then(() => this.update());
+    this.boot();
+    this.update();
+  }
+  componentWillUnmount() {
+    this.dead = true;
+    clearTimeout(this.bootT); clearTimeout(this.closeT); cancelAnimationFrame(this.sRaf);
+    this.anim.forEach((a) => clearInterval(a)); this.anim.clear();
+    window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onScroll);
+    window.removeEventListener('pointermove', this.onPtr); document.removeEventListener('pointerout', this.onOut);
+    document.removeEventListener('pointerdown', this.onDown); window.removeEventListener('keydown', this.onKey);
+    if (this.art) this.art.destroy();
+  }
+  componentDidUpdate(prev) {
+    const p = this.props;
+    if (this.art && (prev.milkyWay !== p.milkyWay || prev.shootingStars !== p.shootingStars || prev.floatingGlyphs !== p.floatingGlyphs)) {
+      this.art.setOpts({ milky: p.milkyWay !== false, shooting: p.shootingStars !== false, glyphs: p.floatingGlyphs !== false });
+    }
+  }
+
+  boot() {
+    if (this.dead) return;
+    if (!window.SanctuaryArt || !this.canvasRef.current) { this.bootT = setTimeout(() => this.boot(), 40); return; }
+    const p = this.props;
+    this.art = window.SanctuaryArt.create(this.canvasRef.current, {
+      hex: this.hex(this.VERSES.map((v) => v.text).join(' ')),
+      milky: p.milkyWay !== false, shooting: p.shootingStars !== false, glyphs: p.floatingGlyphs !== false,
+      onLayout: (s) => this.layoutStars(s),
+    });
+    this.update();
+  }
+  layoutStars(s) {
+    this.starPos = s;
+    const wrap = this.starsRef.current;
+    if (wrap) wrap.querySelectorAll('[data-star]').forEach((b) => {
+      const q = s[+b.getAttribute('data-star')];
+      if (q) b.style.transform = 'translate(' + Math.round(q.x - 22) + 'px,' + Math.round(q.y - 22) + 'px)';
+    });
+    if (this.open >= 0) this.place();
+  }
+
+  encode(L) { if (!L.on) return; L.on = false; this.stopAnim(L.el); this.setText(L.el, L.hx); L.el.style.color = '#6a74b0'; }
+  decode(L) { if (L.on) return; L.on = true; L.el.style.color = '#E8E2CF'; this.scramble(L.el, L.en, 9, 36); }
+
+  update() {
+    const sky = this.skyRef.current, cross = this.crossRef.current;
+    if (!sky || !this.lines) return;
+    const vw = window.innerWidth, vh = window.innerHeight, sb = sky.getBoundingClientRect(), stacked = sb.width > vw * 0.8;
+    this.stacked = stacked;
+    const read = vh * (stacked ? 0.76 : 0.62), top = stacked ? sb.bottom : 0;
+    let first = null, last = null;
+    for (const L of this.lines) {
+      const r = L.el.getBoundingClientRect(), c = r.top + r.height / 2;
+      if (first === null) first = c;
+      last = c;
+      if (!L.on && c < read && r.bottom > top) this.decode(L);
+      else if (L.on && (r.bottom < top || r.top > vh)) this.encode(L);
+    }
+    for (const el of this.fades) {
+      if (!stacked) { if (el.style.opacity) el.style.opacity = ''; continue; }
+      const r = el.getBoundingClientRect();
+      el.style.opacity = String(Math.max(0, Math.min(1, (r.top - top) / 32)));
+    }
+    if (this.art) {
+      this.art.setProgress(last > first ? (read - first) / (last - first) : 0);
+      if (cross) { const cb = cross.getBoundingClientRect(); this.art.setCross({ x: cb.left, y: cb.top, w: cb.width, h: cb.height }); }
+      const tb = this.textRef.current && this.textRef.current.getBoundingClientRect();
+      if (tb) this.art.setKeepOut(stacked ? { x: 0, y: sb.bottom, w: vw, h: Math.max(0, vh - sb.bottom) } : { x: tb.left, y: 0, w: Math.max(0, vw - tb.left), h: vh });
+    }
+    if (this.open >= 0) this.place();
+  }
+
+  show(i, pin) {
+    clearTimeout(this.closeT);
+    const card = this.cardRef.current, V = this.VERSES[i];
+    if (!card || !V) return;
+    if (this.open !== i) {
+      this.open = i;
+      this.setText(card.querySelector('[data-ref]'), V.ref);
+      this.scramble(card.querySelector('[data-verse]'), V.text, 9, 30);
+      const wrap = this.starsRef.current;
+      if (wrap) wrap.querySelectorAll('[data-star]').forEach((b) => b.setAttribute('aria-expanded', b.getAttribute('data-star') === String(i) ? 'true' : 'false'));
+    }
+    if (pin != null) this.pinned = pin;
+    card.style.visibility = 'visible';
+    card.style.opacity = '1';
+    this.place();
+    if (this.art) this.art.setHot(i);
+  }
+  close() {
+    clearTimeout(this.closeT);
+    const card = this.cardRef.current, wrap = this.starsRef.current;
+    this.open = -1; this.pinned = false;
+    if (card) { card.style.opacity = '0'; card.style.visibility = 'hidden'; }
+    if (this.art) this.art.setHot(-1);
+    if (wrap) wrap.querySelectorAll('[data-star]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+  }
+  later() { clearTimeout(this.closeT); if (!this.pinned) this.closeT = setTimeout(() => this.close(), 220); }
+  place() {
+    const card = this.cardRef.current, p = this.starPos[this.open];
+    if (!card || !p) return;
+    const vw = window.innerWidth, vh = window.innerHeight, w = card.offsetWidth, h = card.offsetHeight;
+    if (this.stacked) {
+      card.style.top = 'auto'; card.style.bottom = '14px';
+      card.style.transform = 'translateX(' + Math.round((vw - w) / 2) + 'px)';
+      return;
+    }
+    let x = p.x + 28;
+    if (x + w > vw - 14) x = p.x - 28 - w;
+    const y = Math.max(14, Math.min(vh - h - 14, p.y - 24));
+    card.style.top = '0'; card.style.bottom = 'auto';
+    card.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+  }
+
+  renderVals() {
+    const idx = (e) => +e.currentTarget.getAttribute('data-star');
+    return {
+      rootRef: this.rootRef, canvasRef: this.canvasRef, skyRef: this.skyRef, crossRef: this.crossRef,
+      textRef: this.textRef, starsRef: this.starsRef, cardRef: this.cardRef,
+      starEnter: (e) => { if (e.pointerType === 'mouse') this.show(idx(e)); },
+      starLeave: (e) => { if (e.pointerType === 'mouse') this.later(); },
+      starFocus: (e) => this.show(idx(e)),
+      starBlur: () => this.later(),
+      starClick: (e) => { const i = idx(e); if (this.open === i && this.pinned) this.close(); else this.show(i, true); },
+      cardEnter: () => clearTimeout(this.closeT),
+      cardLeave: () => this.later(),
+      closeCard: () => this.close(),
+    };
+  }
+}
+</script>
+</body>
+</html>

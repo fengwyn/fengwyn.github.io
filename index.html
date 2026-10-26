@@ -1,1034 +1,762 @@
 <!DOCTYPE html>
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FENGWYN // STARCHART</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="favicon/site.webmanifest">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#e3b5ff",
-              "primary-container": "#a020f0",
-              "background": "#131313",
-              "error-container": "#93000a",
-              "surface-container": "#1f1f1f",
-              "surface-tint": "#e3b5ff",
-              "inverse-primary": "#9000de",
-              "on-tertiary-container": "#efedec",
-              "on-secondary-fixed-variant": "#464747",
-              "secondary": "#c6c6c6",
-              "on-secondary": "#2f3131",
-              "on-surface-variant": "#d1c1d7",
-              "on-error-container": "#ffdad6",
-              "outline-variant": "#4e4355",
-              "surface": "#131313",
-              "on-secondary-container": "#b8b8b8",
-              "surface-variant": "#353535",
-              "on-background": "#e2e2e2",
-              "tertiary-fixed-dim": "#c8c6c6",
-              "surface-container-lowest": "#0e0e0e",
-              "outline": "#9a8ca0",
-              "on-tertiary-fixed": "#1b1c1c",
-              "surface-container-low": "#1b1b1b",
-              "surface-dim": "#131313",
-              "on-primary-fixed": "#2f004c",
-              "tertiary-container": "#6c6b6b",
-              "secondary-fixed-dim": "#c6c6c6",
-              "on-primary-container": "#f9e8ff",
-              "surface-container-high": "#2a2a2a",
-              "inverse-on-surface": "#303030",
-              "tertiary-fixed": "#e4e2e1",
-              "on-primary": "#4d007a",
-              "surface-container-highest": "#353535",
-              "on-tertiary-fixed-variant": "#474747",
-              "on-primary-fixed-variant": "#6e00ab",
-              "secondary-fixed": "#e3e2e2",
-              "secondary-container": "#484949",
-              "on-surface": "#e2e2e2",
-              "tertiary": "#c8c6c6",
-              "error": "#ffb4ab",
-              "inverse-surface": "#e2e2e2",
-              "on-tertiary": "#303030",
-              "on-secondary-fixed": "#1a1c1c",
-              "surface-bright": "#393939",
-              "primary-fixed-dim": "#e3b5ff",
-              "on-error": "#690005",
-              "primary-fixed": "#f3daff"
-            },
-            fontFamily: {
-              "headline": ["Space Grotesk"],
-              "body": ["Inter"],
-              "label": ["Space Grotesk"],
-              "mono": ["JetBrains Mono"]
-            },
-            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
-          },
-        },
-      }
-    </script>
-<link rel="stylesheet" href="space.css"/>
-<link rel="stylesheet" href="styles.css"/>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
-<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen bg-grid-pattern">
-<!-- Ringed Planet — fixed background -->
-<div class="ringed-planet" aria-hidden="true">
-<div class="planet-body"></div>
-<div class="planet-ring"></div>
-<div class="planet-ring planet-ring-inner"></div>
-<div class="planet-shadow"></div>
-</div>
-<!-- Starfield Interactive Layer -->
-<canvas id="stars-canvas"></canvas>
-<!-- Custom Cursor -->
-<div id="space-cursor">
-<div class="cursor-outer"></div>
-<div class="cursor-inner"></div>
-<div class="cursor-tick cursor-tick-top"></div>
-<div class="cursor-tick cursor-tick-bottom"></div>
-<div class="cursor-tick cursor-tick-left"></div>
-<div class="cursor-tick cursor-tick-right"></div>
-</div>
+<body>
+<x-dc>
+<helmet>
+  <title>FENGWYN · fw 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    html,body{margin:0;padding:0;background:#000;color:#A8B4F5;}
+    html{scroll-behavior:smooth;}
+    a{color:#A8B4F5;text-decoration:none;} a:hover{color:#E8E2CF;}
+    button,input{font:inherit;}
+    ::selection{background:#1F3BFF;color:#E8E2CF;}
+  </style>
+  <script src="creed.js"></script>
+  <script src="orbit.js?v=8"></script>
+</helmet>
+<div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:#000;color:#A8B4F5;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(12px,0.95vw,14px);line-height:1.7;">
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:0.75;">
+    <canvas ref="{{ bgRef }}" style="position:absolute;left:0;top:0;display:block;image-rendering:pixelated;"></canvas>
+  </div>
 
-<!-- NAVIGATION SHELL: SideNavBar -->
-<nav class="fixed left-0 top-0 h-full flex flex-col z-40 bg-[#1b1b1b] border-r border-[#c6c6c6]/10 w-64 hidden md:flex">
-<div class="p-6">
-<div class="text-[#e3b5ff] font-bold text-lg uppercase font-headline tracking-tighter">FENGWYN_V1.2_ALPHA</div>
-<div class="text-[#c6c6c6] opacity-70 font-mono text-[10px] tracking-[0.2em] mt-1">OPERATOR: $USER</div>
-</div>
-<div class="flex-1 mt-8">
-<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#core" data-section="core">
-<span class="material-symbols-outlined">memory</span>
-                CORE
-            </a>
-<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#directory" data-section="directory">
-<span class="material-symbols-outlined">folder</span>
-                DIRECTORY
-            </a>
-<a class="nav-link nav-link-cyber flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#cyber" data-section="cyber">
-<span class="material-symbols-outlined">lock</span>
-                CYBER
-            </a>
-<a class="nav-link flex items-center gap-4 px-6 py-4 font-label text-xs tracking-widest active:translate-x-1 transition-all" href="#about" data-section="about">
-<span class="material-symbols-outlined">person</span>
-                ABOUT
-            </a>
-</div>
-<div class="p-6 border-t border-[#c6c6c6]/10">
-<a href="mailto:krzfrancesc@gmail.com" class="w-full py-3 bg-transparent border border-[#a020f0] text-primary font-mono text-[10px] tracking-widest hover:bg-[#a020f0]/10 transition-colors uppercase block text-center">
-                INITIALIZE_LINK
-            </a>
-<div class="flex justify-around mt-6">
-<a href="https://github.com/fengwyn" target="_blank"><span class="material-symbols-outlined text-[#353535] hover:text-[#e3b5ff] cursor-pointer transition-colors">planet</span></a>
-<span class="material-symbols-outlined text-[#353535] hover:text-[#e3b5ff] cursor-pointer transition-colors">analytics</span>
-</div>
-</div>
-</nav>
+  <div ref="{{ navRef }}" style="position:fixed;left:0;right:0;top:0;z-index:30;transform:translateY(-110%);transition:transform 240ms steps(4);background:#000;border-bottom:1px solid #1a2260;">
+    <div style="max-width:1100px;margin:0 auto;box-sizing:border-box;display:flex;align-items:center;gap:12px 28px;padding:11px clamp(20px,5vw,72px);font-size:12px;letter-spacing:0.08em;">
+      <a href="#top" style="flex:none;color:#E8E2CF;font-weight:500;letter-spacing:0.34em;">FENGWYN</a>
+      <nav style="flex:1 1 auto;min-width:0;display:flex;gap:20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;">
+        <a data-nav="bootrom" href="#bootrom" style="display:flex;gap:7px;padding:2px 0;border-bottom:1px solid transparent;"><span style="color:#6a74b0;">0</span><span>BOOTROM</span></a>
+        <a data-nav="fsbl" href="#fsbl" style="display:flex;gap:7px;padding:2px 0;border-bottom:1px solid transparent;"><span style="color:#6a74b0;">1</span><span>FSBL</span></a>
+        <a data-nav="fabric" href="#fabric" style="display:flex;gap:7px;padding:2px 0;border-bottom:1px solid transparent;"><span style="color:#6a74b0;">2</span><span>FABRIC</span></a>
+        <a data-nav="kernel" href="#kernel" style="display:flex;gap:7px;padding:2px 0;border-bottom:1px solid transparent;"><span style="color:#6a74b0;">3</span><span>KERNEL</span></a>
+        <a data-nav="adversary" href="#adversary" style="display:flex;gap:7px;padding:2px 0;border-bottom:1px solid transparent;"><span style="color:#6a74b0;">4</span><span>ADVERSARY</span></a>
+      </nav>
+      <a href="mailto:crossvallia@duck.com" style="flex:none;color:#E8E2CF;">UPLINK ↗</a>
+    </div>
+  </div>
 
-<!-- MAIN CONTENT CANVAS -->
-<main class="md:pl-64 pt-16 min-h-screen relative overflow-x-hidden">
+  <div ref="{{ heroRef }}" id="top" data-screen-label="01 Hero" onPointerMove="{{ onMove }}" onPointerLeave="{{ onLeave }}" onPointerDown="{{ onDown }}" onPointerUp="{{ onUp }}" onPointerCancel="{{ onUp }}" style="position:relative;z-index:1;height:100vh;min-height:640px;display:flex;flex-direction:column;overflow:hidden;background:#000;text-shadow:0 0 2px #000,1px 0 1px #000,-1px 0 1px #000,0 1px 1px #000,0 -1px 1px #000;">
+    <div style="position:absolute;inset:0;overflow:hidden;-webkit-touch-callout:none;">
+      <canvas ref="{{ canvasRef }}" style="position:absolute;left:0;top:0;display:block;image-rendering:pixelated;"></canvas>
+    </div>
+    <div ref="{{ satRef }}" style="position:absolute;left:0;top:0;z-index:1;display:flex;gap:8px;font-size:11px;line-height:1;letter-spacing:0.06em;white-space:nowrap;pointer-events:none;opacity:0;color:#8f99d6;">
+      <span>SAT-07</span>
+      <span data-lock="" style="color:#E8E2CF;">⇣ 1694.1 MHz · lock</span>
+    </div>
 
-<!-- ======================================== -->
-<!-- SECTION 01: CORE — Hero + Featured       -->
-<!-- ======================================== -->
-<section id="core" class="relative px-8 py-16 lg:py-24 max-w-7xl mx-auto z-10">
-<div class="flex flex-col lg:flex-row gap-12 items-start">
-<div class="flex-1 space-y-8">
-<div class="inline-flex items-center gap-3 px-3 py-1 bg-primary-container/10 border-l-4 border-primary-container">
-<span class="material-symbols-outlined text-primary text-sm">sensors</span>
-<span class="font-mono text-[10px] tracking-widest uppercase text-primary">System Status: Nominal</span>
-</div>
-<h1 class="text-6xl md:text-7xl font-black font-headline tracking-tighter leading-none text-white">
-                        SYSTEMS <br/> <span class="text-primary">ENGINEER</span>
-</h1>
-<p class="text-on-surface-variant font-body text-lg max-w-xl leading-relaxed">
-                        Navigating the digital frontier at the intersection of
-                        <span class="text-white font-bold">embedded systems</span>,
-                        <span class="text-white font-bold">networks</span>, and
-                        <span class="text-white font-bold">cybersecurity</span>.
-                        From low-level silicon to distributed architectures, building across the full spectrum.
-                    </p>
-<div class="flex flex-wrap gap-4">
-<a href="mailto:krzfrancesc@gmail.com" class="px-8 py-4 bg-primary text-on-primary font-headline font-black text-sm tracking-widest flicker-animation transition-all inline-block">
-                            INITIALIZE_UPLINK
-                        </a>
-<a href="https://github.com/fengwyn" target="_blank" class="px-8 py-4 border border-outline-variant text-secondary font-headline font-bold text-sm tracking-widest hover:bg-surface-container-high transition-all inline-block">
-                            GITHUB_ARCHIVE
-                        </a>
-</div>
-</div>
-<!-- HUD Stats Block -->
-<div class="w-full lg:w-80 grid grid-cols-2 gap-4">
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="font-mono text-[10px] text-primary mb-2">ACTIVE_PROJECTS</div>
-<div class="text-3xl font-black font-headline tracking-tighter text-white">04</div>
-<div class="mt-2 h-1 bg-surface-container-highest overflow-hidden">
-<div class="h-full bg-primary-container w-[70%]"></div>
-</div>
-</div>
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="font-mono text-[10px] text-primary mb-2">HACKATHONS</div>
-<div class="text-3xl font-black font-headline tracking-tighter text-white">03</div>
-<div class="mt-2 h-1 bg-surface-container-highest overflow-hidden">
-<div class="h-full bg-primary-container w-[100%]"></div>
-</div>
-</div>
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="font-mono text-[10px] text-primary mb-2">SKILL_DOMAINS</div>
-<div class="text-3xl font-black font-headline tracking-tighter text-white">15</div>
-<div class="mt-2 h-1 bg-surface-container-highest overflow-hidden">
-<div class="h-full bg-primary-container w-[95%]"></div>
-</div>
-</div>
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="font-mono text-[10px] text-primary mb-2">SYS_UPTIME</div>
-<div class="text-3xl font-black font-headline tracking-tighter text-white">99.78%</div>
-<div class="mt-2 h-1 bg-surface-container-highest overflow-hidden">
-<div class="h-full bg-primary-container w-[99%]"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
+    <header style="position:relative;z-index:2;flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 32px;padding:20px clamp(20px,5vw,72px);font-size:12px;letter-spacing:0.08em;">
+      <a href="#top" style="display:flex;align-items:baseline;gap:12px;">
+        <span style="color:#E8E2CF;font-weight:500;letter-spacing:0.34em;">FENGWYN</span>
+        <span style="color:#6a74b0;letter-spacing:0.04em;">fw 2.0</span>
+      </a>
+      <nav style="max-width:100%;display:flex;align-items:center;gap:6px 22px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;">
+        <a href="#bootrom" style="display:flex;gap:7px;"><span style="color:#6a74b0;">0</span><span>BOOTROM</span></a>
+        <a href="#fsbl" style="display:flex;gap:7px;"><span style="color:#6a74b0;">1</span><span>FSBL</span></a>
+        <a href="#fabric" style="display:flex;gap:7px;"><span style="color:#6a74b0;">2</span><span>FABRIC</span></a>
+        <a href="#kernel" style="display:flex;gap:7px;"><span style="color:#6a74b0;">3</span><span>KERNEL</span></a>
+        <a href="#adversary" style="display:flex;gap:7px;"><span style="color:#6a74b0;">4</span><span>ADVERSARY</span></a>
+        <span style="flex:none;width:1px;height:12px;background:#2a3470;"></span>
+        <a href="https://github.com/fengwyn" target="_blank" rel="noopener">GITHUB ↗</a>
+        <a href="mailto:crossvallia@duck.com" style="color:#E8E2CF;">UPLINK ↗</a>
+      </nav>
+    </header>
 
-<!-- FEATURED SCHEMATICS: Best 3 -->
-<section class="px-8 py-20 bg-surface-container-lowest/50 relative z-10 border-y border-outline-variant/10">
-<div class="max-w-7xl mx-auto">
-<div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6">
-<div>
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 01</span>
-<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">Featured Schematics</h2>
-</div>
-<a href="#directory" class="hidden md:block font-mono text-xs text-primary hover:text-white transition-colors">
-                        VIEW_ALL_PROJECTS &rarr;
-                    </a>
-</div>
-<!-- Bento Grid Layout -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-<!-- Featured Project: eIRC -->
-<div class="md:col-span-8 group relative bg-surface-container-high/60 backdrop-blur-sm overflow-hidden border border-outline-variant/30">
-<div class="absolute top-4 right-4 z-10 font-mono text-[10px] text-white/50 bg-black/50 px-2 py-1">ACTIVE</div>
-<div class="p-8 min-h-[320px] flex flex-col justify-end relative">
-<div class="absolute top-8 right-8 opacity-10 group-hover:opacity-20 transition-opacity">
-<span class="material-symbols-outlined text-[120px] text-primary">lan</span>
-</div>
-<div class="flex items-center gap-2 mb-2">
-<span class="w-2 h-2 bg-primary animate-pulse"></span>
-<span class="font-mono text-[10px] tracking-widest text-primary uppercase">Distributed Network Relay</span>
-</div>
-<h3 class="text-3xl font-black font-headline tracking-tighter uppercase text-white">Internet Relay Channel</h3>
-<p class="text-on-surface-variant text-sm mt-3 max-w-lg">A networked node system enabling IoT interoperability across platforms: Hubs, Nodes, and Endpoints with modular command handlers and dynamic scalability.</p>
-<div class="flex flex-wrap gap-2 mt-4">
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-primary">C/C++</span>
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">PYTHON</span>
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">REDIS</span>
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">CLICKHOUSE</span>
-<span class="px-2 py-1 bg-surface-container-highest font-mono text-[9px] text-secondary">DISTRIBUTED SYSTEMS</span>
+    <div style="position:relative;z-index:2;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:8px clamp(14px,4vw,48px) clamp(150px,31vh,330px);">
+      <div ref="{{ winRef }}" style="width:min(100%,700px);max-height:100%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #1F3BFF;background:rgba(0,0,0,0.9);">
+        <div style="flex:none;display:flex;justify-content:space-between;gap:12px;padding:6px 12px;background:#1F3BFF;color:#E8E2CF;font-size:12px;letter-spacing:0.08em;text-shadow:none;">
+          <span data-tok="">fengwyn@fw2: ~</span>
+          <span>tty0 · downlink</span>
+        </div>
+        <div ref="{{ bodyRef }}" onClick="{{ focusTerm }}" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:2px;font-size:clamp(11.5px,0.9vw,13.5px);line-height:1.6;scrollbar-width:thin;scrollbar-color:#1F3BFF #000;cursor:text;">
+          <div ref="{{ bootRef }}" style="display:flex;flex-direction:column;gap:2px;">
+            <div data-ln="90" style="margin-bottom:8px;color:#6a74b0;letter-spacing:0.03em;">fengwyn-boot 2.0 · downlink capture · vcid 03 · <span data-tok="">1ACFFC1D</span></div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span data-tok="" style="flex:none;color:#6a74b0;">[ 0.000000]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">LINK</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>carrier acquired, <span data-tok="">1694.1</span> MHz</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">lock</span>
+              </span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span data-tok="" style="flex:none;color:#6a74b0;">[ 0.000041]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">LINK</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>sync <span data-tok="">1ACFFC1D</span>, frames aligned</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" data-crc="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span style="flex:none;color:#6a74b0;">[ 0.000184]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">BOOTROM</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>trust nothing</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span data-tok="" style="flex:none;color:#6a74b0;">[ 0.001902]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">FSBL</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>verify everything</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span style="flex:none;color:#6a74b0;">[ 0.004717]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">FABRIC</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>assume the bus is lying</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span data-tok="" style="flex:none;color:#6a74b0;">[ 0.118030]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">KERNEL</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>least privilege, then less</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="90" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span style="flex:none;color:#6a74b0;">[ 0.211954]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">ADVERSARY</span>
+              <span style="flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;">
+                <span>assume breach</span>
+                <span data-lead="" style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;transform-origin:left center;transition:transform 120ms steps(4);"></span>
+                <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
+              </span>
+            </div>
+            <div data-ln="90" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;margin-top:6px;">
+              <span style="flex:none;color:#6a74b0;">[ 0.256001]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">init</span>
+              <span style="flex:1 1 30ch;min-width:0;"><span data-title="" style="color:#E8E2CF;font-weight:500;letter-spacing:0.12em;">FENGWYN</span><span style="color:#8f99d6;">, </span><span style="color:#E8E2CF;">embedded security engineer</span></span>
+            </div>
+            <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+              <span style="flex:none;color:#6a74b0;">[ 0.256002]</span>
+              <span style="flex:none;width:10ch;color:#8f99d6;">init</span>
+              <span style="flex:1 1 30ch;min-width:0;color:#8f99d6;">embedded systems · hardware security · reverse engineering · malware development · rf + signals</span>
+            </div>
+            <div data-err="" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;opacity:0;color:#E8343F;">
+              <span style="flex:none;">[ 0.261104]</span>
+              <span style="flex:none;width:10ch;">LINK</span>
+              <span style="flex:1 1 30ch;min-width:0;">frame <span data-errf="">0x2F1A</span> dropped, crc mismatch, retransmit</span>
+            </div>
+          </div>
+          <div ref="{{ outRef }}" style="display:flex;flex-direction:column;gap:2px;"></div>
+          <label data-prompt="" style="display:flex;align-items:baseline;margin-top:6px;cursor:text;">
+            <span style="flex:none;color:#8f99d6;">fengwyn@fw2</span>
+            <span style="flex:none;color:#6a74b0;">:~$&nbsp;</span>
+            <input ref="{{ inputRef }}" onKeyDown="{{ onKey }}" type="text" aria-label="Terminal input. Type help." spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="type help" style="flex:1 1 auto;min-width:0;padding:0;margin:0;border:0;outline:none;background:transparent;color:#E8E2CF;caret-color:#1F3BFF;font:inherit;letter-spacing:inherit;text-shadow:none;">
+          </label>
+        </div>
+      </div>
+    </div>
 
-</div>
-<a class="mt-4 inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/eIRC" target="_blank">
-                            View_Schematic <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
-</div>
-<!-- Project: Hardware Network Security -->
-<div class="md:col-span-4 group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-center mb-4">
-<div class="font-mono text-[10px] text-white/50">RESEARCH</div>
-</div>
-<span class="material-symbols-outlined text-primary-container text-4xl mb-4">developer_board</span>
-<h3 class="text-xl font-bold font-headline uppercase leading-tight text-white">Hardware Network Security</h3>
-<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Hardware-accelerated network security using FPGA for real-time packet inspection. Ethernet parser and checksum verifier on Artix-7 FPGA.</p>
-<div class="flex flex-wrap gap-1 mt-3">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">W5500</span>
-</div>
-</div>
-<a class="mt-6 flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/PacketProcessor" target="_blank">
-                            View_Schematic <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
-<!-- Project: OSELOT — Satellite Ground Station -->
-<div class="md:col-span-4 group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-center mb-4">
-<div class="font-mono text-[10px] text-white/50">ACTIVE</div>
-</div>
-<span class="material-symbols-outlined text-primary-container text-4xl mb-4">satellite_alt</span>
-<h3 class="text-xl font-bold font-headline uppercase leading-tight text-white">OSELOT</h3>
-<p class="font-mono text-[9px] text-secondary/60 mt-1 tracking-wider">Observational Satellite Embedded Linux Operations Terminal</p>
-<p class="text-on-surface-variant text-xs mt-3 leading-relaxed">Custom Yocto Linux distro on BeaglePlay coupling RTL-SDR with GOES LRIT demodulation at 1694&nbsp;MHz. Decoded telemetry pipes structured image metadata into a custom IRC infrastructure for real-time ground-station event distribution.</p>
-<div class="flex flex-wrap gap-1 mt-3">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL-SDR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GOES</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">IRC</span>
-</div>
-</div>
-<a class="mt-6 flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest uppercase hover:translate-x-2 transition-transform" href="#directory">
-                            View_Details <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
-<!-- Achievements Banner -->
-<div class="md:col-span-8 group relative bg-surface-container-high/60 backdrop-blur-sm overflow-hidden border border-outline-variant/30">
-<div class="absolute inset-0 bg-gradient-to-r from-primary-container/5 to-transparent"></div>
-<div class="p-8 relative flex flex-col justify-center min-h-[240px]">
-<span class="font-mono text-[10px] tracking-widest text-primary uppercase mb-4">Achievements Log</span>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="space-y-2">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
-<span class="font-mono text-[10px] text-primary">2024-11</span>
-</div>
-<h4 class="font-headline font-bold text-white text-sm uppercase">GMiS Hackathon</h4>
-<p class="text-on-surface-variant text-xs">Expert Category. Binary analysis, reverse engineering, cryptography & forensics.</p>
-</div>
-<div class="space-y-2">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">shield</span>
-<span class="font-mono text-[10px] text-primary">2025-04</span>
-</div>
-<h4 class="font-headline font-bold text-white text-sm uppercase">NJIT CyberSec</h4>
-<p class="text-on-surface-variant text-xs">Top 10 International. Identified LFSR cipher from FPGA research.</p>
-</div>
-<div class="space-y-2">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">school</span>
-<span class="font-mono text-[10px] text-primary">2025-06</span>
-</div>
-<h4 class="font-headline font-bold text-white text-sm uppercase">Graduation</h4>
-<p class="text-on-surface-variant text-xs">B.S. Computer Science, Minor Cybersecurity.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
+    <div style="position:absolute;z-index:2;left:clamp(20px,5vw,72px);right:clamp(20px,5vw,72px);bottom:clamp(14px,3vh,26px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;font-size:12px;letter-spacing:0.06em;">
+      <a href="#bootrom" style="display:flex;align-items:baseline;gap:12px;color:#E8E2CF;">
+        <span>↓</span><span>continue boot</span><span style="color:#8f99d6;">stage 0 · BOOTROM</span>
+      </a>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px;color:#6a74b0;">
+        <span>VCID <span style="color:#A8B4F5;">03</span></span>
+        <span>FRAME <span ref="{{ frameRef }}" style="color:#A8B4F5;">0x2F1A</span></span>
+        <span>CRC <span ref="{{ crcRef }}" style="color:#E8E2CF;">ok</span></span>
+      </div>
+    </div>
+  </div>
 
-<!-- SKILLS: Capabilities Grid -->
-<section class="px-8 py-20 relative z-10">
-<div class="max-w-7xl mx-auto">
-<div class="mb-12">
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 02</span>
-<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">Core Capabilities</h2>
-</div>
-<div class="flex flex-wrap gap-3">
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Binary Analysis</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Binary Exploitation</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Cybersecurity</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Distributed Systems</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">FPGA Development</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Embedded Systems</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Network Security</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Systems Programming</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">TCP/IP</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SDR</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Reverse Engineering</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">C/C++</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Python</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">ASM</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Java</span>
-<span class="px-4 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Verilog</span>
-</div>
-</div>
-</section>
+  <section id="bootrom" data-stage="" data-screen-label="02 Stage 0 · BOOTROM" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~/bootrom</span><span>stage 0 · 0x0000_0000</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">cat README</span></div>
+        <div data-seq="out" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:1ch;max-width:48ch;color:#8f99d6;">
+            <span style="flex:none;color:#6a74b0;">[ 0.000184]</span><span>trust nothing</span>
+            <span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span>
+          </div>
+          <p style="margin:0;max-width:62ch;font-size:clamp(15px,1.25vw,18px);line-height:1.65;color:#E8E2CF;text-wrap:pretty;">Everything starts at reset. I work where hardware meets its first instruction: boards, buses, clocks, and the small, stubborn programs that bring them to life. If a system can't account for every step from power-on to running, it isn't finished.</p>
+        </div>
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">ls</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;gap:4px 28px;color:#E8E2CF;"><span>bring-up/</span><span>drivers/</span><span>rtos/</span><span>debug/</span></div>
+      </div>
+    </div>
+  </section>
 
-<!-- PROJECTS SECTION -->
-<section class="px-8 py-05 relative z-10 border-y border-outline-variant/10">
-<div class="max-w-7xl mx-auto">
-<!-- <div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6"> -->
+  <section id="fsbl" data-stage="" data-screen-label="03 Stage 1 · FSBL" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~/fsbl</span><span>stage 1 · 0x0001_0000</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">cat README</span></div>
+        <div data-seq="out" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:1ch;max-width:48ch;color:#8f99d6;">
+            <span style="flex:none;color:#6a74b0;">[ 0.001902]</span><span>verify everything</span>
+            <span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span>
+          </div>
+          <p style="margin:0;max-width:62ch;font-size:clamp(15px,1.25vw,18px);line-height:1.65;color:#E8E2CF;text-wrap:pretty;">Each stage has to prove itself before the next one runs. I design for what a device should refuse: unsigned code, unexpected states, a probe on the wrong pins. Security that lives in hardware can't be patched in later, so it has to be right the first time.</p>
+        </div>
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">ls</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;gap:4px 28px;color:#E8E2CF;"><span>chain-of-trust/</span><span>keys/</span><span>anti-tamper/</span><span>threat-models/</span></div>
+      </div>
+    </div>
+  </section>
 
-</section>
-<!-- HARDWARE_SPECS: Bento Grid -->
-<section class="px-8 py-20 relative z-10">
-<div class="max-w-7xl mx-auto">
-<div class="mb-12">
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Submodule: 02.1</span>
-<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">HARDWARE SPECS</h2>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Platforms -->
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-primary-container text-2xl">memory</span>
-<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Platforms</div>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">STM32</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">ESP32</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Arduino</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Raspberry Pi</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">BeaglePlay</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Artix-7 FPGA</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">MicroBlaze</span>
-</div>
-</div>
-<!-- Protocols -->
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-primary-container text-2xl">cable</span>
-<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Protocols</div>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">TCP/IP</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">RF</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SDR</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Ethernet</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SPI</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">I2C</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">UART</span>
-</div>
-</div>
-<!-- Tools -->
-<div class="p-6 bg-surface-container-low/80 backdrop-blur-sm relative corner-bracket border border-outline-variant/30">
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-primary-container text-2xl">build</span>
-<div class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Tools</div>
-</div>
-<div class="flex flex-wrap gap-2">
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">FreeRTOS</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Yocto</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">Vivado</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">STM32Cube</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">SEGGER</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">GDB</span>
-<span class="px-3 py-2 border border-primary-container/40 text-primary font-mono text-xs hover:bg-primary-container/10 transition-colors">J-Link</span>
-</div>
-</div>
-</div>
-</div>
-</section>
+  <section id="fabric" data-stage="" data-screen-label="04 Stage 2 · FABRIC" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~/fabric</span><span>stage 2 · 0x0002_0000</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">cat README</span></div>
+        <div data-seq="out" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:1ch;max-width:48ch;color:#8f99d6;">
+            <span style="flex:none;color:#6a74b0;">[ 0.004717]</span><span>assume the bus is lying</span>
+            <span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span>
+          </div>
+          <p style="margin:0;max-width:62ch;font-size:clamp(15px,1.25vw,18px);line-height:1.65;color:#E8E2CF;text-wrap:pretty;">Programmable logic, where a decision costs nanoseconds and a mistake ships in hardware. The data paths must check before they forward, and fail closed when they can't.</p>
+        </div>
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">ls notes/</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;gap:4px 28px;color:#E8E2CF;"><span>packetprocessor/</span><span>radsurv/</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
+      <a data-seq="note" href="https://github.com/fengwyn/PacketProcessor" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/packetprocessor</span><span>research</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="font-size:16px;font-weight:500;color:#E8E2CF;">PacketProcessor</span>
+          <span style="text-wrap:pretty;">Serial UDP comes in, a 64-bit shift register stages it into a RAM FIFO, and a checksum verifier gates egress to an Ethernet module. Bad packets never leave; the FIFO flushes.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>verilog</span><span>artix-7</span><span>udp</span><span>w5500</span></span>
+          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/PacketProcessor ↗</span>
+        </span>
+      </a>
+      <a data-seq="note" href="https://github.com/fengwyn/RadSurv" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/radsurv</span><span>active</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="font-size:16px;font-weight:500;color:#E8E2CF;">RadSurv</span>
+          <span style="text-wrap:pretty;">A distributed RF sensor net. Radio nodes on small MCUs run an RTOS scheduler, trigger cameras on IR detection, and relay through bridge boards to a TCP server with local storage.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>nrf24</span><span>freertos</span><span>avr</span><span>tcp/ip</span></span>
+          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/RadSurv ↗</span>
+        </span>
+      </a>
+    </div>
+  </section>
 
+  <section id="kernel" data-stage="" data-screen-label="05 Stage 3 · KERNEL" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~/kernel</span><span>stage 3 · 0x0003_0000</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">cat README</span></div>
+        <div data-seq="out" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:1ch;max-width:48ch;color:#8f99d6;">
+            <span style="flex:none;color:#6a74b0;">[ 0.118030]</span><span>least privilege, then less</span>
+            <span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span>
+          </div>
+          <p style="margin:0;max-width:62ch;font-size:clamp(15px,1.25vw,18px);line-height:1.65;color:#E8E2CF;text-wrap:pretty;">Operating systems on small machines: custom images, services that start in a known order, and nothing running that doesn't need to be. I build the layer people stop thinking about, and keep it small enough to reason about.</p>
+        </div>
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">ls notes/</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;gap:4px 28px;color:#E8E2CF;"><span>eirc/</span><span>oselot/</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
+      <a data-seq="note" href="https://github.com/fengwyn/eIRC" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/eirc</span><span>active</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="font-size:16px;font-weight:500;color:#E8E2CF;">eIRC</span>
+          <span style="text-wrap:pretty;">A message-passing system for coordinating local and remote network nodes. A tracker keeps the master ledger; each node keeps its own, plus a hot-swappable command module for live updates.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>c++</span><span>python</span><span>sockets</span><span>redis</span></span>
+          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/eIRC ↗</span>
+        </span>
+      </a>
+      <a data-seq="note" href="https://github.com/fengwyn/OSELOT" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/oselot</span><span>active</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:16px;font-weight:500;color:#E8E2CF;">OSELOT</span><span style="font-size:12px;color:#6a74b0;">observational satellite embedded linux operations terminal</span></span>
+          <span style="text-wrap:pretty;">An embedded ground station. A custom Linux image pairs an SDR with a satellite downlink at 1694.1 MHz, then publishes decoded image metadata to IRC channels as it lands.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>yocto</span><span>rtl-sdr</span><span>goes</span><span>systemd</span></span>
+          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/OSELOT ↗</span>
+        </span>
+      </a>
+    </div>
+  </section>
 
+  <section id="adversary" data-stage="" data-screen-label="06 Stage 4 · ADVERSARY" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~/adversary</span><span>stage 4 · 0x0004_0000</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">cat README</span></div>
+        <div data-seq="out" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:1ch;max-width:48ch;color:#8f99d6;">
+            <span style="flex:none;color:#6a74b0;">[ 0.211954]</span><span>assume breach</span>
+            <span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span>
+          </div>
+          <p style="margin:0;max-width:62ch;font-size:clamp(15px,1.25vw,18px);line-height:1.65;color:#E8E2CF;text-wrap:pretty;">To defend something, learn how it breaks. I take binaries apart, study how hostile code hides and mutates, and keep the habit sharp with wargames. The attacker's view sits in on every design review.</p>
+        </div>
+        <div data-seq="cmd" style="color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">ls notes/</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;gap:4px 28px;color:#E8E2CF;"><span>malware-research/</span><span>reverse-engineering/</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
+      <div data-seq="note" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/malware-research</span><span>research</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="font-size:16px;font-weight:500;color:#E8E2CF;">Malware research</span>
+          <span style="text-wrap:pretty;">Polymorphic and metamorphic samples in an isolated homelab: how payloads re-wrap or rewrite themselves to slip past signatures, and what still gives them away.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>gdb</span><span>x64dbg</span><span>entropy</span><span>rop</span></span>
+          <span style="font-size:12px;color:#6a74b0;">repo private</span>
+        </span>
+      </div>
+      <a data-seq="note" href="https://github.com/fengwyn/Reverse-Engineering" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
+        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/reverse-engineering</span><span>labs</span></span>
+        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <span style="font-size:16px;font-weight:500;color:#E8E2CF;">Reverse engineering</span>
+          <span style="text-wrap:pretty;">Labs and hackathons: reversing WebAssembly auth routines, unpacking packed executables by hand, and rebuilding key validators from the stack.</span>
+          <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>wasm</span><span>x86</span><span>ghidra</span><span>unpacking</span></span>
+          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/Reverse-Engineering ↗</span>
+        </span>
+      </a>
+    </div>
+  </section>
 
-<!-- ======================================== -->
-<!-- SECTION 02: DIRECTORY — All Projects     -->
-<!-- ======================================== -->
-<section id="directory" class="px-8 py-20 bg-surface-container-lowest/50 relative z-10 border-y border-outline-variant/10">
-<div class="max-w-7xl mx-auto">
-<div class="flex justify-between items-end mb-12 border-b border-outline-variant/20 pb-6">
-<div>
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 03</span>
-<h2 class="text-4xl font-black font-headline tracking-tighter uppercase mt-2 text-white">All Project Nodes</h2>
+  <section id="shutdown" data-stage="" data-screen-label="07 Shutdown" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) clamp(40px,8vh,80px);display:flex;flex-direction:column;gap:18px;">
+    <div data-win="" style="border:1px solid #2a3470;background:#000;">
+      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+        <span>~ · shutdown</span><span>halt · 0xFFFF_FFF0</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;padding:clamp(18px,3vw,32px);">
+        <div data-seq="cmd" style="margin-bottom:8px;color:#8f99d6;"><span style="color:#6a74b0;">$</span> <span data-cmd="" style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;">shutdown -h now</span></div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+          <span style="flex:none;color:#6a74b0;">[ 9.998104]</span><span style="flex:none;width:10ch;color:#8f99d6;">init</span><span style="flex:1 1 30ch;min-width:0;">operator session ending</span>
+        </div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+          <span style="flex:none;color:#6a74b0;">[ 9.998512]</span><span style="flex:none;width:10ch;color:#8f99d6;">KERNEL</span>
+          <span style="flex:0 1 40ch;min-width:0;display:flex;align-items:baseline;gap:1ch;"><span>syncing filesystems</span><span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span></span>
+        </div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+          <span style="flex:none;color:#6a74b0;">[ 9.999020]</span><span style="flex:none;width:10ch;color:#8f99d6;">FSBL</span>
+          <span style="flex:0 1 40ch;min-width:0;display:flex;align-items:baseline;gap:1ch;"><span>forgetting secrets</span><span style="flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;"></span><span style="flex:none;color:#E8E2CF;">ok</span></span>
+        </div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;margin-top:10px;">
+          <span style="flex:none;color:#6a74b0;">[ 9.999371]</span><span style="flex:none;width:10ch;color:#8f99d6;">LINK</span>
+          <span style="flex:1 1 30ch;min-width:0;display:flex;flex-wrap:wrap;gap:0 2ch;"><span style="color:#8f99d6;">uplink</span><a href="mailto:crossvallia@duck.com" style="color:#E8E2CF;font-size:clamp(15px,1.25vw,18px);" style-hover="color:#A8B4F5;">→ crossvallia@duck.com</a></span>
+        </div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
+          <span style="flex:none;color:#6a74b0;">[ 9.999372]</span><span style="flex:none;width:10ch;color:#8f99d6;">LINK</span>
+          <span style="flex:1 1 30ch;min-width:0;display:flex;flex-wrap:wrap;gap:0 2ch;"><span style="color:#8f99d6;">github</span><a href="https://github.com/fengwyn" target="_blank" rel="noopener" style="color:#E8E2CF;font-size:clamp(15px,1.25vw,18px);" style-hover="color:#A8B4F5;">→ github.com/fengwyn</a></span>
+        </div>
+        <div data-seq="out" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;margin-top:10px;">
+          <span style="flex:none;color:#6a74b0;">[ 9.999999]</span><span style="flex:none;width:10ch;color:#8f99d6;">reboot</span><span style="flex:1 1 30ch;min-width:0;color:#E8E2CF;">power down</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:12px;letter-spacing:0.06em;color:#6a74b0;">
+      <span>© FENGWYN · fw 2.0</span>
+      <span style="display:flex;gap:18px;"><span>signal lost</span><a href="Sanctuary.dc.html" aria-label="hidden page" style="color:#2a3470;" style-hover="color:#E8E2CF;">∴</a></span>
+    </div>
+  </section>
 </div>
-<div class="font-mono text-[10px] text-secondary/50 tracking-[0.3em] uppercase">9 ENTRIES</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;glitchEvery&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:10,&quot;max&quot;:60,&quot;step&quot;:2,&quot;unit&quot;:&quot;s&quot;,&quot;default&quot;:32,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;backgroundStars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;typedStages&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  rootRef = React.createRef(); heroRef = React.createRef(); canvasRef = React.createRef(); bgRef = React.createRef();
+  winRef = React.createRef(); bodyRef = React.createRef(); bootRef = React.createRef(); outRef = React.createRef();
+  inputRef = React.createRef(); satRef = React.createRef(); navRef = React.createRef(); frameRef = React.createRef(); crcRef = React.createRef();
+  timers = []; stageT = []; revT = []; hist = []; hi = 0; kon = 0; frameN = 0x2f1a; seen = {}; lastSudo = -1;
+  C = { text: '#A8B4F5', bone: '#E8E2CF', mut: '#6a74b0', peri: '#8f99d6', red: '#E8343F' };
+  STAGES = ['bootrom', 'fsbl', 'fabric', 'kernel', 'adversary'];
+  LS = { bootrom: ['bring-up/', 'drivers/', 'rtos/', 'debug/'], fsbl: ['chain-of-trust/', 'keys/', 'anti-tamper/', 'threat-models/'], fabric: ['packetprocessor', 'radsurv'], kernel: ['eirc', 'oselot'], adversary: ['malware-research', 'reverse-engineering'] };
+  CAT = {
+    packetprocessor: ['FPGA packet processor: serial UDP in, checksum-gated Ethernet out. Bad packets never leave.', 'https://github.com/fengwyn/PacketProcessor'],
+    radsurv: ['Distributed RF sensor net: RTOS radio nodes, IR-triggered cameras, TCP relay to local storage.', 'https://github.com/fengwyn/RadSurv'],
+    eirc: ['Message passing for network nodes: a tracker ledger and hot-swappable command modules.', 'https://github.com/fengwyn/eIRC'],
+    oselot: ['Embedded Linux ground station: SDR + satellite downlink at 1694.1 MHz, events published to IRC.', 'https://github.com/fengwyn/OSELOT'],
+    'malware-research': ['Polymorphic and metamorphic samples in an isolated homelab: how code hides, and what still gives it away.', null],
+    'reverse-engineering': ['WASM auth routines, hand-unpacked executables, key validators rebuilt from the stack.', 'https://github.com/fengwyn/Reverse-Engineering'],
+  };
+  SUDO = ['Nice try, this incident will be reported.', 'fengwyn is not in the sudoers file. Neither are you.', 'Permission denied. Privilege is earned, not escalated.', 'sudo: a valid signature is required for that.', 'Request logged, signed, and ignored.', 'root is busy. Leave a message after the beep.'];
+  CMDS = ['help', 'whoami', 'ls', 'cd', 'cat', 'uplink', 'github', 'history', 'clear', 'reboot', 'sudo'];
 
-<!-- eIRC -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">NETWORK</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">hub</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">eIRC</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Internet Relay Channel · Tracker + Node Architecture</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Message-passing system for creating, administrating, and coordinating local and remote network nodes. A <span class="font-mono text-[10px] text-primary/80">Tracker</span> server hosts the master ledger for node registration; <span class="font-mono text-[10px] text-primary/80">Node</span> servers maintain their own client ledger and a hot-swappable command module for live runtime updates.<br><br>
-Strategic fit: bridges legacy systems to modern containerized stacks via lightweight message passing. Shared utilities (<span class="font-mono text-[10px] text-primary/80">packet</span>, <span class="font-mono text-[10px] text-primary/80">tracker</span>, <span class="font-mono text-[10px] text-primary/80">interface</span>) provide structured packets, tracker class hierarchy, and OS-shell ↔ IRC interface switching.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CLICKHOUSE</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NETWORK</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SOCKETS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LINUX</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">REDIS</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/eIRC" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  componentDidMount() {
+    this.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this.secs = Array.from(this.rootRef.current.querySelectorAll('[data-stage]'));
+    this.prepStages();
+    this.playBoot();
+    this.startArt();
+    this.onKeyWin = (e) => this.konami(e);
+    this.onScroll = () => { if (this.sRaf) return; this.sRaf = requestAnimationFrame(() => { this.sRaf = 0; this.scrolled(); }); };
+    this.onPtr = (e) => { if (this.bg) this.bg.pointer(e.clientX, e.clientY); };
+    window.addEventListener('keydown', this.onKeyWin);
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    window.addEventListener('pointermove', this.onPtr, { passive: true });
+    this.scrolled();
+  }
+  componentWillUnmount() {
+    this.dead = true;
+    [this.timers, this.stageT, this.revT].forEach((a) => a.forEach(clearTimeout));
+    clearTimeout(this.artT); clearInterval(this.scrT); clearTimeout(this.errT); clearTimeout(this.lpT); cancelAnimationFrame(this.sRaf);
+    window.removeEventListener('keydown', this.onKeyWin); window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onScroll); window.removeEventListener('pointermove', this.onPtr);
+    if (this.ro) this.ro.disconnect(); if (this.art) this.art.destroy(); if (this.bg) this.bg.destroy();
+  }
+  componentDidUpdate(prev) {
+    if (prev.glitchEvery !== this.props.glitchEvery && this.art) this.art.setGap(this.gap());
+    if (prev.backgroundStars !== this.props.backgroundStars) this.syncBg();
+  }
+  gap() { const g = Number(this.props.glitchEvery); return g > 0 ? g : 32; }
 
-<!-- Distributed Systems -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-secondary px-2 py-0.5 border border-secondary/30">COMPLETED</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">NETWORK</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">dns</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Distributed Systems</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">DFS · Metadata + Data Node Architecture</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Scalable distributed file system built for University coursework, predating the AI era. A central <span class="font-mono text-[10px] text-primary/80">meta-data server</span> tracks inode metadata and the registry of connected data nodes; <span class="font-mono text-[10px] text-primary/80">data nodes</span> register on startup and serve block-level reads/writes to clients via unique block IDs. Clients can list (<span class="font-mono text-[10px] text-primary/80">ls</span>) or copy files (<span class="font-mono text-[10px] text-primary/80">DFScopy</span>) into and out of the DFS using simple <span class="font-mono text-[10px] text-primary/80">server:port</span> addressing.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DISTRIBUTED</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">METADATA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DATA NODES</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SCALABILITY</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SOCKETS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MYSQL</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JSON</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/DistributedFileSystem" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  startArt() {
+    let n = 0;
+    const go = () => {
+      if (this.dead) return;
+      if (!window.OrbitArt || !this.canvasRef.current || (!window.CREED_HEX && n++ < 40)) { this.artT = setTimeout(go, 50); return; }
+      this.art = window.OrbitArt.create(this.canvasRef.current, { mood: 'intercept', gap: this.gap(), hex: window.CREED_HEX, onFrame: (f) => this.place(f), onBurst: (on, info) => this.burst(on, info) });
+      this.syncBg();
+      this.anchor();
+      this.ro = new ResizeObserver(() => this.anchor());
+      this.ro.observe(this.heroRef.current);
+      if (document.fonts) document.fonts.ready.then(() => this.anchor());
+    };
+    go();
+  }
+  syncBg() {
+    const want = this.props.backgroundStars !== false;
+    if (want && !this.bg && window.OrbitArt && this.bgRef.current) this.bg = window.OrbitArt.create(this.bgRef.current, { mood: 'calm', earth: false });
+    if (!want && this.bg) { this.bg.destroy(); this.bg = null; const c = this.bgRef.current; if (c) c.getContext('2d').clearRect(0, 0, c.width, c.height); }
+  }
+  anchor() {
+    const hero = this.heroRef.current, win = this.winRef.current;
+    if (!hero || !win || !this.art) return;
+    const hb = hero.getBoundingClientRect(), wb = win.getBoundingClientRect();
+    this.art.setHorizon(wb.bottom - hb.top);
+    const free = hb.right - wb.right;
+    if (free > 220 && hb.width > hb.height) this.art.setSat(wb.right - hb.left + free * 0.5, Math.max(hb.height * 0.18, 96));
+    else this.art.setSat(null);
+  }
+  place(f) {
+    this.satBox = f;
+    const el = this.satRef.current, hero = this.heroRef.current;
+    if (!el || !hero) return;
+    const w = el.offsetWidth, rw = hero.clientWidth;
+    let x = f.x + f.w + 10, y = f.y + f.h / 2 - 6;
+    if (x + w > rw - 12) { x = Math.max(12, Math.min(rw - w - 12, f.x + f.w / 2 - w / 2)); y = f.y + f.h + 10; }
+    el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+    el.style.opacity = rw < 560 ? '0' : '1';
+  }
 
-<!-- OSELOT — Embedded Linux Satellite Ground Station -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED / SDR</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">satellite_alt</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">OSELOT</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Observational Satellite Embedded Linux Operations Terminal</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Engineered an embedded satellite ground station on <span class="font-mono text-[10px] text-primary/80">BeaglePlay</span>, coupling RTL-SDR hardware with GOES LRIT demodulation tools to capture, demodulate, and persist live geostationary satellite imagery at 1694&nbsp;MHz with a sub-1&nbsp;W RF front-end.<br><br>
-Integrated decoded satellite telemetry with a <span class="font-mono text-[10px] text-primary/80">IRC</span> infrastructure, publishing structured image metadata and alerts to IRC channels as a lightweight, protocol-native transport layer for distributing real-time ground-station events across a network.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">YOCTO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BEAGLEPLAY</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RTL-SDR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GOES LRIT</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SYSTEMD</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">IRC</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BSP</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/OSELOT" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  txt(el, s) { if (el && el.firstChild) el.firstChild.nodeValue = s; }
+  col(el, c) { if (el) el.style.color = c; }
+  burst(on, info) {
+    const win = this.winRef.current;
+    if (!win) return;
+    const C = this.C, G = '▒░▓#%01ABCDEF';
+    const toks = Array.from(win.querySelectorAll('[data-tok]')), crc = this.crcRef.current, mark = win.querySelector('[data-crc]'), err = win.querySelector('[data-err]'), title = win.querySelector('[data-title]');
+    const lock = this.satRef.current && this.satRef.current.querySelector('[data-lock]');
+    if (on) {
+      const strong = !!(info && info.strong);
+      this.saved = toks.map((el) => (el.firstChild ? el.firstChild.nodeValue : ''));
+      clearInterval(this.scrT);
+      this.scrT = setInterval(() => {
+        toks.forEach((el, i) => {
+          if (!el.firstChild) return;
+          let o = '';
+          for (const ch of this.saved[i] || '') o += ch !== ' ' && Math.random() < 0.4 ? G[(Math.random() * G.length) | 0] : ch;
+          el.firstChild.nodeValue = o;
+        });
+        win.style.transform = 'translate(' + Math.round((Math.random() * 2 - 1) * (strong ? 8 : 3)) + 'px,' + (Math.random() < 0.2 ? Math.round((Math.random() * 2 - 1) * 3) : 0) + 'px)';
+      }, 55);
+      this.txt(crc, 'FAIL'); this.col(crc, C.red);
+      this.txt(mark, 'crc!'); this.col(mark, C.red);
+      this.txt(lock, '⇣ ----.- MHz · no lock'); this.col(lock, C.red);
+      if (err) { this.txt(err.querySelector('[data-errf]'), '0x' + this.frameN.toString(16).toUpperCase()); err.style.opacity = '1'; }
+      if (title) title.style.textShadow = (strong ? 4 : 2) + 'px 0 #E8343F,-' + (strong ? 4 : 2) + 'px 0 #1F3BFF';
+      if (strong) win.style.borderColor = C.red;
+      clearTimeout(this.errT);
+    } else {
+      clearInterval(this.scrT);
+      toks.forEach((el, i) => { if (el.firstChild && this.saved) el.firstChild.nodeValue = this.saved[i]; });
+      win.style.transform = ''; win.style.borderColor = '#1F3BFF';
+      this.txt(crc, 'ok'); this.col(crc, C.bone);
+      this.txt(mark, 'ok'); this.col(mark, C.bone);
+      this.txt(lock, '⇣ 1694.1 MHz · lock'); this.col(lock, C.bone);
+      if (title) title.style.textShadow = '';
+      this.frameN += 1 + ((Math.random() * 3) | 0);
+      this.txt(this.frameRef.current, '0x' + this.frameN.toString(16).toUpperCase());
+      this.errT = setTimeout(() => { if (err) err.style.opacity = '0'; }, 1600);
+    }
+  }
 
-<!-- Radio Surveillance -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">ACTIVE</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">EMBEDDED / RF</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">radar</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Radio Surveillance</h3>
-</div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">Distributed RF surveillance system using NRF24 radio modules, infrared sensors, and camera modules. ATMega nodes run FreeRTOS schedulers and relay data via ARM RPI converter devices to a TCP server with local database storage.<br><br>Coverage spans [50–1000] m² per RF zone. Sequential hardware circuit triggers camera on IR detection. Supports packet capture instruction forwarding from RF nodes to server.</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NRF24</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ATMEGA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM / RPI</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TCP/IP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C / AVR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">IR SENSOR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/RadSurv" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  playBoot() {
+    const boot = this.bootRef.current, prompt = this.heroRef.current && this.heroRef.current.querySelector('[data-prompt]');
+    if (!boot) return;
+    this.timers.forEach(clearTimeout); this.timers = [];
+    boot.style.display = '';
+    const lines = Array.from(boot.querySelectorAll('[data-ln]')), all = this.reduced;
+    lines.forEach((el) => {
+      el.style.visibility = all ? '' : 'hidden';
+      const ld = el.querySelector('[data-lead]'); if (ld) ld.style.transform = all ? '' : 'scaleX(0)';
+      const st = el.querySelector('[data-st]'); if (st) st.style.visibility = all ? '' : 'hidden';
+    });
+    if (prompt) prompt.style.visibility = all ? '' : 'hidden';
+    if (all) return;
+    const at = (ms, fn) => this.timers.push(setTimeout(fn, ms));
+    let t = 380;
+    lines.forEach((el) => {
+      at(t, () => { el.style.visibility = ''; const ld = el.querySelector('[data-lead]'); if (ld) ld.style.transform = 'scaleX(1)'; this.scrollBody(); });
+      const st = el.querySelector('[data-st]');
+      if (st) at(t + 110, () => { st.style.visibility = ''; });
+      t += parseInt(el.getAttribute('data-ln'), 10) || 0;
+    });
+    at(t + 60, () => { if (prompt) prompt.style.visibility = ''; this.scrollBody(); });
+  }
 
-<!-- Hardware Network Security -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">FPGA</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">shield</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Hardware Network Security</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Basys 3 Artix-7 · Packet Processor</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Hardware-accelerated network security on FPGA. Ingests serial UDP data from the Basys 3 Artix-7's <span class="font-mono text-[10px] text-primary/80">JB Pmod</span> port and gates packet egress to a W5500 Ethernet module behind a hardware checksum verifier.<br><br>
-<span class="font-mono text-[10px] text-primary/80">Pipeline:</span> a 64-bit shift register stabilizes the serial stream into a 16×4096 RAM-FIFO, the <span class="font-mono text-[10px] text-primary/80">check_checksum</span> module verifies the UDP checksum field, and valid packets are streamed to the W5500 while invalid ones flush the FIFO.<br>
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">VERILOG</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BASYS 3</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARTIX-7</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DIGITAL SYSTEMS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RAM-FIFO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">UDP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">CHECKSUM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ETHERNET</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FPGA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PMOD</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">W5500</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">LFSR</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/PacketProcessor" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  prepStages() {
+    if (this.reduced || this.props.typedStages === false) return;
+    this.secs.forEach((s) => s.querySelectorAll('[data-seq]').forEach((el) => {
+      el.style.visibility = 'hidden';
+      const c = el.querySelector('[data-cmd]'); if (c) c.style.maxWidth = '0ch';
+    }));
+  }
+  replay(sec) {
+    if (this.seen[sec.id]) return;
+    this.seen[sec.id] = 1;
+    if (this.reduced || this.props.typedStages === false) return;
+    const at = (ms, fn) => this.stageT.push(setTimeout(fn, ms));
+    let t = 80;
+    sec.querySelectorAll('[data-seq]').forEach((el) => {
+      const kind = el.getAttribute('data-seq');
+      if (kind === 'cmd') {
+        const c = el.querySelector('[data-cmd]'), n = c ? c.textContent.length : 0;
+        at(t, () => { el.style.visibility = ''; });
+        for (let i = 1; i <= n; i++) at(t + i * 14, () => { c.style.maxWidth = i + 'ch'; });
+        at(t + n * 14 + 10, () => { if (c) c.style.maxWidth = ''; });
+        t += n * 14 + 70;
+      } else {
+        at(t, () => { el.style.visibility = ''; });
+        t += kind === 'note' ? 70 : 50;
+      }
+    });
+    if (sec.id === 'shutdown') at(t + 600, () => this.powerDown(sec));
+  }
+  powerDown(sec) {
+    sec.setAttribute('data-off', '1');
+    const w = sec.querySelector('[data-win]'), b = sec.querySelector('[data-bar]');
+    if (w) w.style.borderColor = '#141a40';
+    if (b) { b.style.background = '#05081a'; b.style.color = '#3b4799'; }
+  }
+  scrolled() {
+    const hero = this.heroRef.current;
+    if (!hero || !this.secs) return;
+    const vh = window.innerHeight, hb = hero.getBoundingClientRect(), line = vh * 0.42;
+    const nav = this.navRef.current;
+    if (nav) nav.style.transform = hb.bottom < 60 ? 'translateY(0)' : 'translateY(-110%)';
+    let act = null;
+    this.secs.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      if (r.top < vh * 0.82 && r.bottom > 0) this.replay(s);
+      const w = s.querySelector('[data-win]'), wr = (w || s).getBoundingClientRect();
+      if (hb.bottom < line && wr.top <= line) act = s.id;
+    });
+    if (act !== this.act) { this.act = act; this.paint(); }
+  }
+  paint() {
+    this.secs.forEach((s) => {
+      if (s.getAttribute('data-off')) return;
+      const on = s.id === this.act, w = s.querySelector('[data-win]'), b = s.querySelector('[data-bar]');
+      if (w) w.style.borderColor = on ? '#1F3BFF' : '#2a3470';
+      if (b) { b.style.background = on ? '#1F3BFF' : '#0c1240'; b.style.color = on ? '#E8E2CF' : '#8f99d6'; }
+    });
+    const nav = this.navRef.current;
+    if (nav) nav.querySelectorAll('[data-nav]').forEach((a) => {
+      const on = a.getAttribute('data-nav') === this.act;
+      a.style.color = on ? '#E8E2CF' : '';
+      a.style.borderBottomColor = on ? '#1F3BFF' : 'transparent';
+    });
+  }
 
-<!-- Embedded Security -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">SECURITY</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">verified_user</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Embedded Security</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">STM32 ARM Cortex · On-Board Security Architecture</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Research into protecting STM32 (ARM Cortex) microcontrollers against software and hardware attacks, with FreeRTOS deep-dive on STM32Cube/SEGGER and dynamic debugging via J-Link.<br><br>
-<span class="font-mono text-[10px] text-primary/80">Software attacks:</span> buffer overflows, code injection, untrusted libraries, malware that disables protections or exfiltrates data — countered by safe coding practices and on-die features (RDP, MPU).<br><br>
-<span class="font-mono text-[10px] text-primary/80">Hardware attacks:</span> non-invasive (MCU interface and environmental side-channels), semi-invasive (debug port and serial-port exploitation), and invasive techniques requiring specialized equipment — countered with hardware-level security primitives.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32CUBE</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARM CORTEX</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SEGGER</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TASK SCHEDULING</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32F767ZI</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">J-LINK</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RDP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">MPU</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SIDE-CHANNEL</span>
-</div>
-<div class="inline-flex items-center gap-2 text-secondary/40 font-mono text-[10px] tracking-wider">
-<span class="material-symbols-outlined text-sm">lock</span> CLASSIFIED
-</div>
-</div>
+  scrollBody() { const b = this.bodyRef.current; if (b) b.scrollTop = b.scrollHeight; }
+  print(parts) {
+    const out = this.outRef.current;
+    if (!out) return null;
+    const row = document.createElement('div');
+    row.style.whiteSpace = 'pre-wrap'; row.style.overflowWrap = 'anywhere';
+    parts.forEach(([t, c, h]) => {
+      const el = document.createElement(h ? 'a' : 'span');
+      el.textContent = t;
+      if (c) el.style.color = c;
+      if (h) { el.href = h; if (/^https?:/.test(h)) { el.target = '_blank'; el.rel = 'noopener'; } el.style.textDecoration = 'underline dotted'; el.style.textUnderlineOffset = '3px'; }
+      row.appendChild(el);
+    });
+    out.appendChild(row);
+    this.scrollBody();
+    return row;
+  }
+  go(id) {
+    const el = id === 'top' ? this.heroRef.current : this.rootRef.current.querySelector('#' + id);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - (id === 'top' ? 0 : 40);
+    window.scrollTo({ top: Math.max(0, y), behavior: this.reduced ? 'auto' : 'smooth' });
+  }
+  clear() { const b = this.bootRef.current, o = this.outRef.current; if (b) b.style.display = 'none'; if (o) o.innerHTML = ''; }
+  reboot() { const o = this.outRef.current; if (o) o.innerHTML = ''; this.playBoot(); }
 
-<!-- Reverse Engineering -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-error px-2 py-0.5 border border-error/30">RESEARCH</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">SECURITY</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">terminal</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Reverse Engineering</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">WASM Analysis · Binary Unpacking · Exploitation</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Binary analysis, exploitation, and cryptography from university labs and hackathons.<br><br>
-<span class="font-mono text-[10px] text-primary/80">WASM analysis:</span> reversing JS-invoked WebAssembly auth routines — locating string constants in linear memory, identifying input transforms (e.g. XOR masking against stored bytes), and inverting them to recover credentials and flags.<br><br>
-<span class="font-mono text-[10px] text-primary/80">Binary unpacking:</span> manually unwrapping packed executables via static inspection and dynamic debugging. Catching the original entry point with <span class="font-mono text-[10px] text-primary/80">pushad</span>/<span class="font-mono text-[10px] text-primary/80">popad</span> heuristics and stack-watch breakpoints, tracing API calls and reconstructing serial/key validators from EBP-relative stack slots.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">WASM</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">x86</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ASSEMBLY</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">GHIDRA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PESTUDIO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ASPACK</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">UNPACKING</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">BINARY ANALYSIS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EXPLOITATION</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PYTHON</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PERL</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/Reverse-Engineering" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  run(raw) {
+    const C = this.C, line = raw.trim();
+    this.print([['fengwyn@fw2', C.peri], [':~$ ', C.mut], [line, C.bone]]);
+    if (!line) return;
+    this.hist.push(line); this.hi = this.hist.length;
+    const parts = line.split(/\s+/), cmd = parts[0].toLowerCase();
+    const a = (parts.slice(1).find((x) => !x.startsWith('-')) || '').toLowerCase().replace(/\/+$/, ''), arg = a.split('/').pop();
+    const P = (t, c) => this.print([[t, c || C.text]]);
+    const L = (url) => this.print([['→ ', C.mut], [url.replace(/^https:\/\/|^mailto:/, ''), C.bone, url]]);
+    switch (cmd) {
+      case 'help':
+        [['help', 'this list'], ['whoami', 'identify'], ['ls [stage]', 'list stages, or a stage\'s notes'], ['cd <stage>', 'jump to a stage'], ['cat <note>', 'print a field note'], ['uplink', 'open email'], ['github', 'open github'], ['history', 'command history'], ['clear', 'clear the screen'], ['reboot', 'replay the boot log']]
+          .forEach(([k, d]) => this.print([[k.padEnd(12), C.bone], [d, C.peri]]));
+        break;
+      case 'whoami': P('Who am I??? Who are YOU!?', C.bone); break;
+      case 'ls':
+        if (!arg || arg === '~' || arg === 'notes') P(this.STAGES.map((s) => s + '/').join('   '), C.bone);
+        else if (this.LS[arg]) P(this.LS[arg].join('   '), C.bone);
+        else P('ls: cannot access \'' + a + '\': no such stage', C.red);
+        break;
+      case 'cd':
+        if (!arg || arg === '~' || arg === '..' || a === '/') { P('→ ~', C.mut); this.go('top'); }
+        else if (this.STAGES.includes(arg) || arg === 'shutdown') { P('→ ~/' + arg, C.mut); this.go(arg); }
+        else P('cd: no such stage: ' + a, C.red);
+        break;
+      case 'cat':
+        if (!arg) P('usage: cat <note>   try: ls fabric', C.mut);
+        else if (arg === 'readme') P('every stage has one. cd into it.', C.peri);
+        else if (this.CAT[arg]) { P(this.CAT[arg][0]); if (this.CAT[arg][1]) L(this.CAT[arg][1]); else P('repo private', C.mut); }
+        else P('cat: ' + a + ': no such file', C.red);
+        break;
+      case 'uplink': P('opening uplink', C.mut); L('mailto:crossvallia@duck.com'); window.location.href = 'mailto:crossvallia@duck.com'; break;
+      case 'github': L('https://github.com/fengwyn'); window.open('https://github.com/fengwyn', '_blank', 'noopener'); break;
+      case 'history': this.hist.forEach((h, i) => P(String(i + 1).padStart(4) + '  ' + h, C.peri)); break;
+      case 'clear': this.clear(); break;
+      case 'reboot': this.reboot(); break;
+      case 'sudo': {
+        let i = (Math.random() * this.SUDO.length) | 0;
+        if (i === this.lastSudo) i = (i + 1) % this.SUDO.length;
+        this.lastSudo = i; P(this.SUDO[i], C.red);
+        break;
+      }
+      case 'exit': case 'logout': P('there is no exit. only reboot.', C.peri); break;
+      case 'pray': this.reveal(); break;
+      default: P(cmd + ': command not found. try help', C.red);
+    }
+  }
+  complete(inp) {
+    const parts = inp.value.split(/\s+/), cur = (parts[parts.length - 1] || '').toLowerCase();
+    const pool = parts.length <= 1 ? this.CMDS : ['cd', 'ls'].includes(parts[0]) ? this.STAGES : parts[0] === 'cat' ? Object.keys(this.CAT) : [];
+    const m = pool.filter((x) => x.startsWith(cur));
+    if (m.length === 1) { parts[parts.length - 1] = m[0]; inp.value = parts.join(' ') + ' '; }
+    else if (m.length > 1) this.print([[m.join('   '), this.C.mut]]);
+  }
 
-<!-- FAIRWELL — FAI Verification Tool -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-primary bg-primary-container/10 px-2 py-0.5">COMPLETED</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">TOOLING / QA</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">fact_check</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">FAIRWELL</h3>
-</div>
-<p class="font-mono text-[9px] text-secondary/60 mb-3 tracking-wider">Aerospace & Defense QA Tool</p>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Lightweight, front-end for documenting and navigating QA verification processes.<br><br>
-Turns the web of governing documents, hierarchies, decision flows, and inspection forms into a clickable interface instead of a stack of PDFs.<br><br>
-Sections include a top-down Hierarchy of governing docs, a Decision Flow for QA review, Interactive forms with field-level traceability, 
-a Findings Composer for generating turnback exports, and a client-side Trace tool that ingests QA packet PDFs (PDF.js + Tesseract.js OCR) for systemic validation<br><br></p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">WEBDEV</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">DJANGO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVASCRIPT</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">PDF.JS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">TESSERACT.JS</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
+  konami(e) {
+    const SEQ = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+    const k = (e.key || '').toLowerCase();
+    if (k === SEQ[this.kon]) {
+      this.kon++;
+      if (this.kon === SEQ.length) {
+        this.kon = 0;
+        const inp = this.inputRef.current;
+        if (inp && document.activeElement === inp) { e.preventDefault(); inp.value = inp.value.replace(/b$/i, ''); }
+        this.reveal();
+      }
+    } else this.kon = k === SEQ[0] ? 1 : 0;
+  }
+  reveal() {
+    if (this.revealing) return;
+    this.revealing = true;
+    const C = this.C, HEXD = '0123456789ABCDEF';
+    if (window.scrollY > 40) this.go('top');
+    if (this.art) { this.art.setHex(window.CREED_HEX); this.art.forceBurst(); }
+    const text = window.CREED_TEXT || 'I believe ḯ̴̯̩̤ņ̸͉͎̦̫̒̌͋ ̸̨̧̬̹̞͎̥̘̪͈̘͓̺͖̳̥̻͚̦̠̻̀͐̉̓̏͊͂͜ͅơ̴̡̐̀̀́̓̕͠n̸̛̞̬͓̻͕̖̠̞͖͓͇̬̐́̊̈́̔̎̏̆͐͜è̵̛̞̰̗͎̳̹̟̱͊̄͘̕God,\nt̸̨̢̼̭̭͙̻͙͓͚͓̳̺̺̜̲̬̟͇̖͙̮͉̪͕̦̘͖͎̖̪̳̮̤̟̬͙̬̞̞͖͙̤̰̱͖̜͖̻͉̣̫̤̤̭̣̼̩̩̥̪͔̪̭̠̖̙̜̼͇͓̭̳̝̍̀͊̽̉͐̊̓̈́̒̑͌́͂͒́̒̈́̉̀̔͛̀͌̚̚͘͜͜͜͜͝ͅͅḥ̴̡̨̡̧̡̡̢̗̘̠̟̲͙̰͎͕̥̳̲͔͎̙̱̘̩͕̤̝͖͚̰̩̰̯͓̩̣̐̈́̐̒̄̇̇̊̑̅̊̽͂͂̑̈́͒̀͒̓͂͛̂̾̐̉̿̈́͗̽͒́́͋̽̓̚̕̕͘͝͝͝e̷̢̨̦̣͕̫̺͓̮̦̳̟̘̝͖̖̩͕̠͖͔͔̜̰̪̹̦̮͚͓̪̘̝͔̦̼͕̳̥̝͙͈͎̤̬̳̤͖̥̠̫͍͖͇͙͙̤̜̹̳̒̿͛̒̄̃͑͗̽̈͑͒̓̄̽͜͜͜͝ͅ ̷̨̧̢̨̧̨̧̡̛̛͎̲̭̗͍̦̥̤̬̻̘͔̳̬͙͙̮̬̟͙̯͉͎̳̫̯̭̮̣̱̟̥͓̬͉͉͉̯͍̘̯̭͍̰̥̺̦̺̯̬̪͈̰̬̹̳̣͕̰̜͙̹̤̟̤̮̯̗̓̐̐̓̋̂͛̉̂̆́̆́̆̾̑͛̌̔͆̀̓̆̎̊̀̒͛̿̓̎̔̍̐̀͐͗̇̓̑̔̄̈̓̈̉́̕̚͘̕͝͝͝ͅͅͅ Father a̸͙̮͘l̷̩̅ṁ̶͚͛ḭ̸̟͑͘g̷̡̈̃ḧ̵̥̥̌t̷͈̃y̵̖͓̔\n66696E64 206D 652062656C 6F 772E 205765 2073 68616C6C 2062 652077 616974696E67 2E\n\nAmen.';
+    const at = (ms, fn) => this.revT.push(setTimeout(fn, ms));
+    this.print([['[ 7.777777] ', C.mut], ['pray', C.bone], ['  decoding ' + text.length + ' bytes from the downlink', C.peri]]);
+    let t = 650;
+    text.split('\n').forEach((ln) => {
+      if (!ln.trim()) { at(t, () => this.print([[' ']])); t += 60; return; }
+      let hx = '';
+      for (const ch of ln) hx += ch.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
+      at(t, () => {
+        const row = this.print([['', C.bone], [hx.slice(0, ln.length), C.peri]]);
+        if (!row) return;
+        const done = row.children[0], rest = row.children[1];
+        for (let s = 1; s <= 10; s++) this.revT.push(setTimeout(() => {
+          const k = Math.round((ln.length * Math.max(0, s - 3)) / 7);
+          let o = '';
+          for (let i = k; i < ln.length; i++) o += HEXD[(Math.random() * 16) | 0];
+          done.textContent = ln.slice(0, k);
+          rest.textContent = o;
+        }, s * 40));
+      });
+      t += 70;
+    });
+    at(t + 520, () => {
+      const row = this.print([['[ 7.777777] ', C.mut], ['☧', C.bone, 'Sanctuary.dc.html'], ['  amen. the signal is stronger elsewhere... Find us.', C.peri]]);
+      const a = row && row.querySelector('a');
+      if (a) { a.style.fontSize = '1.6em'; a.style.textDecoration = 'none'; a.setAttribute('aria-label', 'Enter the hidden page'); }
+      this.revealing = false;
+    });
+  }
 
-<!-- Other Projects -->
-<div class="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/30 p-6 hover:border-primary-container/50 transition-all">
-<div class="flex justify-between items-start mb-4">
-<span class="font-mono text-[10px] text-secondary px-2 py-0.5 border border-secondary/30">COMPLETED</span>
-<span class="font-mono text-[9px] text-secondary/50 tracking-wider">MISC</span>
-</div>
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary-container text-2xl">widgets</span>
-<h3 class="font-headline font-bold text-lg text-white group-hover:text-primary transition-colors uppercase">Other Projects</h3>
-</div>
-<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
-Embedded Systems — gadgets through functional walking robots. Temperature and movement sensors, network access points, RF modules, satellite imagery, and TCP/IP over RF on STM32, Arduino, and ESP32.<br><br>
-Java Rummy card game, NLP social-engineering password tool.<br><br>
-Rust implementation of the Prisoner's Dilemma with a small twist inspired by The Dark Forest.
-</p>
-<div class="flex flex-wrap gap-1 mb-4">
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">EMBEDDED</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ROBOTICS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">C++</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">FREERTOS</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RF</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">SDR</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">STM32</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ARDUINO</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">ESP32</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">JAVA</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">NLP</span>
-<span class="px-2 py-0.5 bg-surface-container-highest font-mono text-[8px] text-secondary">RUST</span>
-</div>
-<a class="inline-flex items-center gap-2 text-primary font-mono text-[10px] tracking-widest hover:translate-x-2 transition-transform" href="https://github.com/fengwyn/" target="_blank">
-UPLINK <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
-</div>
-
-</div>
-</div>
-</section>
-
-
-<!-- ======================================== -->
-<!-- SECTION 03: CLASSIFIED — Cyberspace Zone  -->
-<!-- ======================================== -->
-<section id="cyber" class="cyber-zone relative py-20 z-10 overflow-hidden" style="background: #0a0a0a;">
-<!-- Cyberspace backdrop layers -->
-<div class="crt-overlay"></div>
-<div class="cyber-grid"></div>
-<div class="pixel-cloud" style="width: 400px; height: 400px; top: 5%; left: -5%;"></div>
-<div class="pixel-cloud" style="width: 300px; height: 300px; bottom: 10%; right: -5%;"></div>
-
-<!-- Cyber Octopus -->
-<div class="cyber-octopus" aria-hidden="true">
-<svg viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice">
-<defs>
-  <radialGradient id="octo-glow" cx="75%" cy="35%" r="40%">
-    <stop offset="0%" stop-color="#00ff41" stop-opacity="0.15"/>
-    <stop offset="100%" stop-color="#00ff41" stop-opacity="0"/>
-  </radialGradient>
-  <filter id="neon-blur">
-    <feGaussianBlur stdDeviation="3" result="blur"/>
-    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
-  <filter id="soft-glow">
-    <feGaussianBlur stdDeviation="6"/>
-  </filter>
-</defs>
-
-<!-- Ambient glow at edge -->
-<ellipse cx="820" cy="400" rx="200" ry="250" fill="url(#octo-glow)"/>
-
-<!-- Tentacle 1 — top, sweeping far left -->
-<path class="tentacle t1" d="M830,220 C720,180 520,150 320,180 C180,206 60,250 -80,220"
-      stroke="#00ff41" stroke-width="6" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.25"/>
-<path class="tentacle t1" d="M830,220 C720,180 520,150 320,180 C180,206 60,250 -80,220"
-      stroke="#00ff41" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
-
-<!-- Tentacle 2 — upper mid -->
-<path class="tentacle t2" d="M830,300 C700,270 500,250 300,290 C150,322 30,300 -100,340"
-      stroke="#00ff41" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.2"/>
-<path class="tentacle t2" d="M830,300 C700,270 500,250 300,290 C150,322 30,300 -100,340"
-      stroke="#00ff41" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.45"/>
-
-<!-- Tentacle 3 — mid, longest -->
-<path class="tentacle t3" d="M830,380 C680,360 450,380 220,410 C80,432 -40,400 -150,440"
-      stroke="#00ff41" stroke-width="10" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.18"/>
-<path class="tentacle t3" d="M830,380 C680,360 450,380 220,410 C80,432 -40,400 -150,440"
-      stroke="#00ff41" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.4"/>
-
-<!-- Tentacle 4 — lower mid -->
-<path class="tentacle t4" d="M830,460 C710,480 500,510 300,490 C140,474 20,520 -120,500"
-      stroke="#00ff41" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.2"/>
-<path class="tentacle t4" d="M830,460 C710,480 500,510 300,490 C140,474 20,520 -120,500"
-      stroke="#00ff41" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.45"/>
-
-<!-- Tentacle 5 — lower -->
-<path class="tentacle t5" d="M830,540 C720,580 500,620 280,600 C130,586 10,640 -100,620"
-      stroke="#00ff41" stroke-width="7" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.2"/>
-<path class="tentacle t5" d="M830,540 C720,580 500,620 280,600 C130,586 10,640 -100,620"
-      stroke="#00ff41" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.4"/>
-
-<!-- Tentacle 6 — bottom, curling down -->
-<path class="tentacle t6" d="M830,620 C740,680 560,740 350,720 C180,704 40,770 -80,750"
-      stroke="#00ff41" stroke-width="6" fill="none" stroke-linecap="round" filter="url(#neon-blur)" opacity="0.15"/>
-<path class="tentacle t6" d="M830,620 C740,680 560,740 350,720 C180,704 40,770 -80,750"
-      stroke="#00ff41" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.35"/>
-
-<!-- Data nodes along tentacles -->
-<circle class="data-node dn1" cx="320" cy="182" r="4" fill="#00ff41" opacity="0.5" filter="url(#neon-blur)"/>
-<circle class="data-node dn2" cx="300" cy="295" r="3.5" fill="#00ff41" opacity="0.4" filter="url(#neon-blur)"/>
-<circle class="data-node dn3" cx="220" cy="415" r="5" fill="#00ff41" opacity="0.5" filter="url(#neon-blur)"/>
-<circle class="data-node dn4" cx="300" cy="493" r="3" fill="#00ff41" opacity="0.35" filter="url(#neon-blur)"/>
-<circle class="data-node dn5" cx="280" cy="605" r="4" fill="#00ff41" opacity="0.4" filter="url(#neon-blur)"/>
-</svg>
-</div>
-
-<div class="max-w-7xl mx-auto px-8 relative z-20">
-<!-- Section Header — Cyberspace styled -->
-<div class="mb-16">
-<div class="flex items-center gap-3 mb-4">
-<div class="h-px flex-1 bg-gradient-to-r from-transparent to-[#00ff41]"></div>
-<span class="font-mono text-[10px] text-[#008F11] tracking-[0.3em]">// MODULE 04 :: RESTRICTED_ACCESS </span>
-<div class="h-px flex-1 bg-gradient-to-l from-transparent to-[#00ff41]"></div>
-</div>
-<h2 class="glitch font-headline font-black text-5xl md:text-5xl tracking-tighter leading-none text-[#00ff41]" style="text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);">CYBER//SECURITY</h2>
-<p class="font-mono text-xs text-[#008F11] mt-4 tracking-wider typing-cursor">Offensive security research, encryption engines, and signal intelligence</p>
-</div>
-
-<!-- Card 1: Malware Analysis & Development -->
-<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
-<div class="flex items-start justify-between mb-6">
-<div>
-<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">RESEARCH // ACTIVE</div>
-<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">Malware Analysis & Development</h3>
-</div>
-<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">shield</span>
-</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed mb-4">
-Polymorphic and metamorphic malware research in homelab environment. Focused on understanding evasion techniques and detection methodologies. With ever-evolving pattern matching tools, being able to analyze at this depth will be key.
-</p>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-<div class="bg-[#1b1b1b] border border-[#3b4b37] p-4">
-<div class="font-mono text-[10px] text-[#00ff41] tracking-wider mb-2">> POLYMORPHIC</div>
-<p class="text-[#b9ccb2] text-xs leading-relaxed">Same core behavior, encrypts/reshuffles outer shell. The payload remains functionally identical while the wrapper mutates on each iteration to evade signature-based detection.</p>
-</div>
-<div class="bg-[#1b1b1b] border border-[#3b4b37] p-4">
-<div class="font-mono text-[10px] text-[#00ff41] tracking-wider mb-2">> METAMORPHIC</div>
-<p class="text-[#b9ccb2] text-xs leading-relaxed">Rewrites own logic entirely. Each generation produces functionally equivalent but structurally distinct code, defeating both signature and heuristic analysis.</p>
-</div>
-</div>
-<div class="flex flex-wrap gap-2 mb-6">
-<span class="tech-tag font-mono text-[10px] px-3 py-1">GDB</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">x64DBG</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Immunity Debugger</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Malware</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Reverse Engineering</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Entropy</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Dynamic Analysis</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Static Analysis</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">ROP</span>
-</div>
-<div class="inline-flex items-center gap-2 text-[#008F11] font-mono text-xs tracking-wider opacity-60">
-<span class="material-symbols-outlined text-base">lock</span>
-<span>REPOSITORY_RESTRICTED</span>
-</div>
-</div>
-
-<!-- Card 2: FPGA Encryption Engine -->
-<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
-<div class="flex items-start justify-between mb-6">
-<div>
-<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">RESEARCH // HARDWARE</div>
-<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">Hardware Network Security</h3>
-</div>
-<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">developer_board</span>
-</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed mb-6">
-Hardware-accelerated network security on Field Programmable Gate Array. Real-time packet inspection, Ethernet parser and checksum verifier on Artix-7. Self-taught Digital Systems from old textbooks. Identified an algorithm used by a cipher: a block linear feedback shift register applied on plaintext to obtain ciphertext.
-</p>
-<div class="flex flex-wrap gap-2 mb-6">
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Verilog</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Digital Systems Design</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Ethernet</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">FPGA</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Network Security</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">TCP/IP</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">W5500</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Artix-7</span>
-</div>
-<a href="https://github.com/fengwyn/PacketProcessor" target="_blank" class="inline-flex items-center gap-2 text-[#00ff41] font-mono text-xs tracking-wider hover:text-[#e2e2e2] transition-colors group">
-<span class="material-symbols-outlined text-base">link</span>
-<span class="group-hover:underline">VIEW_REPOSITORY</span>
-<span class="material-symbols-outlined text-sm opacity-50 group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</a>
-</div>
-
-<!-- Card 3: RF Signal Relay -->
-<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8 mb-8">
-<div class="flex items-start justify-between mb-6">
-<div>
-<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">ACTIVE // SIGINT</div>
-<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">RF Signal Relay</h3>
-</div>
-<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">cell_tower</span>
-</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed mb-6">
-Radio-Frequency based surveillance project powered by eIRC's Node-Relay groundwork. Leveraging SDR capabilities and embedded systems for signal intelligence and networked sensor platforms. Combines RF engineering with distributed systems architecture.
-</p>
-<div class="flex flex-wrap gap-2 mb-6">
-<span class="tech-tag font-mono text-[10px] px-3 py-1">SDR</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Radio Frequency</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">eIRC Node-Relay</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Embedded Systems</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">Surveillance</span>
-<span class="tech-tag font-mono text-[10px] px-3 py-1">TCP/IP</span>
-</div>
-<div class="inline-flex items-center gap-2 text-[#008F11] font-mono text-xs tracking-wider opacity-60">
-<span class="material-symbols-outlined text-base">lock</span>
-<span>REPOSITORY_RESTRICTED</span>
-</div>
-</div>
-
-<!-- Hackathon Achievements -->
-<div class="cyber-card bg-[#0e0e0e] border-l-2 border-[#00ff41] p-8">
-<div class="flex items-start justify-between mb-6">
-<div>
-<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em] mb-2">ACHIEVEMENTS // 0xC0FFEE</div>
-<h3 class="cyber-card-title glitch font-headline font-bold text-2xl text-[#e2e2e2] tracking-tight">Field Operations</h3>
-</div>
-<span class="material-symbols-outlined text-[#00ff41] text-3xl opacity-50">emoji_events</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="border border-[#3b4b37] p-6 hover:border-[#00ff41]/50 transition-colors">
-<div class="flex items-center gap-3 mb-3">
-<div class="w-2 h-2 bg-[#00ff41] shadow-[0_0_8px_rgba(0,255,65,0.5)]"></div>
-<h4 class="font-headline font-semibold text-lg text-[#e2e2e2]">GMiS Hackathon 2024</h4>
-</div>
-<div class="font-mono text-xs text-[#00ff41] tracking-wider mb-3">EXPERT DIVISION</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed">Binary analysis, reverse engineering, cryptography, and forensics. 
-      Taught a workshop on Binary Analysis and Reverse Engineering.</p>
-</div>
-<div class="border border-[#3b4b37] p-6 hover:border-[#00ff41]/50 transition-colors">
-<div class="flex items-center gap-3 mb-3">
-<div class="w-2 h-2 bg-[#00ff41] shadow-[0_0_8px_rgba(0,255,65,0.5)]"></div>
-<h4 class="font-headline font-semibold text-lg text-[#e2e2e2]">NJIT CyberSec 2025</h4>
-</div>
-<div class="font-mono text-xs text-[#00ff41] tracking-wider mb-3">TOP 10 // INTERNATIONAL</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed">Binary Exploitation, Cryptography. 
-      Identified LFSR cipher from FPGA Digital Systems research, 
-      applying cross-domain knowledge from embedded systems and reverse engineering.</p>
-</div>
-</div>
-
-<!-- CTF Wargames -->
-<div class="mt-6 border-t border-[#3b4b37] pt-6">
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-[#00ff41] text-base opacity-60">flag</span>
-<div class="font-mono text-[10px] text-[#008F11] tracking-[0.2em]">ONGOING // WARGAMES</div>
-</div>
-<p class="text-[#b9ccb2] text-sm leading-relaxed">Active on online Capture the Flag platforms such as <span class="text-[#00ff41] font-mono text-xs">OverTheWire</span>. Working through wargames covering Linux exploitation, binary analysis, web security, and cryptographic challenges.</p>
-</div>
-</div>
-
-</div>
-</section>
-
-
-<!-- ======================================== -->
-<!-- SECTION 04: ABOUT                        -->
-<!-- ======================================== -->
-<section id="about" class="px-8 py-16 relative z-10 border-t border-outline-variant/10">
-<div class="max-w-7xl mx-auto">
-<div class="max-w-2xl">
-<span class="font-mono text-[10px] text-primary tracking-[0.3em] uppercase">Module: 05</span>
-<h2 class="text-2xl font-black font-headline tracking-tighter uppercase mt-2 mb-6 text-white">About: &nbsp; Operator</h2>
-<p class="text-on-surface-variant leading-relaxed">
-                        Welcome, fellow Netizen. Navigating the digital frontier, exploring the intersection of
-                        cybersecurity, networks, and embedded systems. This terminal serves as my log of progress
-                        through cyberspace. I shall briefly explain my journey towards tech...
-                        <br><br>
-                        Let there be... drones?
-                        Exploring the tech realm, I was very interested and had some novice experience in electronics; drones and embedded systems (Arduino).
-                        However, it all started with a Drone I had as a kid. It was a mid-range racer type, remote controlled remote.
-                        At a certain moment, it broke down, a wire had been cut, I figured that if I just taped it well enough, it'd work again, and it did!
-                        Eventually, it kept breaking, so I made my way to the port where the wire was connected, and replaced it.
-                        <br><br>
-                        What pulled me into the software side of tech, was that I once was trying to optimize my Windows 7 Desktop into running Flash Games on Newegg, 
-                        it was running quite laggy, and there was a taxi simulator game that I really liked, as well as a disc game a neighbor gave us, a jet simulator. 
-                        I accidentally uninstalled too many critical programs from the \x86 directory (iirc) and some printer stuff broke! 
-                        I browsed the web, and something I had to do was modify the registry and manually install some programs through the command line! 
-                        Yes, before becoming a Linux power-user, I was a Windows 7 shell apprentice, it was a humbling experience...
-                    </p>
-<div class="mt-6 flex gap-6">
-<a href="mailto:krzfrancesc@gmail.com" class="text-primary font-mono text-xs hover:text-white transition-colors">krzfrancesc@gmail.com</a>
-<a href="https://github.com/fengwyn" target="_blank" class="text-primary font-mono text-xs hover:text-white transition-colors">github.com/fengwyn</a>
-</div>
-</div>
-</div>
-</section>
-
-<!-- FOOTER -->
-<footer class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center bg-[#131313]/90 backdrop-blur-md border-t border-[#c6c6c6]/20 mt-20 relative z-10">
-<div class="flex flex-col gap-2 mb-8 md:mb-0">
-<div class="font-mono text-[10px] tracking-widest uppercase text-[#a020f0]">&copy; 20XX FENGWYN // ALL SYSTEMS NOMINAL</div>
-<div class="font-mono text-[8px] tracking-[0.4em] text-secondary/40">STARCHART_BUILD: V1.2_ALPHA</div>
-</div>
-<div class="flex gap-8">
-<a class="font-mono text-[13px] tracking-widest uppercase text-[#353535] hover:text-[#e3FFff] transition-colors" href="#">∴</a>
-<a class="font-mono text-[15px] tracking-widest uppercase text-[#353535] hover:text-[#e3FFff] transition-colors" href="XP.html">:</a>
-<a class="font-mono text-[13px] tracking-widest uppercase text-[#353535] hover:text-[#e3FFff] transition-colors" href="#">·</a>
-</div>
-<div class="flex items-center gap-4 mt-8 md:mt-0">
-<div class="w-2 h-2 bg-[#4da6ff] rounded-full animate-ping"></div>
-<span class="font-mono text-[10px] text-[#4da6ff]">CONNECTION: STABLE</span>
-</div>
-</footer>
-
-<!-- Signature Status HUD -->
-<div class="fixed bottom-6 right-6 z-50 pointer-events-none hidden lg:block">
-<div class="p-4 bg-background/60 backdrop-blur-sm border border-primary/15 flex flex-col gap-1">
-<div class="flex items-center gap-2 text-primary font-mono text-[9px] tracking-widest">
-<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
-                    [ STARCHART_READY ]
-                </div>
-<div class="text-[8px] font-mono text-secondary/40">ENCRYPTION: BLISS-II</div>
-<div class="text-[8px] font-mono text-secondary/40">NET_STATUS: TUNNELED</div>
-</div>
-</div>
-
-</main>
-
-<!-- MOBILE NAVIGATION: BottomNavBar -->
-<nav class="md:hidden fixed bottom-0 w-full bg-[#1b1b1b]/95 backdrop-blur-md border-t border-[#c6c6c6]/10 flex justify-around items-center h-16 z-50">
-<a class="flex flex-col items-center gap-1 text-[#a020f0]" href="#core">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">memory</span>
-<span class="text-[8px] font-mono tracking-widest">CORE</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#directory">
-<span class="material-symbols-outlined">folder</span>
-<span class="text-[8px] font-mono tracking-widest">DIR</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#cyber">
-<span class="material-symbols-outlined">lock</span>
-<span class="text-[8px] font-mono tracking-widest">CYBER</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-[#c6c6c6] opacity-70" href="#about">
-<span class="material-symbols-outlined">person</span>
-<span class="text-[8px] font-mono tracking-widest">ABOUT</span>
-</a>
-</nav>
-
-<!-- Starfield Script -->
-<script src="js/starfield.js"></script>
-<script src="js/cursor.js"></script>
-<script src="js/nav-highlight.js"></script>
+  renderVals() {
+    return {
+      rootRef: this.rootRef, heroRef: this.heroRef, canvasRef: this.canvasRef, bgRef: this.bgRef, winRef: this.winRef,
+      bodyRef: this.bodyRef, bootRef: this.bootRef, outRef: this.outRef, inputRef: this.inputRef, satRef: this.satRef,
+      navRef: this.navRef, frameRef: this.frameRef, crcRef: this.crcRef,
+      onMove: (e) => { const r = this.heroRef.current; if (!r || !this.art) return; const b = r.getBoundingClientRect(); this.art.pointer(e.clientX - b.left, e.clientY - b.top); },
+      onLeave: () => { if (this.art) this.art.pointer(null); clearTimeout(this.lpT); },
+      onDown: (e) => {
+        const b = this.satBox, hero = this.heroRef.current;
+        if (!b || !hero) return;
+        const r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, p = 18;
+        if (x < b.x - p || x > b.x + b.w + p || y < b.y - p || y > b.y + b.h + p) return;
+        clearTimeout(this.lpT);
+        this.lpT = setTimeout(() => this.reveal(), 650);
+      },
+      onUp: () => clearTimeout(this.lpT),
+      focusTerm: (e) => {
+        if (e.target.closest && e.target.closest('a')) return;
+        if (window.getSelection && String(window.getSelection())) return;
+        const i = this.inputRef.current;
+        if (i) i.focus({ preventScroll: true });
+      },
+      onKey: (e) => {
+        const inp = e.currentTarget, k = e.key;
+        if (k === 'Enter') { e.preventDefault(); const v = inp.value; inp.value = ''; this.run(v); }
+        else if (k === 'ArrowUp') { e.preventDefault(); if (this.hist.length) { this.hi = Math.max(0, this.hi - 1); inp.value = this.hist[this.hi] || ''; } }
+        else if (k === 'ArrowDown') { e.preventDefault(); this.hi = Math.min(this.hist.length, this.hi + 1); inp.value = this.hist[this.hi] || ''; }
+        else if (k === 'Tab') { e.preventDefault(); this.complete(inp); }
+        else if ((k === 'l' || k === 'L') && e.ctrlKey) { e.preventDefault(); this.clear(); }
+        else if (k === 'Escape') inp.blur();
+      },
+    };
+  }
+}
+</script>
 </body>
-
 </html>
