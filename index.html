@@ -693,7 +693,7 @@ class Component extends DCLogic {
     const C = this.C, HEXD = '0123456789ABCDEF';
     if (window.scrollY > 40) this.go('top');
     if (this.art) { this.art.setHex(window.CREED_HEX); this.art.forceBurst(); }
-    const text = window.CREED_TEXT || 'I believe ḯ̴̯̩̤ņ̸͉͎̦̫̒̌͋ ̸̨̧̬̹̞͎̥̘̪͈̘͓̺͖̳̥̻͚̦̠̻̀͐̉̓̏͊͂͜ͅơ̴̡̐̀̀́̓̕͠n̸̛̞̬͓̻͕̖̠̞͖͓͇̬̐́̊̈́̔̎̏̆͐͜è̵̛̞̰̗͎̳̹̟̱͊̄͘̕God,\nt̸̨̢̼̭̭͙̻͙͓͚͓̳̺̺̜̲̬̟͇̖͙̮͉̪͕̦̘͖͎̖̪̳̮̤̟̬͙̬̞̞͖͙̤̰̱͖̜͖̻͉̣̫̤̤̭̣̼̩̩̥̪͔̪̭̠̖̙̜̼͇͓̭̳̝̍̀͊̽̉͐̊̓̈́̒̑͌́͂͒́̒̈́̉̀̔͛̀͌̚̚͘͜͜͜͜͝ͅͅḥ̴̡̨̡̧̡̡̢̗̘̠̟̲͙̰͎͕̥̳̲͔͎̙̱̘̩͕̤̝͖͚̰̩̰̯͓̩̣̐̈́̐̒̄̇̇̊̑̅̊̽͂͂̑̈́͒̀͒̓͂͛̂̾̐̉̿̈́͗̽͒́́͋̽̓̚̕̕͘͝͝͝e̷̢̨̦̣͕̫̺͓̮̦̳̟̘̝͖̖̩͕̠͖͔͔̜̰̪̹̦̮͚͓̪̘̝͔̦̼͕̳̥̝͙͈͎̤̬̳̤͖̥̠̫͍͖͇͙͙̤̜̹̳̒̿͛̒̄̃͑͗̽̈͑͒̓̄̽͜͜͜͝ͅ ̷̨̧̢̨̧̨̧̡̛̛͎̲̭̗͍̦̥̤̬̻̘͔̳̬͙͙̮̬̟͙̯͉͎̳̫̯̭̮̣̱̟̥͓̬͉͉͉̯͍̘̯̭͍̰̥̺̦̺̯̬̪͈̰̬̹̳̣͕̰̜͙̹̤̟̤̮̯̗̓̐̐̓̋̂͛̉̂̆́̆́̆̾̑͛̌̔͆̀̓̆̎̊̀̒͛̿̓̎̔̍̐̀͐͗̇̓̑̔̄̈̓̈̉́̕̚͘̕͝͝͝ͅͅͅ Father a̸͙̮͘l̷̩̅ṁ̶͚͛ḭ̸̟͑͘g̷̡̈̃ḧ̵̥̥̌t̷͈̃y̵̖͓̔\n66696E64 206D 652062656C 6F 772E 205765 2073 68616C6C 2062 652077 616974696E67 2E\n\nAmen.';
+    const text = window.CREED_TEXT || 'I believe in one God,\nthe Father almighty,\nmaker of heaven and earth.\n\nAmen.';
     const at = (ms, fn) => this.revT.push(setTimeout(fn, ms));
     this.print([['[ 7.777777] ', C.mut], ['pray', C.bone], ['  decoding ' + text.length + ' bytes from the downlink', C.peri]]);
     let t = 650;
@@ -716,7 +716,7 @@ class Component extends DCLogic {
       t += 70;
     });
     at(t + 520, () => {
-      const row = this.print([['[ 7.777777] ', C.mut], ['☧', C.bone, 'Sanctuary.dc.html'], ['  amen. the signal is stronger elsewhere... Find us.', C.peri]]);
+      const row = this.print([['[ 7.777777] ', C.mut], ['☧', C.bone, 'Sanctuary.dc.html'], ['  amen. the signal was never lost.', C.peri]]);
       const a = row && row.querySelector('a');
       if (a) { a.style.fontSize = '1.6em'; a.style.textDecoration = 'none'; a.setAttribute('aria-label', 'Enter the hidden page'); }
       this.revealing = false;
