@@ -75,7 +75,7 @@
         </div>
         <div ref="{{ bodyRef }}" onClick="{{ focusTerm }}" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:2px;font-size:clamp(11.5px,0.9vw,13.5px);line-height:1.6;scrollbar-width:thin;scrollbar-color:#1F3BFF #000;cursor:text;">
           <div ref="{{ bootRef }}" style="display:flex;flex-direction:column;gap:2px;">
-            <div data-ln="90" style="margin-bottom:8px;color:#6a74b0;letter-spacing:0.03em;">fengwyn-boot 2.0 · downlink capture · vcid 03 · <span data-tok="">1ACF539D</span></div>
+            <div data-ln="90" style="margin-bottom:8px;color:#6a74b0;letter-spacing:0.03em;">fengwyn-boot 2.0 · downlink capture · vcid 03 · <span data-tok="" data-sess="">1ACF539D</span></div>
             <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
               <span data-tok="" style="flex:none;color:#6a74b0;">[ 0.000000]</span>
               <span style="flex:none;width:10ch;color:#8f99d6;">LINK</span>
@@ -465,6 +465,7 @@ class Component extends DCLogic {
 
   txt(el, s) { if (el && el.firstChild) el.firstChild.nodeValue = s; }
   col(el, c) { if (el) el.style.color = c; }
+  sess() { const b = this.bootRef.current; this.txt(b && b.querySelector('[data-sess]'), '1ACF' + ((Math.random() * 0x10000) | 0).toString(16).toUpperCase().padStart(4, '0')); }
   burst(on, info) {
     const win = this.winRef.current;
     if (!win) return;
@@ -494,6 +495,7 @@ class Component extends DCLogic {
     } else {
       clearInterval(this.scrT);
       toks.forEach((el, i) => { if (el.firstChild && this.saved) el.firstChild.nodeValue = this.saved[i]; });
+      this.sess();
       win.style.transform = ''; win.style.borderColor = '#1F3BFF';
       this.txt(crc, 'ok'); this.col(crc, C.bone);
       this.txt(mark, 'ok'); this.col(mark, C.bone);
@@ -509,6 +511,7 @@ class Component extends DCLogic {
     const boot = this.bootRef.current, prompt = this.heroRef.current && this.heroRef.current.querySelector('[data-prompt]');
     if (!boot) return;
     this.timers.forEach(clearTimeout); this.timers = [];
+    this.sess();
     boot.style.display = '';
     const lines = Array.from(boot.querySelectorAll('[data-ln]')), all = this.reduced;
     lines.forEach((el) => {
