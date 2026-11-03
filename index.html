@@ -21,6 +21,7 @@
   </style>
   <script src="creed.js"></script>
   <script src="orbit.js?v=8"></script>
+  <script src="diagrams.js?v=1"></script>
 </helmet>
 <div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:#000;color:#A8B4F5;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(12px,0.95vw,14px);line-height:1.7;">
   <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:0.75;">
@@ -68,7 +69,7 @@
     </header>
 
     <div style="position:relative;z-index:2;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:8px clamp(14px,4vw,48px) clamp(150px,31vh,330px);">
-      <div ref="{{ winRef }}" style="width:min(100%,700px);max-height:100%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #1F3BFF;background:rgba(0,0,0,0.9);">
+      <div ref="{{ winRef }}" style="width:min(100%,700px);max-height:50%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #1F3BFF;background:rgba(0,0,0,0.9);">
         <div style="flex:none;display:flex;justify-content:space-between;gap:12px;padding:6px 12px;background:#1F3BFF;color:#E8E2CF;font-size:12px;letter-spacing:0.08em;text-shadow:none;">
           <span data-tok="">fengwyn@fw2: ~</span>
           <span>tty0 · downlink</span>
@@ -139,7 +140,16 @@
                 <span data-st="" style="flex:none;color:#E8E2CF;">ok</span>
               </span>
             </div>
-            <div data-ln="90" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;margin-top:6px;">
+            <div data-err="" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;opacity:0;color:#E8343F;">
+              <span style="flex:none;">[ 0.261104]</span>
+              <span style="flex:none;width:10ch;">LINK</span>
+              <span style="flex:1 1 30ch;min-width:0;">frame <span data-errf="">0x2F1A</span> dropped, crc mismatch, retransmit</span>
+            </div>
+          </div>
+          <!-- Direct child of the scroller: sticky is bounded by its containing block,
+               so this has to sit outside the boot log to stay pinned once that scrolls past. -->
+          <div data-pin="" style="position:sticky;top:0;z-index:2;display:flex;flex-direction:column;gap:2px;margin-top:6px;padding-bottom:5px;border-bottom:1px solid #1a2260;background:#000;box-shadow:0 -16px 0 0 #000;">
+            <div data-ln="90" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
               <span style="flex:none;color:#6a74b0;">[ 0.256001]</span>
               <span style="flex:none;width:10ch;color:#8f99d6;">init</span>
               <span style="flex:1 1 30ch;min-width:0;"><span data-title="" style="color:#E8E2CF;font-weight:500;letter-spacing:0.12em;">FENGWYN</span><span style="color:#8f99d6;">, </span><span style="color:#E8E2CF;">embedded security engineer</span></span>
@@ -147,12 +157,7 @@
             <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
               <span style="flex:none;color:#6a74b0;">[ 0.256002]</span>
               <span style="flex:none;width:10ch;color:#8f99d6;">init</span>
-              <span style="flex:1 1 30ch;min-width:0;color:#8f99d6;">embedded systems · hardware security · reverse engineering · malware development · rf + signals</span>
-            </div>
-            <div data-err="" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;opacity:0;color:#E8343F;">
-              <span style="flex:none;">[ 0.261104]</span>
-              <span style="flex:none;width:10ch;">LINK</span>
-              <span style="flex:1 1 30ch;min-width:0;">frame <span data-errf="">0x2F1A</span> dropped, crc mismatch, retransmit</span>
+              <span style="flex:1 1 30ch;min-width:0;color:#BCC6FF;text-shadow:0 0 12px rgba(31,59,255,0.6),0 0 4px rgba(31,59,255,0.4),0 1px 1px #000;">embedded systems · hardware security · reverse engineering · malware development · rf + signals</span>
             </div>
           </div>
           <div ref="{{ outRef }}" style="display:flex;flex-direction:column;gap:2px;"></div>
@@ -161,6 +166,13 @@
             <span style="flex:none;color:#6a74b0;">:~$&nbsp;</span>
             <input ref="{{ inputRef }}" onKeyDown="{{ onKey }}" type="text" aria-label="Terminal input. Type help." spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="type help" style="flex:1 1 auto;min-width:0;padding:0;margin:0;border:0;outline:none;background:transparent;color:#E8E2CF;caret-color:#1F3BFF;font:inherit;letter-spacing:inherit;text-shadow:none;">
           </label>
+        </div>
+        <div title="Entropy pool. Move the pointer or type to stir it." style="flex:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;padding:6px 12px;border-top:1px solid #1a2260;background:#02030e;font-size:11px;letter-spacing:0.06em;color:#6a74b0;text-shadow:none;">
+          <span style="flex:none;color:#8f99d6;">ENTROPY</span>
+          <span ref="{{ poolBarRef }}" style="flex:none;letter-spacing:0;color:#1F3BFF;">████████████████</span>
+          <span ref="{{ poolBitsRef }}" style="flex:none;width:6ch;color:#E8E2CF;">4096b</span>
+          <span ref="{{ poolHexRef }}" style="flex:1 1 34ch;min-width:0;overflow:hidden;white-space:nowrap;letter-spacing:0;color:#3b4799;">00000000 00000000 00000000 00000000</span>
+          <span ref="{{ poolGenRef }}" style="flex:none;">gen 1</span>
         </div>
       </div>
     </div>
@@ -172,6 +184,7 @@
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px;color:#6a74b0;">
         <span>VCID <span style="color:#A8B4F5;">03</span></span>
         <span>FRAME <span ref="{{ frameRef }}" style="color:#A8B4F5;">0x2F1A</span></span>
+        <span>ENT <span ref="{{ entRef }}" style="color:#A8B4F5;">4096b</span></span>
         <span>CRC <span ref="{{ crcRef }}" style="color:#E8E2CF;">ok</span></span>
       </div>
     </div>
@@ -179,7 +192,7 @@
 
   <section id="bootrom" data-stage="" data-screen-label="02 Stage 0 · BOOTROM" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~/bootrom</span><span>stage 0 · 0x0000_0000</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
@@ -199,7 +212,7 @@
 
   <section id="fsbl" data-stage="" data-screen-label="03 Stage 1 · FSBL" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~/fsbl</span><span>stage 1 · 0x0001_0000</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
@@ -219,7 +232,7 @@
 
   <section id="fabric" data-stage="" data-screen-label="04 Stage 2 · FABRIC" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~/fabric</span><span>stage 2 · 0x0002_0000</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
@@ -236,30 +249,32 @@
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
-      <a data-seq="note" href="https://github.com/fengwyn/PacketProcessor" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/packetprocessor</span><span>research</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+      <div data-seq="note" data-card="packetprocessor" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/packetprocessor</span><span style="display:flex;align-items:center;gap:10px;"><span>research</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="font-size:16px;font-weight:500;color:#E8E2CF;">PacketProcessor</span>
           <span style="text-wrap:pretty;">Serial UDP comes in, a 64-bit shift register stages it into a RAM FIFO, and a checksum verifier gates egress to an Ethernet module. Bad packets never leave; the FIFO flushes.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>verilog</span><span>artix-7</span><span>udp</span><span>w5500</span></span>
-          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/PacketProcessor ↗</span>
-        </span>
-      </a>
-      <a data-seq="note" href="https://github.com/fengwyn/RadSurv" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/radsurv</span><span>active</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
+          <a href="https://github.com/fengwyn/PacketProcessor" target="_blank" rel="noopener" style="font-size:12px;color:#E8E2CF;" style-hover="color:#A8B4F5;">→ github.com/fengwyn/PacketProcessor ↗</a>
+        </div>
+      </div>
+      <div data-seq="note" data-card="radsurv" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/radsurv</span><span style="display:flex;align-items:center;gap:10px;"><span>active</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="font-size:16px;font-weight:500;color:#E8E2CF;">RadSurv</span>
           <span style="text-wrap:pretty;">A distributed RF sensor net. Radio nodes on small MCUs run an RTOS scheduler, trigger cameras on IR detection, and relay through bridge boards to a TCP server with local storage.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>nrf24</span><span>freertos</span><span>avr</span><span>tcp/ip</span></span>
-          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/RadSurv ↗</span>
-        </span>
-      </a>
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
+          <a href="https://github.com/fengwyn/RadSurv" target="_blank" rel="noopener" style="font-size:12px;color:#E8E2CF;" style-hover="color:#A8B4F5;">→ github.com/fengwyn/RadSurv ↗</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="kernel" data-stage="" data-screen-label="05 Stage 3 · KERNEL" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~/kernel</span><span>stage 3 · 0x0003_0000</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
@@ -276,30 +291,32 @@
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
-      <a data-seq="note" href="https://github.com/fengwyn/eIRC" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/eirc</span><span>active</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+      <div data-seq="note" data-card="eirc" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/eirc</span><span style="display:flex;align-items:center;gap:10px;"><span>active</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="font-size:16px;font-weight:500;color:#E8E2CF;">eIRC</span>
           <span style="text-wrap:pretty;">A message-passing system for coordinating local and remote network nodes. A tracker keeps the master ledger; each node keeps its own, plus a hot-swappable command module for live updates.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>c++</span><span>python</span><span>sockets</span><span>redis</span></span>
-          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/eIRC ↗</span>
-        </span>
-      </a>
-      <a data-seq="note" href="https://github.com/fengwyn/OSELOT" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/oselot</span><span>active</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
+          <a href="https://github.com/fengwyn/eIRC" target="_blank" rel="noopener" style="font-size:12px;color:#E8E2CF;" style-hover="color:#A8B4F5;">→ github.com/fengwyn/eIRC ↗</a>
+        </div>
+      </div>
+      <div data-seq="note" data-card="oselot" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/oselot</span><span style="display:flex;align-items:center;gap:10px;"><span>active</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:16px;font-weight:500;color:#E8E2CF;">OSELOT</span><span style="font-size:12px;color:#6a74b0;">observational satellite embedded linux operations terminal</span></span>
           <span style="text-wrap:pretty;">An embedded ground station. A custom Linux image pairs an SDR with a satellite downlink at 1694.1 MHz, then publishes decoded image metadata to IRC channels as it lands.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>yocto</span><span>rtl-sdr</span><span>goes</span><span>systemd</span></span>
-          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/OSELOT ↗</span>
-        </span>
-      </a>
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
+          <a href="https://github.com/fengwyn/OSELOT" target="_blank" rel="noopener" style="font-size:12px;color:#E8E2CF;" style-hover="color:#A8B4F5;">→ github.com/fengwyn/OSELOT ↗</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="adversary" data-stage="" data-screen-label="06 Stage 4 · ADVERSARY" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) 0;display:flex;flex-direction:column;gap:20px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~/adversary</span><span>stage 4 · 0x0004_0000</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;padding:clamp(18px,3vw,32px);">
@@ -316,30 +333,32 @@
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;">
-      <div data-seq="note" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/malware-research</span><span>research</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+      <div data-seq="note" data-card="malware-research" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/malware-research</span><span style="display:flex;align-items:center;gap:10px;"><span>research</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="font-size:16px;font-weight:500;color:#E8E2CF;">Malware research</span>
-          <span style="text-wrap:pretty;">Polymorphic and metamorphic samples in an isolated homelab: how payloads re-wrap or rewrite themselves to slip past signatures, and what still gives them away.</span>
+          <span style="text-wrap:pretty;">Polymorphic and metamorphic samples in an isolated environment: how payloads re-wrap or rewrite themselves to slip past signatures, and what still gives them away.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>gdb</span><span>x64dbg</span><span>entropy</span><span>rop</span></span>
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
           <span style="font-size:12px;color:#6a74b0;">repo private</span>
-        </span>
+        </div>
       </div>
-      <a data-seq="note" href="https://github.com/fengwyn/Reverse-Engineering" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;color:#A8B4F5;">
-        <span style="display:flex;justify-content:space-between;gap:12px;padding:7px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;"><span>notes/reverse-engineering</span><span>labs</span></span>
-        <span style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+      <div data-seq="note" data-card="reverse-engineering" style="display:flex;flex-direction:column;border:1px solid #3b4799;background:#000;color:#A8B4F5;" style-hover="border-color:#1F3BFF;">
+        <div data-grip="" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 8px 5px 14px;background:#0c1240;font-size:12px;letter-spacing:0.06em;color:#8f99d6;cursor:grab;touch-action:none;user-select:none;"><span>notes/reverse-engineering</span><span style="display:flex;align-items:center;gap:10px;"><span>labs</span><button data-expand="" type="button" aria-expanded="false" style="padding:2px 9px;border:1px solid #3b4799;background:#000;color:#8f99d6;font-size:11px;letter-spacing:0.06em;cursor:pointer;" style-hover="border-color:#1F3BFF;color:#E8E2CF;">expand</button></span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
           <span style="font-size:16px;font-weight:500;color:#E8E2CF;">Reverse engineering</span>
           <span style="text-wrap:pretty;">Labs and hackathons: reversing WebAssembly auth routines, unpacking packed executables by hand, and rebuilding key validators from the stack.</span>
           <span style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#6a74b0;"><span>wasm</span><span>x86</span><span>ghidra</span><span>unpacking</span></span>
-          <span style="font-size:12px;color:#E8E2CF;">→ github.com/fengwyn/Reverse-Engineering ↗</span>
-        </span>
-      </a>
+          <div data-diagram="" style="display:none;overflow-x:auto;padding:12px 0 2px;border-top:1px solid #1a2260;"></div>
+          <a href="https://github.com/fengwyn/Reverse-Engineering" target="_blank" rel="noopener" style="font-size:12px;color:#E8E2CF;" style-hover="color:#A8B4F5;">→ github.com/fengwyn/Reverse-Engineering ↗</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="shutdown" data-stage="" data-screen-label="07 Shutdown" style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(72px,14vh,150px) clamp(20px,5vw,72px) clamp(40px,8vh,80px);display:flex;flex-direction:column;gap:18px;">
     <div data-win="" style="border:1px solid #2a3470;background:#000;">
-      <div data-bar="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;">
+      <div data-bar="" data-grip="" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:7px 14px;background:#0c1240;color:#8f99d6;font-size:12px;letter-spacing:0.08em;cursor:grab;touch-action:none;user-select:none;">
         <span>~ · shutdown</span><span>halt · 0xFFFF_FFF0</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;padding:clamp(18px,3vw,32px);">
@@ -370,17 +389,64 @@
     </div>
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:12px;letter-spacing:0.06em;color:#6a74b0;">
       <span>© FENGWYN · fw 2.0</span>
-      <span style="display:flex;gap:18px;"><span>signal lost</span><a href="Sanctuary.dc.html" aria-label="hidden page" style="color:#2a3470;" style-hover="color:#E8E2CF;">∴</a></span>
+      <span style="display:flex;gap:18px;"><span>signal lost</span><a href="Sanctuary.dc.html" aria-label="hidden page" style="color:#ff0000;" style-hover="color:#E8E2CF;">∴</a></span>
     </div>
   </section>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;glitchEvery&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:10,&quot;max&quot;:60,&quot;step&quot;:2,&quot;unit&quot;:&quot;s&quot;,&quot;default&quot;:32,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;backgroundStars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;typedStages&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+// Seeded entropy pool: crypto.getRandomValues feeds a xorshift128 stream, so every
+// value the page shows (session ids, frame counts, log readouts) is drawn from one
+// auditable source instead of scattered Math.random calls.
+class Pool {
+  MAX = 4096;
+  constructor() { this.s = new Uint32Array(4); this.bits = this.MAX; this.reseeds = 0; this.stirs = 0; this.seed(); }
+  seed() {
+    const s = this.s;
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(s);
+    else for (let i = 0; i < 4; i++) s[i] = (Math.random() * 4294967296) >>> 0;
+    for (let i = 0; i < 4; i++) if (!s[i]) s[i] = 0x9e3779b9 ^ (i + 1);
+    this.bits = this.MAX; this.reseeds++;
+    return this;
+  }
+  // Harvest: mixes an outside event (pointer, keystroke) into the state and
+  // credits the pool. Never charges bits, so the operator genuinely feeds it.
+  stir(a, b) {
+    const s = this.s, t = (performance.now() * 1000) | 0;
+    s[0] = (s[0] ^ Math.imul(a | 0, 2654435761)) >>> 0;
+    s[1] = (s[1] ^ (b | 0) ^ (t << 7)) >>> 0;
+    s[2] = (s[2] + Math.imul(t, 40503)) >>> 0;
+    s[3] = (s[3] ^ (s[0] >>> 11) ^ (s[1] << 5)) >>> 0;
+    this.bits = Math.min(this.MAX, this.bits + 2); this.stirs++;
+    return this;
+  }
+  drain(n) { this.bits = Math.max(0, this.bits - n); return this; }
+  // The pool's own 128 bits of state, for display.
+  peek() { return Array.from(this.s).map((w) => w.toString(16).toUpperCase().padStart(8, '0')).join(' '); }
+  u32() {
+    const s = this.s, k = s[0];
+    let t = s[3];
+    s[3] = s[2]; s[2] = s[1]; s[1] = k;
+    t ^= t << 11; t ^= t >>> 8; t ^= k; t ^= k >>> 19;
+    s[0] = t;
+    this.bits = Math.max(0, this.bits - 32);
+    return s[0];
+  }
+  f() { return this.u32() / 4294967296; }
+  int(n) { return (this.f() * n) | 0; }
+  pick(a) { return a[this.int(a.length)]; }
+  hex(n) { let o = ''; while (o.length < n) o += this.u32().toString(16).toUpperCase().padStart(8, '0'); return o.slice(0, n); }
+  num(a, b, d) { const v = a + this.f() * (b - a); return d ? v.toFixed(d) : String(Math.round(v)); }
+}
+
 class Component extends DCLogic {
   rootRef = React.createRef(); heroRef = React.createRef(); canvasRef = React.createRef(); bgRef = React.createRef();
   winRef = React.createRef(); bodyRef = React.createRef(); bootRef = React.createRef(); outRef = React.createRef();
   inputRef = React.createRef(); satRef = React.createRef(); navRef = React.createRef(); frameRef = React.createRef(); crcRef = React.createRef();
+  entRef = React.createRef(); poolBarRef = React.createRef(); poolBitsRef = React.createRef();
+  poolHexRef = React.createRef(); poolGenRef = React.createRef();
   timers = []; stageT = []; revT = []; hist = []; hi = 0; kon = 0; frameN = 0x2f1a; seen = {}; lastSudo = -1;
+  pool = new Pool(); logN = 0; booted = false; drags = new Map(); zTop = 10; dragging = null;
   C = { text: '#A8B4F5', bone: '#E8E2CF', mut: '#6a74b0', peri: '#8f99d6', red: '#E8343F' };
   STAGES = ['bootrom', 'fsbl', 'fabric', 'kernel', 'adversary'];
   LS = { bootrom: ['bring-up/', 'drivers/', 'rtos/', 'debug/'], fsbl: ['chain-of-trust/', 'keys/', 'anti-tamper/', 'threat-models/'], fabric: ['packetprocessor', 'radsurv'], kernel: ['eirc', 'oselot'], adversary: ['malware-research', 'reverse-engineering'] };
@@ -389,21 +455,35 @@ class Component extends DCLogic {
     radsurv: ['Distributed RF sensor net: RTOS radio nodes, IR-triggered cameras, TCP relay to local storage.', 'https://github.com/fengwyn/RadSurv'],
     eirc: ['Message passing for network nodes: a tracker ledger and hot-swappable command modules.', 'https://github.com/fengwyn/eIRC'],
     oselot: ['Embedded Linux ground station: SDR + satellite downlink at 1694.1 MHz, events published to IRC.', 'https://github.com/fengwyn/OSELOT'],
-    'malware-research': ['Polymorphic and metamorphic samples in an isolated homelab: how code hides, and what still gives it away.', null],
+    'malware-research': ['Polymorphic and metamorphic samples in an isolated environment: how code hides, and what still gives it away.', null],
     'reverse-engineering': ['WASM auth routines, hand-unpacked executables, key validators rebuilt from the stack.', 'https://github.com/fengwyn/Reverse-Engineering'],
   };
   SUDO = ['Nice try, this incident will be reported.', 'fengwyn is not in the sudoers file. Neither are you.', 'Permission denied. Privilege is earned, not escalated.', 'sudo: a valid signature is required for that.', 'Request logged, signed, and ignored.', 'root is busy. Leave a message after the beep.'];
-  CMDS = ['help', 'whoami', 'ls', 'cd', 'cat', 'uplink', 'github', 'history', 'clear', 'reboot', 'sudo'];
+  CMDS = ['help', 'whoami', 'ls', 'cd', 'cat', 'entropy', 'uplink', 'github', 'history', 'clear', 'reboot', 'sudo'];
 
   componentDidMount() {
     this.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    window.FW_POOL = this.pool;
     this.secs = Array.from(this.rootRef.current.querySelectorAll('[data-stage]'));
     this.prepStages();
     this.playBoot();
     this.startArt();
-    this.onKeyWin = (e) => this.konami(e);
+    this.onKeyWin = (e) => { this.harvest((e.key || ' ').charCodeAt(0), e.timeStamp | 0); this.konami(e); };
     this.onScroll = () => { if (this.sRaf) return; this.sRaf = requestAnimationFrame(() => { this.sRaf = 0; this.scrolled(); }); };
-    this.onPtr = (e) => { if (this.bg) this.bg.pointer(e.clientX, e.clientY); };
+    this.onPtr = (e) => { this.harvest(e.clientX, e.clientY); if (this.dragging) this.moveDrag(e); if (this.bg) this.bg.pointer(e.clientX, e.clientY); };
+    this.onDrop = () => this.endDrag();
+    this.onDown2 = (e) => this.startDrag(e);
+    this.onClick = (e) => { const b = e.target.closest && e.target.closest('[data-expand]'); if (b) { e.preventDefault(); this.expand(b); } };
+    this.onDbl = (e) => { const g = e.target.closest && e.target.closest('[data-grip]'); if (g) this.resetDrag(g.closest('[data-card],[data-win]')); };
+    const root = this.rootRef.current;
+    root.addEventListener('pointerdown', this.onDown2);
+    root.addEventListener('click', this.onClick);
+    root.addEventListener('dblclick', this.onDbl);
+    window.addEventListener('pointerup', this.onDrop);
+    window.addEventListener('pointercancel', this.onDrop);
+    // The pool is always being consumed; stirring it is what keeps it up.
+    this.poolT = setInterval(() => { if (!document.hidden) { this.pool.drain(6); this.poolPaint(); } }, 250);
+    this.poolPaint();
     window.addEventListener('keydown', this.onKeyWin);
     window.addEventListener('scroll', this.onScroll, { passive: true });
     window.addEventListener('resize', this.onScroll);
@@ -413,9 +493,12 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this.dead = true;
     [this.timers, this.stageT, this.revT].forEach((a) => a.forEach(clearTimeout));
-    clearTimeout(this.artT); clearInterval(this.scrT); clearTimeout(this.errT); clearTimeout(this.lpT); cancelAnimationFrame(this.sRaf);
+    clearTimeout(this.artT); clearInterval(this.scrT); clearTimeout(this.errT); clearTimeout(this.lpT); clearTimeout(this.logT); clearInterval(this.poolT); clearInterval(this.spinT); cancelAnimationFrame(this.sRaf); cancelAnimationFrame(this.pRaf);
     window.removeEventListener('keydown', this.onKeyWin); window.removeEventListener('scroll', this.onScroll);
     window.removeEventListener('resize', this.onScroll); window.removeEventListener('pointermove', this.onPtr);
+    window.removeEventListener('pointerup', this.onDrop); window.removeEventListener('pointercancel', this.onDrop);
+    const root = this.rootRef.current;
+    if (root) { root.removeEventListener('pointerdown', this.onDown2); root.removeEventListener('click', this.onClick); root.removeEventListener('dblclick', this.onDbl); }
     if (this.ro) this.ro.disconnect(); if (this.art) this.art.destroy(); if (this.bg) this.bg.destroy();
   }
   componentDidUpdate(prev) {
@@ -465,7 +548,36 @@ class Component extends DCLogic {
 
   txt(el, s) { if (el && el.firstChild) el.firstChild.nodeValue = s; }
   col(el, c) { if (el) el.style.color = c; }
-  sess() { const b = this.bootRef.current; this.txt(b && b.querySelector('[data-sess]'), '1ACF' + ((Math.random() * 0x10000) | 0).toString(16).toUpperCase().padStart(4, '0')); }
+  sess() { const b = this.bootRef.current; this.txt(b && b.querySelector('[data-sess]'), '1ACF' + this.pool.hex(4)); }
+  ent(low) {
+    const el = this.entRef.current;
+    if (!el) return;
+    this.txt(el, low ? '----b' : this.pool.bits + 'b');
+    this.col(el, low || this.pool.bits < 512 ? this.C.red : this.C.text);
+  }
+  reseed() { this.pool.seed(); this.sess(); this.poolPaint(); return this.pool.reseeds; }
+  poolPaint() {
+    if (this.pRaf) return;
+    this.pRaf = requestAnimationFrame(() => {
+      this.pRaf = 0;
+      const R = this.pool, N = 16, f = R.bits / R.MAX, on = Math.round(f * N), bar = this.poolBarRef.current;
+      this.txt(bar, '█'.repeat(on) + '░'.repeat(N - on));
+      this.col(bar, f < 0.2 ? this.C.red : '#1F3BFF');
+      this.txt(this.poolBitsRef.current, R.bits + 'b');
+      this.txt(this.poolHexRef.current, R.peek());
+      this.txt(this.poolGenRef.current, 'gen ' + R.reseeds);
+      this.ent();
+    });
+  }
+  // Pointer motion and keystrokes are the harvest source; throttled so a single
+  // mouse sweep doesn't peg the pool.
+  harvest(a, b) {
+    const now = performance.now();
+    if (now - (this.lastStir || 0) < 55) return;
+    this.lastStir = now;
+    this.pool.stir(a, b);
+    this.poolPaint();
+  }
   burst(on, info) {
     const win = this.winRef.current;
     if (!win) return;
@@ -473,18 +585,20 @@ class Component extends DCLogic {
     const toks = Array.from(win.querySelectorAll('[data-tok]')), crc = this.crcRef.current, mark = win.querySelector('[data-crc]'), err = win.querySelector('[data-err]'), title = win.querySelector('[data-title]');
     const lock = this.satRef.current && this.satRef.current.querySelector('[data-lock]');
     if (on) {
-      const strong = !!(info && info.strong);
-      this.saved = toks.map((el) => (el.firstChild ? el.firstChild.nodeValue : ''));
+      const strong = !!(info && info.strong), R = this.pool;
+      this.saved = new Map(toks.map((el) => [el, el.firstChild ? el.firstChild.nodeValue : '']));
+      this.lost = true;
       clearInterval(this.scrT);
       this.scrT = setInterval(() => {
-        toks.forEach((el, i) => {
+        this.saved.forEach((was, el) => {
           if (!el.firstChild) return;
           let o = '';
-          for (const ch of this.saved[i] || '') o += ch !== ' ' && Math.random() < 0.4 ? G[(Math.random() * G.length) | 0] : ch;
+          for (const ch of was) o += ch !== ' ' && R.f() < 0.4 ? G[R.int(G.length)] : ch;
           el.firstChild.nodeValue = o;
         });
-        win.style.transform = 'translate(' + Math.round((Math.random() * 2 - 1) * (strong ? 8 : 3)) + 'px,' + (Math.random() < 0.2 ? Math.round((Math.random() * 2 - 1) * 3) : 0) + 'px)';
+        win.style.transform = 'translate(' + Math.round((R.f() * 2 - 1) * (strong ? 8 : 3)) + 'px,' + (R.f() < 0.2 ? Math.round((R.f() * 2 - 1) * 3) : 0) + 'px)';
       }, 55);
+      this.ent(true);
       this.txt(crc, 'FAIL'); this.col(crc, C.red);
       this.txt(mark, 'crc!'); this.col(mark, C.red);
       this.txt(lock, '⇣ ----.- MHz · no lock'); this.col(lock, C.red);
@@ -494,34 +608,233 @@ class Component extends DCLogic {
       clearTimeout(this.errT);
     } else {
       clearInterval(this.scrT);
-      toks.forEach((el, i) => { if (el.firstChild && this.saved) el.firstChild.nodeValue = this.saved[i]; });
-      this.sess();
+      if (this.saved) this.saved.forEach((was, el) => { if (el.firstChild) el.firstChild.nodeValue = was; });
+      this.lost = false;
       win.style.transform = ''; win.style.borderColor = '#1F3BFF';
       this.txt(crc, 'ok'); this.col(crc, C.bone);
       this.txt(mark, 'ok'); this.col(mark, C.bone);
       this.txt(lock, '⇣ 1694.1 MHz · lock'); this.col(lock, C.bone);
       if (title) title.style.textShadow = '';
-      this.frameN += 1 + ((Math.random() * 3) | 0);
+      this.frameN += 1 + this.pool.int(3);
       this.txt(this.frameRef.current, '0x' + this.frameN.toString(16).toUpperCase());
       this.errT = setTimeout(() => { if (err) err.style.opacity = '0'; }, 1600);
+      if (this.booted) { const n = this.reseed(); this.log('ENTROPY', 'pool reseeded after loss, gen ' + n, 'ok'); }
+      else this.reseed();
     }
   }
 
+  // One kernel-style row: [ timestamp ] SUBSYS  message ....... status
+  log(sys, msg, st, c, ts) {
+    const out = this.outRef.current;
+    if (!out) return null;
+    // performance.now() is clamped to 1 ms, so jitter the tail: without it every
+    // runtime stamp ends in the same three digits.
+    const C = this.C, t = ts == null ? (performance.now() - this.t0) / 1000 + this.pool.f() * 0.00099 : ts;
+    const mk = (css, text, tok) => { const e = document.createElement('span'); if (css) e.style.cssText = css; e.textContent = text; if (tok) e.setAttribute('data-tok', ''); return e; };
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;';
+    row.appendChild(mk('flex:none;color:' + C.mut + ';', '[' + t.toFixed(6).padStart(9) + ']', 1));
+    row.appendChild(mk('flex:none;width:10ch;color:' + C.peri + ';', sys));
+    const rest = mk('flex:1 1 30ch;min-width:0;display:flex;align-items:baseline;gap:1ch;', '');
+    const mEl = mk(c ? 'color:' + c + ';' : '', msg);
+    mEl.setAttribute('data-msg', '');
+    rest.appendChild(mEl);
+    if (st) {
+      rest.appendChild(mk('flex:1 1 2ch;min-width:2ch;align-self:center;border-top:1px dotted #3b4799;', ''));
+      const sEl = mk('flex:none;color:' + (c || C.bone) + ';', st);
+      sEl.setAttribute('data-stat', '');
+      rest.appendChild(sEl);
+    }
+    row.appendChild(rest);
+    out.appendChild(row);
+    while (out.children.length > 160) out.removeChild(out.firstChild);
+    this.tail();
+    return row;
+  }
+  // Only follow the log when the operator is already reading the bottom of it.
+  tail() {
+    const b = this.bodyRef.current;
+    if (b && b.scrollHeight - b.scrollTop - b.clientHeight < 48) b.scrollTop = b.scrollHeight;
+  }
+
+  // The boot blocks here until the hardware entropy source is ready, the way a real
+  // kernel stalls on crng init. Spins for `ms`, then resolves the line in place.
+  spin(ts, ms) {
+    const F = '|/-\\', row = this.log('∴', F[0] + ' waiting on hw entropy source', 'wait', this.C.mut, ts);
+    if (!row) return;
+    const m = row.querySelector('[data-msg]'), s = row.querySelector('[data-stat]');
+    let i = 0;
+    clearInterval(this.spinT);
+    this.spinT = setInterval(() => { i++; if (m) m.textContent = F[i % F.length] + ' waiting on hw entropy source'; }, 90);
+    this.timers.push(setTimeout(() => {
+      clearInterval(this.spinT);
+      if (m) { m.textContent = 'crng init done in ' + (ms / 1000).toFixed(2) + ' s'; m.style.color = ''; }
+      if (s) { s.textContent = 'ok'; s.style.color = this.C.bone; }
+      this.pool.bits = this.pool.MAX; this.poolPaint();
+      this.tail();
+    }, ms));
+  }
+
+  // Second boot phase: entropy, crypto and service bring-up, drawn fresh each boot.
+  boot2() {
+    const R = this.pool;
+    return [
+      ['TRNG', 'ring oscillator, 3 taps, jitter harvest', 'ok'],
+      ['TRNG', 'sp800-90b health: rct ' + R.int(2) + ', apt ' + R.int(3), 'pass'],
+      ['ENTROPY', 'pool seeded 4096 bits, gen ' + R.reseeds, 'ok'],
+      ['ENTROPY', 'von neumann debias, bias ' + R.num(1, 9, 0) + 'e-6', 'ok'],
+      ['CRYPTO', 'aes-256-gcm + hkdf-sha384', 'ok'],
+      ['CRYPTO', 'session ' + R.hex(8) + ', forward secrecy', 'ok'],
+      ['BOOTROM', 'rom hash pinned, otp lanes fused', 'ok'],
+      ['FSBL', 'anti-rollback ctr 0x' + R.hex(2) + ', monotonic', 'ok'],
+      ['FABRIC', 'bitstream auth rsa-4096, ' + R.num(380, 520, 0) + ' ms', 'ok'],
+      ['FEC', 'reed-solomon (255,223) i=4, deinterleaved', 'ok'],
+      ['FEC', R.num(2, 28, 0) + ' symbol errors corrected', 'ok'],
+      ['LINK', 'vcid 03 demux, ' + R.num(1800, 2400, 0) + ' frames', 'ok'],
+      ['MEM', 'ecc scrub 512 MiB, 0 uncorrectable', 'ok'],
+      ['ATTEST', 'measured boot, pcr0 ' + R.hex(8), 'sealed'],
+      ['SECMON', 'tamper mesh + lid switch', 'armed'],
+      ['ADVERSARY', 'stack canary, aslr, rop guard', 'armed'],
+      ['WATCHDOG', 'wdt 2000 ms, pet by init', 'ok'],
+      ['init', R.num(12, 18, 0) + ' services up, 0 failed', 'ok'],
+      ['init', 'operator session ' + R.hex(6) + ', tty0', 'open'],
+      ['init', 'downlink live. type help for commands'],
+    ];
+  }
+
+  // One runtime line. Mostly healthy traffic, with the occasional thing worth noticing.
+  logLine() {
+    const R = this.pool, C = this.C, F = '0x' + this.frameN.toString(16).toUpperCase();
+    const ip = () => R.int(192) + 16 + '.' + R.int(256) + '.' + R.int(256) + '.' + (R.int(253) + 1);
+    const ok = [
+      () => ['LINK', 'frame ' + F + ' accepted, vcid 03', 'ok'],
+      () => ['LINK', 'bit sync locked, eb/n0 ' + R.num(9.4, 14.8, 1) + ' dB', 'ok'],
+      () => ['LINK', 'agc ' + R.num(-62, -48, 1) + ' dBm, doppler ' + R.num(-3.2, 3.2, 2) + ' kHz', 'ok'],
+      () => ['FEC', R.num(0, 16, 0) + ' rs symbols corrected in ' + F, 'ok'],
+      () => ['GOES', 'GOES19 FD ch13, ' + R.num(0.8, 2.4, 1) + ' MiB, snr ' + R.num(11, 16, 1), 'stored'],
+      () => ['GOES', 'goesproc pair ' + R.hex(4) + '.jpg + json', 'published'],
+      () => ['ENTROPY', 'pool ' + this.pool.bits + ' bits, drain ' + R.num(24, 96, 0) + ' b/s', 'ok'],
+      () => ['TRNG', 'health rct ' + R.int(2) + ', apt ' + R.int(3) + ', 1024 samples', 'pass'],
+      () => ['CRYPTO', 'key ratchet, gen ' + (R.int(40) + 8) + ', ' + R.hex(6), 'ok'],
+      () => ['WATCHDOG', 'pet by init, margin ' + R.num(380, 1700, 0) + ' ms', 'ok'],
+      () => ['KERNEL', 'sched ' + R.num(40, 220, 0) + ' wakeups/s, load ' + R.num(0.04, 0.6, 2), 'ok'],
+      () => ['MEM', 'slab ' + R.num(240, 820, 0) + ' KiB, 0 leaks', 'ok'],
+      () => ['SECMON', 'tamper mesh continuity, ' + R.num(1, 9, 0) + ' zones', 'armed'],
+      () => ['ATTEST', 'quote refreshed, pcr0 ' + R.hex(8), 'sealed'],
+    ];
+    const bad = [
+      () => ['LINK', 'frame ' + F + ' dropped, crc mismatch', 'retry', C.red],
+      () => ['FEC', 'uncorrectable block in ' + F + ', discarded', 'drop', C.red],
+      () => ['SECMON', 'probe detected on jtag tap', 'locked', C.red],
+      () => ['ADVERSARY', 'auth attempt from ' + ip() + ', unsigned', 'denied', C.red],
+      () => ['ADVERSARY', 'port sweep from ' + ip() + ', ' + R.num(8, 90, 0) + ' ports', 'dropped', C.red],
+      () => ['FSBL', 'rollback image offered, ctr stale', 'refused', C.red],
+    ];
+    return R.f() < 0.17 ? R.pick(bad)() : R.pick(ok)();
+  }
+  stream() {
+    clearTimeout(this.logT);
+    if (this.reduced || this.props.typedStages === false) return;
+    const next = () => {
+      this.logT = setTimeout(() => {
+        if (this.dead) return;
+        if (!this.lost && !document.hidden) {
+          if (this.pool.bits < 640) { const n = this.reseed(); this.log('ENTROPY', 'pool exhausted, reseeded from hw rng, gen ' + n, 'ok'); }
+          else {
+            this.frameN += 1 + this.pool.int(4);
+            this.txt(this.frameRef.current, '0x' + this.frameN.toString(16).toUpperCase());
+            const [sys, msg, st, c] = this.logLine();
+            this.log(sys, msg, st, c);
+            this.ent();
+          }
+        }
+        next();
+      }, 2600 + this.pool.f() * 4400);
+    };
+    next();
+  }
+
+  // Windows and note cards can be shoved around by their title bar.
+  // Double-click the bar to snap one back.
+  startDrag(e) {
+    const grip = e.target.closest && e.target.closest('[data-grip]');
+    if (!grip || e.button > 0 || e.target.closest('button,a,input')) return;
+    const el = grip.closest('[data-card],[data-win]');
+    if (!el) return;
+    const at = this.drags.get(el) || { x: 0, y: 0 };
+    this.dragging = { sx: e.clientX, sy: e.clientY, ox: at.x, oy: at.y, el: el, grip: grip };
+    try { grip.setPointerCapture(e.pointerId); } catch (err) { /* capture is best effort */ }
+    grip.style.cursor = 'grabbing';
+    el.style.position = 'relative';
+    el.style.zIndex = String(++this.zTop);
+    e.preventDefault();
+  }
+  moveDrag(e) {
+    const d = this.dragging;
+    if (!d) return;
+    const x = d.ox + (e.clientX - d.sx), y = d.oy + (e.clientY - d.sy);
+    this.drags.set(d.el, { x: x, y: y });
+    d.el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+  }
+  endDrag() {
+    if (!this.dragging) return;
+    this.dragging.grip.style.cursor = '';
+    this.dragging = null;
+  }
+  resetDrag(el) {
+    if (!el || !this.drags.has(el)) return;
+    this.drags.delete(el);
+    el.style.transform = ''; el.style.zIndex = '';
+  }
+
+  expand(btn) {
+    const card = btn.closest('[data-card]');
+    if (!card) return;
+    const key = card.getAttribute('data-card'), host = card.querySelector('[data-diagram]');
+    if (card.getAttribute('data-open')) {
+      card.removeAttribute('data-open');
+      card.style.gridColumn = ''; card.style.borderColor = '#3b4799';
+      if (host) host.style.display = 'none';
+      btn.textContent = 'expand'; btn.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    if (host && !host.firstChild) {
+      const make = window.FW_DIAGRAMS && window.FW_DIAGRAMS[key];
+      if (make) host.innerHTML = make();
+      else { host.textContent = 'diagram unavailable'; host.style.cssText += ';color:' + this.C.mut + ';font-size:12px;'; }
+    }
+    if (host) host.style.display = '';
+    card.setAttribute('data-open', '1');
+    card.style.gridColumn = '1 / -1'; card.style.borderColor = '#1F3BFF';
+    btn.textContent = 'collapse'; btn.setAttribute('aria-expanded', 'true');
+    if (!this.reduced) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
   playBoot() {
-    const boot = this.bootRef.current, prompt = this.heroRef.current && this.heroRef.current.querySelector('[data-prompt]');
-    if (!boot) return;
+    const boot = this.bootRef.current, body = this.bodyRef.current;
+    const prompt = this.heroRef.current && this.heroRef.current.querySelector('[data-prompt]');
+    if (!boot || !body) return;
     this.timers.forEach(clearTimeout); this.timers = [];
-    this.sess();
-    boot.style.display = '';
-    const lines = Array.from(boot.querySelectorAll('[data-ln]')), all = this.reduced;
+    clearTimeout(this.logT); clearInterval(this.spinT); this.booted = false; this.t0 = performance.now();
+    this.sess(); this.ent();
+    const pin = body.querySelector('[data-pin]');
+    boot.style.display = ''; if (pin) pin.style.display = '';
+    const lines = Array.from(body.querySelectorAll('[data-ln]')), all = this.reduced;
     lines.forEach((el) => {
       el.style.visibility = all ? '' : 'hidden';
       const ld = el.querySelector('[data-lead]'); if (ld) ld.style.transform = all ? '' : 'scaleX(0)';
       const st = el.querySelector('[data-st]'); if (st) st.style.visibility = all ? '' : 'hidden';
     });
     if (prompt) prompt.style.visibility = all ? '' : 'hidden';
-    if (all) return;
+    if (all) {
+      let rt = 0.2561;
+      this.boot2().forEach(([sys, msg, st]) => { rt += 0.02 + this.pool.f() * 0.07; this.log(sys, msg, st, null, rt); });
+      this.t0 = performance.now() - rt * 1000; this.booted = true;
+      return;
+    }
     const at = (ms, fn) => this.timers.push(setTimeout(fn, ms));
+    // printed timestamps follow real elapsed time, so the clock matches the pacing
+    const stamp = (ms) => ms / 1000 + this.pool.f() * 0.0009;
     let t = 380;
     lines.forEach((el) => {
       at(t, () => { el.style.visibility = ''; const ld = el.querySelector('[data-lead]'); if (ld) ld.style.transform = 'scaleX(1)'; this.scrollBody(); });
@@ -529,7 +842,17 @@ class Component extends DCLogic {
       if (st) at(t + 110, () => { st.style.visibility = ''; });
       t += parseInt(el.getAttribute('data-ln'), 10) || 0;
     });
-    at(t + 60, () => { if (prompt) prompt.style.visibility = ''; this.scrollBody(); });
+    // hold on the loader for a random 1-3 s, then bring the rest up at uneven intervals
+    const wait = 1000 + this.pool.f() * 2000, spinAt = stamp(t);
+    at(t, () => this.spin(spinAt, wait));
+    t += wait;
+    at(t, () => { if (prompt) prompt.style.visibility = ''; this.scrollBody(); });
+    this.boot2().forEach(([sys, msg, st]) => {
+      t += this.pool.f() * 1000;
+      const T = stamp(t);
+      at(t, () => this.log(sys, msg, st, null, T));
+    });
+    at(t + 60, () => { this.booted = true; this.scrollBody(); this.stream(); });
   }
 
   prepStages() {
@@ -622,7 +945,13 @@ class Component extends DCLogic {
     const y = el.getBoundingClientRect().top + window.scrollY - (id === 'top' ? 0 : 40);
     window.scrollTo({ top: Math.max(0, y), behavior: this.reduced ? 'auto' : 'smooth' });
   }
-  clear() { const b = this.bootRef.current, o = this.outRef.current; if (b) b.style.display = 'none'; if (o) o.innerHTML = ''; }
+  clear() {
+    const b = this.bootRef.current, o = this.outRef.current, body = this.bodyRef.current;
+    const pin = body && body.querySelector('[data-pin]');
+    if (b) b.style.display = 'none';
+    if (pin) pin.style.display = 'none';
+    if (o) o.innerHTML = '';
+  }
   reboot() { const o = this.outRef.current; if (o) o.innerHTML = ''; this.playBoot(); }
 
   run(raw) {
@@ -636,8 +965,9 @@ class Component extends DCLogic {
     const L = (url) => this.print([['→ ', C.mut], [url.replace(/^https:\/\/|^mailto:/, ''), C.bone, url]]);
     switch (cmd) {
       case 'help':
-        [['help', 'this list'], ['whoami', 'identify'], ['ls [stage]', 'list stages, or a stage\'s notes'], ['cd <stage>', 'jump to a stage'], ['cat <note>', 'print a field note'], ['uplink', 'open email'], ['github', 'open github'], ['history', 'command history'], ['clear', 'clear the screen'], ['reboot', 'replay the boot log']]
+        [['help', 'this list'], ['whoami', 'identify'], ['ls [stage]', 'list stages, or a stage\'s notes'], ['cd <stage>', 'jump to a stage'], ['cat <note>', 'print a field note'], ['entropy', 'pool state, or reseed it'], ['uplink', 'open email'], ['github', 'open github'], ['history', 'command history'], ['clear', 'clear the screen'], ['reboot', 'replay the boot log']]
           .forEach(([k, d]) => this.print([[k.padEnd(12), C.bone], [d, C.peri]]));
+        P('windows drag by their title bar, double-click one to snap it back', C.mut);
         break;
       case 'whoami': P('Who am I??? Who are YOU!?', C.bone); break;
       case 'ls':
@@ -656,13 +986,25 @@ class Component extends DCLogic {
         else if (this.CAT[arg]) { P(this.CAT[arg][0]); if (this.CAT[arg][1]) L(this.CAT[arg][1]); else P('repo private', C.mut); }
         else P('cat: ' + a + ': no such file', C.red);
         break;
+      case 'entropy': {
+        const R = this.pool;
+        if (arg === 'reseed' || arg === '-r') { const n = this.reseed(); P('reseeded from hw rng, gen ' + n + ', 4096 bits', C.bone); break; }
+        P('source    ' + (window.crypto && crypto.getRandomValues ? 'crypto.getRandomValues → xorshift128' : 'Math.random → xorshift128 (no hw rng)'), C.peri);
+        P('pool      ' + R.bits + ' / ' + R.MAX + ' bits', C.bone);
+        P('state     ' + R.peek(), C.bone);
+        P('gen       ' + R.reseeds + ', stirred ' + R.stirs + ' times', C.bone);
+        P('harvest   pointer motion + keystrokes, drained 24 b/s', C.peri);
+        P('try: entropy reseed', C.mut);
+        this.poolPaint();
+        break;
+      }
       case 'uplink': P('opening uplink', C.mut); L('mailto:crossvallia@duck.com'); window.location.href = 'mailto:crossvallia@duck.com'; break;
       case 'github': L('https://github.com/fengwyn'); window.open('https://github.com/fengwyn', '_blank', 'noopener'); break;
       case 'history': this.hist.forEach((h, i) => P(String(i + 1).padStart(4) + '  ' + h, C.peri)); break;
       case 'clear': this.clear(); break;
       case 'reboot': this.reboot(); break;
       case 'sudo': {
-        let i = (Math.random() * this.SUDO.length) | 0;
+        let i = this.pool.int(this.SUDO.length);
         if (i === this.lastSudo) i = (i + 1) % this.SUDO.length;
         this.lastSudo = i; P(this.SUDO[i], C.red);
         break;
@@ -714,7 +1056,7 @@ class Component extends DCLogic {
         for (let s = 1; s <= 10; s++) this.revT.push(setTimeout(() => {
           const k = Math.round((ln.length * Math.max(0, s - 3)) / 7);
           let o = '';
-          for (let i = k; i < ln.length; i++) o += HEXD[(Math.random() * 16) | 0];
+          for (let i = k; i < ln.length; i++) o += HEXD[this.pool.int(16)];
           done.textContent = ln.slice(0, k);
           rest.textContent = o;
         }, s * 40));
@@ -733,7 +1075,8 @@ class Component extends DCLogic {
     return {
       rootRef: this.rootRef, heroRef: this.heroRef, canvasRef: this.canvasRef, bgRef: this.bgRef, winRef: this.winRef,
       bodyRef: this.bodyRef, bootRef: this.bootRef, outRef: this.outRef, inputRef: this.inputRef, satRef: this.satRef,
-      navRef: this.navRef, frameRef: this.frameRef, crcRef: this.crcRef,
+      navRef: this.navRef, frameRef: this.frameRef, crcRef: this.crcRef, entRef: this.entRef,
+      poolBarRef: this.poolBarRef, poolBitsRef: this.poolBitsRef, poolHexRef: this.poolHexRef, poolGenRef: this.poolGenRef,
       onMove: (e) => { const r = this.heroRef.current; if (!r || !this.art) return; const b = r.getBoundingClientRect(); this.art.pointer(e.clientX - b.left, e.clientY - b.top); },
       onLeave: () => { if (this.art) this.art.pointer(null); clearTimeout(this.lpT); },
       onDown: (e) => {
