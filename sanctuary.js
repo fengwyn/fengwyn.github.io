@@ -244,18 +244,24 @@
       let near = 0;
       if (pres > 0.02) { const d = Math.hypot(n.x - px, n.y - py); if (d < RC) near = (1 - d / RC) * pres; }
       const tw = this.reduced ? 0 : Math.sin(t * 0.8 + i * 1.9);
+      // Beacon: a slow blink that walks around the constellation so the nodes read
+      // as clickable. Cubed so it reads as a blink rather than a throb, and yielded
+      // entirely to hover and to prefers-reduced-motion.
+      const b = this.reduced || hot ? 0 : Math.max(0, Math.sin(t * 1.5 - i * 0.7));
+      const beat = b * b * b;
       let arm = lit ? 2 : 1;
       if (lit && tw > 0.55) arm++;
       if (i === 1) arm++;
       if (near > 0.35) arm++;
       if (hot) arm += 2;
+      if (beat > 0.45) arm++;
       for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) this.put(n.x + ox, n.y + oy, K);
       this.put(n.x, n.y, lit || hot || near > 0.5 ? BONE : PERI);
       for (let k = 1; k <= arm; k++) {
-        const c = k === 1 ? (lit || hot ? PERI : COB) : k < arm ? COB : DEEP;
+        const c = k === 1 ? (lit || hot || beat > 0.3 ? PERI : COB) : k < arm ? COB : DEEP;
         this.max(n.x + k, n.y, c); this.max(n.x - k, n.y, c); this.max(n.x, n.y + k, c); this.max(n.x, n.y - k, c);
       }
-      if ((lit && i === 1) || hot) { const c = hot ? PERI : COB; this.max(n.x + 1, n.y + 1, c); this.max(n.x - 1, n.y + 1, c); this.max(n.x + 1, n.y - 1, c); this.max(n.x - 1, n.y - 1, c); }
+      if ((lit && i === 1) || hot || beat > 0.8) { const c = hot ? PERI : COB; this.max(n.x + 1, n.y + 1, c); this.max(n.x - 1, n.y + 1, c); this.max(n.x + 1, n.y - 1, c); this.max(n.x - 1, n.y - 1, c); }
       if (hot) this.ring(n.x, n.y, Math.round(5 + 2 * this.sc), COB);
     }
 

@@ -18,6 +18,17 @@
     a{color:#A8B4F5;text-decoration:none;} a:hover{color:#E8E2CF;}
     button,input{font:inherit;}
     ::selection{background:#1F3BFF;color:#E8E2CF;}
+    /* Phones and short landscape screens: the half-height cap leaves the log
+       unreadable, so give the window more of the column and claw back some of
+       the space reserved below it for the horizon art. */
+    @media (max-width:760px),(max-height:620px){
+      .fw-term{max-height:74%!important;}
+      .fw-stage{padding-bottom:clamp(96px,17vh,170px)!important;}
+      /* the pinned header costs a whole line per row for its [time] init prefix
+         once the text wraps, so drop the prefix and keep the words */
+      [data-pin] [data-ln]>span:first-child,[data-pin] [data-ln]>span:nth-child(2){display:none!important;}
+      [data-pin] [data-ln]>span:last-child{flex:1 1 100%!important;}
+    }
   </style>
   <script src="creed.js"></script>
   <script src="orbit.js?v=8"></script>
@@ -68,8 +79,8 @@
       </nav>
     </header>
 
-    <div style="position:relative;z-index:2;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:8px clamp(14px,4vw,48px) clamp(150px,31vh,330px);">
-      <div ref="{{ winRef }}" style="width:min(100%,700px);max-height:50%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #1F3BFF;background:rgba(0,0,0,0.9);">
+    <div class="fw-stage" style="position:relative;z-index:2;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:8px clamp(14px,4vw,48px) clamp(150px,31vh,330px);">
+      <div ref="{{ winRef }}" class="fw-term" style="width:min(100%,700px);max-height:50%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #1F3BFF;background:rgba(0,0,0,0.9);">
         <div style="flex:none;display:flex;justify-content:space-between;gap:12px;padding:6px 12px;background:#1F3BFF;color:#E8E2CF;font-size:12px;letter-spacing:0.08em;text-shadow:none;">
           <span data-tok="">fengwyn@fw2: ~</span>
           <span>tty0 · downlink</span>
@@ -459,7 +470,50 @@ class Component extends DCLogic {
     'reverse-engineering': ['WASM auth routines, hand-unpacked executables, key validators rebuilt from the stack.', 'https://github.com/fengwyn/Reverse-Engineering'],
   };
   SUDO = ['Nice try, this incident will be reported.', 'fengwyn is not in the sudoers file. Neither are you.', 'Permission denied. Privilege is earned, not escalated.', 'sudo: a valid signature is required for that.', 'Request logged, signed, and ignored.', 'root is busy. Leave a message after the beep.'];
-  CMDS = ['help', 'whoami', 'ls', 'cd', 'cat', 'entropy', 'uplink', 'github', 'history', 'clear', 'reboot', 'sudo'];
+  CMDS = ['help', 'whoami', 'ls', 'cd', 'cat', 'entropy', 'scan', 'tune', '2600', 'finger', 'fortune', 'koan', 'ping', 'brew', 'xyzzy', 'uplink', 'github', 'history', 'clear', 'reboot', 'sudo'];
+  // Real shortwave numbers stations. The frequencies are the ones they actually used.
+  RADIO = {
+    4625: {
+      tag: '4625.0 kHz · buzzer', hz: '4625.0 kHz · AM · S9+20 · continuous',
+      lines: [['▂▃▄▃▂▃▄▃▂▃▄▃▂▃▄▃▂▃▄▃▂▃▄▃▂   25 tones per minute', 'peri'],
+        ['MDZhB MDZhB — 93 882 NEPTUN 74 27 99 14', 'bone'],
+        ['the buzzer. on air since 1982. nobody has ever said why.', 'mut']],
+      feed: (R) => 'MDZhB ' + R.num(10, 99, 0) + ' ' + R.num(100, 999, 0) + ' ' + R.pick(['NEPTUN', 'BROMAL', 'IZBUSHKA', 'KABLUK', 'OSETR']) + ' ' + R.num(10, 99, 0) + ' ' + R.num(10, 99, 0),
+    },
+    5883: {
+      tag: '5883.0 kHz · HM01', hz: '5883.0 kHz · AM · S7 · hybrid',
+      lines: [['atención · atención · denary groups, then an RDFT burst', 'bone'],
+        ['∿∿∿∿∿  digital segment, decoded against a one-time pad  ∿∿∿∿∿', 'peri'],
+        ['havana. in 1998 the fbi read one of these out in court.', 'mut']],
+      feed: (R) => 'atención ' + [0, 0, 0, 0].map(() => String(R.int(100000)).padStart(5, '0')).join(' '),
+    },
+    11545: {
+      tag: '11545.0 kHz · E03', hz: '11545.0 kHz · AM · S5 · interval signal',
+      lines: [['♪ twelve bars of an english folk tune, played twice', 'peri'],
+        ['03571 03571 03571  message begins  five-figure groups', 'bone'],
+        ['the lincolnshire poacher. akrotiri, cyprus. silent since 2008.', 'mut']],
+      feed: (R) => [0, 0, 0, 0, 0].map(() => String(R.int(100000)).padStart(5, '0')).join(' '),
+    },
+  };
+  FORTUNE = [
+    'Every byte you did not check is a byte somebody else chose.',
+    'The bus does not lie. It repeats, faithfully, whatever it was told.',
+    'A system is secure until it is powered on.',
+    'Entropy is the one thing you cannot fake and the first thing you run out of.',
+    'The attacker read the same datasheet you did, and finished it.',
+    'An untested error path is not an error path. It is the attacker\'s happy path.',
+    'Hardware remembers what software promised to forget.',
+    'Nothing is temporarily disabled once it has shipped.',
+    'Reset is the only state you can trust, and only for an instant.',
+    'If it keeps time, it leaks.',
+  ];
+  KOANS = [
+    ['A student came with a board that would not boot.', '"I have read the code a hundred times," he said.', 'The master measured the supply rail and said nothing.', 'The student measured it too, and was enlightened.'],
+    ['A student asked: "Master, is this device secure?"', 'The master said: "Against whom?"', 'The student began to answer, and stopped.', 'The master said: "Now you have a threat model."'],
+    ['A student built a lock that no one could pick.', 'The master unplugged it.'],
+    ['A student boasted that his firmware had never once failed.', '"Then it has never once been attacked," said the master,', 'and went back to reading the errata.'],
+    ['A student asked how much entropy would be enough.', 'The master held out a coin and asked him to call it.', 'He called it correctly, and was troubled for a long time.'],
+  ];
 
   componentDidMount() {
     this.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -493,7 +547,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this.dead = true;
     [this.timers, this.stageT, this.revT].forEach((a) => a.forEach(clearTimeout));
-    clearTimeout(this.artT); clearInterval(this.scrT); clearTimeout(this.errT); clearTimeout(this.lpT); clearTimeout(this.logT); clearInterval(this.poolT); clearInterval(this.spinT); cancelAnimationFrame(this.sRaf); cancelAnimationFrame(this.pRaf);
+    clearTimeout(this.artT); clearInterval(this.scrT); clearTimeout(this.errT); clearTimeout(this.lpT); clearTimeout(this.logT); clearInterval(this.poolT); clearInterval(this.spinT); clearTimeout(this.toneT); cancelAnimationFrame(this.sRaf); cancelAnimationFrame(this.pRaf);
     window.removeEventListener('keydown', this.onKeyWin); window.removeEventListener('scroll', this.onScroll);
     window.removeEventListener('resize', this.onScroll); window.removeEventListener('pointermove', this.onPtr);
     window.removeEventListener('pointerup', this.onDrop); window.removeEventListener('pointercancel', this.onDrop);
@@ -548,6 +602,20 @@ class Component extends DCLogic {
 
   txt(el, s) { if (el && el.firstChild) el.firstChild.nodeValue = s; }
   col(el, c) { if (el) el.style.color = c; }
+  // The receiver readout survives glitches and retunes, so it has one owner.
+  lockText() { return '⇣ ' + (this.tuned ? this.RADIO[this.tuned].tag : '1694.1 MHz · lock'); }
+  setLock() {
+    const el = this.satRef.current && this.satRef.current.querySelector('[data-lock]');
+    this.txt(el, this.lockText());
+    this.col(el, this.tuned ? this.C.text : this.C.bone);
+  }
+  pick1(key, arr) {
+    const l = this.lastp || (this.lastp = {});
+    let i = this.pool.int(arr.length);
+    if (arr.length > 1 && i === l[key]) i = (i + 1) % arr.length;
+    l[key] = i;
+    return arr[i];
+  }
   sess() { const b = this.bootRef.current; this.txt(b && b.querySelector('[data-sess]'), '1ACF' + this.pool.hex(4)); }
   ent(low) {
     const el = this.entRef.current;
@@ -613,7 +681,7 @@ class Component extends DCLogic {
       win.style.transform = ''; win.style.borderColor = '#1F3BFF';
       this.txt(crc, 'ok'); this.col(crc, C.bone);
       this.txt(mark, 'ok'); this.col(mark, C.bone);
-      this.txt(lock, '⇣ 1694.1 MHz · lock'); this.col(lock, C.bone);
+      this.setLock();
       if (title) title.style.textShadow = '';
       this.frameN += 1 + this.pool.int(3);
       this.txt(this.frameRef.current, '0x' + this.frameN.toString(16).toUpperCase());
@@ -705,6 +773,10 @@ class Component extends DCLogic {
   // One runtime line. Mostly healthy traffic, with the occasional thing worth noticing.
   logLine() {
     const R = this.pool, C = this.C, F = '0x' + this.frameN.toString(16).toUpperCase();
+    // once you have retuned, the intercept keeps coming in underneath everything else
+    if (this.tuned && R.f() < 0.45) return ['INTERCEPT', this.RADIO[this.tuned].feed(R), 'copied'];
+    // Big Ear, 15 August 1977. Seventy-two seconds, never heard again.
+    if (R.f() < 0.012) return ['SETI', '6EQUJ5 · 1420.456 MHz · 72 s · never repeated', 'logged'];
     const ip = () => R.int(192) + 16 + '.' + R.int(256) + '.' + R.int(256) + '.' + (R.int(253) + 1);
     const ok = [
       () => ['LINK', 'frame ' + F + ' accepted, vcid 03', 'ok'],
@@ -964,11 +1036,19 @@ class Component extends DCLogic {
     const P = (t, c) => this.print([[t, c || C.text]]);
     const L = (url) => this.print([['→ ', C.mut], [url.replace(/^https:\/\/|^mailto:/, ''), C.bone, url]]);
     switch (cmd) {
-      case 'help':
-        [['help', 'this list'], ['whoami', 'identify'], ['ls [stage]', 'list stages, or a stage\'s notes'], ['cd <stage>', 'jump to a stage'], ['cat <note>', 'print a field note'], ['entropy', 'pool state, or reseed it'], ['uplink', 'open email'], ['github', 'open github'], ['history', 'command history'], ['clear', 'clear the screen'], ['reboot', 'replay the boot log']]
-          .forEach(([k, d]) => this.print([[k.padEnd(12), C.bone], [d, C.peri]]));
+      case 'help': {
+        const sec = (name, rows) => {
+          P(' '); if (name) P(name, C.mut);
+          rows.forEach(([k, d]) => this.print([[k.padEnd(14), C.bone], [d, C.peri]]));
+        };
+        [['help', 'this list'], ['whoami', 'identify'], ['ls [stage]', 'list stages, or a stage\'s notes'], ['cd <stage>', 'jump to a stage'], ['cat <note>', 'print a field note'], ['entropy', 'pool state, or reseed it'], ['history', 'command history'], ['clear', 'clear the screen'], ['reboot', 'replay the boot log']]
+          .forEach(([k, d]) => this.print([[k.padEnd(14), C.bone], [d, C.peri]]));
+        sec('receiver', [['scan', 'sweep the band for carriers'], ['tune <khz>', 'retune the receiver'], ['2600', 'seize the trunk']]);
+        sec('elsewhere', [['finger <user>', 'read a .plan'], ['fortune', 'an epigram'], ['koan', 'a short parable'], ['ping <host>', 'reach out'], ['brew', 'put the kettle on'], ['xyzzy', '?'], ['uplink', 'open email'], ['github', 'open github']]);
+        P(' ');
         P('windows drag by their title bar, double-click one to snap it back', C.mut);
         break;
+      }
       case 'whoami': P('Who am I??? Who are YOU!?', C.bone); break;
       case 'ls':
         if (!arg || arg === '~' || arg === 'notes') P(this.STAGES.map((s) => s + '/').join('   '), C.bone);
@@ -998,6 +1078,77 @@ class Component extends DCLogic {
         this.poolPaint();
         break;
       }
+      case 'scan':
+        P('sweeping 3.5 – 30.0 MHz · 0.5 kHz steps', C.mut);
+        [['4625.0 kHz', 'AM', 'S9+20', 'continuous tone'], ['5883.0 kHz', 'AM', 'S7', 'voice, then digital'],
+          ['11545.0 kHz', 'AM', 'S5', 'music, then voice'], ['1694.1 MHz', 'LRIT', 'S9', 'GOES-19 · current']]
+          .forEach(([f, m, s, d]) => this.print([[f.padStart(11) + '  ', C.bone], [m.padEnd(6), C.peri], [s.padEnd(7), C.text], [d, C.mut]]));
+        P('four carriers. try: tune 4625', C.mut);
+        break;
+      case 'tune': {
+        if (!arg) { P('tuned to ' + (this.tuned ? this.RADIO[this.tuned].hz : '1694.1 MHz · LRIT · lock'), C.bone); P('usage: tune <khz>   try: scan', C.mut); break; }
+        if (/^1694/.test(arg) || arg === 'goes' || arg === 'home') {
+          this.tuned = null; this.setLock();
+          P('1694.1 MHz · LRIT · lock', C.bone); P('back on the downlink.', C.mut);
+          break;
+        }
+        const st = this.RADIO[arg];
+        if (!st) {
+          P(arg + ' kHz · AM · S1', C.peri);
+          P('···· static ···· no carrier ····', C.mut);
+          P('most of the band is empty. try: scan', C.mut);
+          break;
+        }
+        this.tuned = arg; this.setLock();
+        P(st.hz, C.bone);
+        st.lines.forEach(([t, k]) => P(t, C[k]));
+        P('tune goes — back to the downlink', C.mut);
+        break;
+      }
+      case '2600': {
+        P('2600 Hz ········································· trunk seized', C.bone);
+        P('operator tone accepted. you are on the long lines now.', C.text);
+        P('a plastic whistle out of a cereal box used to do this.', C.mut);
+        P('in 1984 a magazine took the number for its name.', C.mut);
+        const el = this.satRef.current && this.satRef.current.querySelector('[data-lock]');
+        this.txt(el, '⇣ 2600 Hz · trunk'); this.col(el, C.text);
+        clearTimeout(this.toneT);
+        this.toneT = setTimeout(() => this.setLock(), 7000);
+        break;
+      }
+      case 'finger': {
+        const who = a || 'fengwyn';
+        if (who === 'root') { P('finger: root: login restricted', C.red); break; }
+        if (who !== 'fengwyn') { P('finger: ' + who + ': no such user', C.red); break; }
+        const d = new Date(), hh = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        this.print([['Login: ', C.mut], ['fengwyn'.padEnd(20), C.bone], ['Name: ', C.mut], ['FENGWYN', C.bone]]);
+        this.print([['Directory: ', C.mut], ['/home/fengwyn'.padEnd(16), C.text], ['Shell: ', C.mut], ['/bin/sh', C.text]]);
+        P('On since ' + hh + ' on tty0, idle 0:00', C.text);
+        P('No unread mail.', C.mut);
+        P('Plan:', C.mut);
+        ['  stage 0   bring-up · drivers · rtos · debug', '  stage 1   chain of trust · keys · anti-tamper',
+          '  stage 2   packetprocessor · radsurv', '  stage 3   eirc · oselot', '  stage 4   learning exactly how it breaks',
+          ' ', '  listening on 1694.1 MHz.', '  this is how a homepage used to work.'].forEach((l) => P(l, C.text));
+        break;
+      }
+      case 'fortune': P(this.pick1('f', this.FORTUNE), C.bone); break;
+      case 'koan': this.pick1('k', this.KOANS).forEach((l) => P(l, C.text)); break;
+      case 'ping': {
+        const host = a || 'crossvallia';
+        P('PING ' + host + ' (avian carrier) 32 bytes of data', C.text);
+        let got = 0;
+        for (let i = 1; i <= 4; i++) {
+          if (this.pool.f() < 0.5) { P('request ' + i + ' timed out — carrier did not come back', C.mut); continue; }
+          got++;
+          P('32 bytes from carrier ' + i + ': seq=' + i + ' ttl=12 time=' + this.pool.num(3000000, 6000000, 0) + ' ms', C.bone);
+        }
+        P('--- ' + host + ' avian statistics ---', C.mut);
+        P('4 transmitted, ' + got + ' received, ' + (100 - got * 25) + '% packet loss', C.text);
+        P('RFC 1149, april 1990. flown for real in bergen, 2001.', C.mut);
+        break;
+      }
+      case 'brew': P('418 i\'m a teapot', C.red); P('HTCPCP/1.0 · RFC 2324 · april 1998.', C.mut); break;
+      case 'xyzzy': P('Nothing happens.', C.peri); break;
       case 'uplink': P('opening uplink', C.mut); L('mailto:crossvallia@duck.com'); window.location.href = 'mailto:crossvallia@duck.com'; break;
       case 'github': L('https://github.com/fengwyn'); window.open('https://github.com/fengwyn', '_blank', 'noopener'); break;
       case 'history': this.hist.forEach((h, i) => P(String(i + 1).padStart(4) + '  ' + h, C.peri)); break;
@@ -1016,7 +1167,8 @@ class Component extends DCLogic {
   }
   complete(inp) {
     const parts = inp.value.split(/\s+/), cur = (parts[parts.length - 1] || '').toLowerCase();
-    const pool = parts.length <= 1 ? this.CMDS : ['cd', 'ls'].includes(parts[0]) ? this.STAGES : parts[0] === 'cat' ? Object.keys(this.CAT) : [];
+    const pool = parts.length <= 1 ? this.CMDS : ['cd', 'ls'].includes(parts[0]) ? this.STAGES
+      : parts[0] === 'cat' ? Object.keys(this.CAT) : parts[0] === 'tune' ? Object.keys(this.RADIO).concat('goes') : [];
     const m = pool.filter((x) => x.startsWith(cur));
     if (m.length === 1) { parts[parts.length - 1] = m[0]; inp.value = parts.join(' ') + ' '; }
     else if (m.length > 1) this.print([[m.join('   '), this.C.mut]]);
