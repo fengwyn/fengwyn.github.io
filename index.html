@@ -33,9 +33,10 @@
   <script src="creed.js"></script>
   <script src="orbit.js?v=8"></script>
   <script src="diagrams.js?v=1"></script>
+  <script src="watcher.js?v=1"></script>
 </helmet>
 <div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:#000;color:#A8B4F5;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(12px,0.95vw,14px);line-height:1.7;">
-  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:0.75;">
+  <div ref="{{ skyRef }}" aria-hidden="true" style="position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:0.75;">
     <canvas ref="{{ bgRef }}" style="position:absolute;left:0;top:0;display:block;image-rendering:pixelated;"></canvas>
   </div>
 
@@ -398,6 +399,18 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- The descent lands here: the orbital sky hands over to the ridgeline, and
+       something on the ground is already looking back. -->
+  <section id="watcher" data-screen-label="08 The Watcher" style="position:relative;z-index:1;margin-top:clamp(40px,8vh,96px);">
+    <div ref="{{ watchRef }}" style="position:relative;width:100%;aspect-ratio:43/18;min-height:min(54vh,430px);overflow:hidden;background:#000;">
+      <canvas ref="{{ watchCanvasRef }}" role="img" aria-label="A pixel-art eye scanning over dithered mountains" style="position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;opacity:0;"></canvas>
+      <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:15%;background:linear-gradient(rgba(0,0,0,0),#000);pointer-events:none;"></div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;box-sizing:border-box;max-width:1100px;margin:0 auto;padding:clamp(26px,5vh,48px) clamp(20px,5vw,72px) clamp(40px,8vh,80px);">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:12px;letter-spacing:0.06em;color:#6a74b0;">
       <span>© FENGWYN · fw 2.0</span>
       <span style="display:flex;gap:18px;"><span>signal lost</span><a href="Sanctuary.dc.html" aria-label="hidden page" style="color:#ff0000;" style-hover="color:#E8E2CF;">∴</a></span>
@@ -405,7 +418,7 @@
   </section>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;glitchEvery&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:10,&quot;max&quot;:60,&quot;step&quot;:2,&quot;unit&quot;:&quot;s&quot;,&quot;default&quot;:32,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;backgroundStars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;typedStages&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;glitchEvery&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:10,&quot;max&quot;:60,&quot;step&quot;:2,&quot;unit&quot;:&quot;s&quot;,&quot;default&quot;:32,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;backgroundStars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;typedStages&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;watcher&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
 // Seeded entropy pool: crypto.getRandomValues feeds a xorshift128 stream, so every
 // value the page shows (session ids, frame counts, log readouts) is drawn from one
 // auditable source instead of scattered Math.random calls.
@@ -456,6 +469,7 @@ class Component extends DCLogic {
   inputRef = React.createRef(); satRef = React.createRef(); navRef = React.createRef(); frameRef = React.createRef(); crcRef = React.createRef();
   entRef = React.createRef(); poolBarRef = React.createRef(); poolBitsRef = React.createRef();
   poolHexRef = React.createRef(); poolGenRef = React.createRef();
+  skyRef = React.createRef(); watchRef = React.createRef(); watchCanvasRef = React.createRef();
   timers = []; stageT = []; revT = []; hist = []; hi = 0; kon = 0; frameN = 0x2f1a; seen = {}; lastSudo = -1;
   pool = new Pool(); logN = 0; booted = false; drags = new Map(); zTop = 10; dragging = null;
   C = { text: '#A8B4F5', bone: '#E8E2CF', mut: '#6a74b0', peri: '#8f99d6', red: '#E8343F' };
@@ -522,6 +536,7 @@ class Component extends DCLogic {
     this.prepStages();
     this.playBoot();
     this.startArt();
+    this.syncWatcher();
     this.onKeyWin = (e) => { this.harvest((e.key || ' ').charCodeAt(0), e.timeStamp | 0); this.konami(e); };
     this.onScroll = () => { if (this.sRaf) return; this.sRaf = requestAnimationFrame(() => { this.sRaf = 0; this.scrolled(); }); };
     this.onPtr = (e) => { this.harvest(e.clientX, e.clientY); if (this.dragging) this.moveDrag(e); if (this.bg) this.bg.pointer(e.clientX, e.clientY); };
@@ -553,11 +568,13 @@ class Component extends DCLogic {
     window.removeEventListener('pointerup', this.onDrop); window.removeEventListener('pointercancel', this.onDrop);
     const root = this.rootRef.current;
     if (root) { root.removeEventListener('pointerdown', this.onDown2); root.removeEventListener('click', this.onClick); root.removeEventListener('dblclick', this.onDbl); }
-    if (this.ro) this.ro.disconnect(); if (this.art) this.art.destroy(); if (this.bg) this.bg.destroy();
+    clearTimeout(this.watchT);
+    if (this.ro) this.ro.disconnect(); if (this.art) this.art.destroy(); if (this.bg) this.bg.destroy(); if (this.watch) this.watch.destroy();
   }
   componentDidUpdate(prev) {
     if (prev.glitchEvery !== this.props.glitchEvery && this.art) this.art.setGap(this.gap());
     if (prev.backgroundStars !== this.props.backgroundStars) this.syncBg();
+    if (prev.watcher !== this.props.watcher) this.syncWatcher();
   }
   gap() { const g = Number(this.props.glitchEvery); return g > 0 ? g : 32; }
 
@@ -574,6 +591,26 @@ class Component extends DCLogic {
       if (document.fonts) document.fonts.ready.then(() => this.anchor());
     };
     go();
+  }
+  startWatcher() {
+    let n = 0;
+    const go = () => {
+      if (this.dead || this.watch) return;
+      const c = this.watchCanvasRef.current, w = this.watchRef.current;
+      if (!window.WatcherArt || !c || !w) { if (n++ < 60) this.watchT = setTimeout(go, 50); return; }
+      this.watch = window.WatcherArt.create(c, { wrap: w, palette: 'Cobalt', glitch: 'Occasional', trackCursor: true, resolution: 'Native' });
+      this.scrolled();
+    };
+    go();
+  }
+  syncWatcher() {
+    const want = this.props.watcher !== false;
+    if (want) { this.startWatcher(); return; }
+    clearTimeout(this.watchT);
+    if (this.watch) { this.watch.destroy(); this.watch = null; }
+    const c = this.watchCanvasRef.current, sky = this.skyRef.current;
+    if (c) c.style.opacity = '0';
+    if (sky) sky.style.opacity = '0.75';
   }
   syncBg() {
     const want = this.props.backgroundStars !== false;
@@ -978,6 +1015,17 @@ class Component extends DCLogic {
       if (hb.bottom < line && wr.top <= line) act = s.id;
     });
     if (act !== this.act) { this.act = act; this.paint(); }
+    this.handover(vh);
+  }
+  // Scroll-linked crossfade: the orbital starfield dims out at exactly the rate
+  // the watcher's own sky comes up, so you never see two skies at once.
+  handover(vh) {
+    const w = this.watchRef.current, sky = this.skyRef.current, c = this.watchCanvasRef.current;
+    if (!w || !sky || !c || !this.watch) return;
+    const r = w.getBoundingClientRect();
+    const v = Math.max(0, Math.min(1, (vh - r.top) / Math.max(1, vh * 0.72)));
+    c.style.opacity = v.toFixed(3);
+    sky.style.opacity = (0.75 * (1 - v)).toFixed(3);
   }
   paint() {
     this.secs.forEach((s) => {
@@ -1229,6 +1277,7 @@ class Component extends DCLogic {
       bodyRef: this.bodyRef, bootRef: this.bootRef, outRef: this.outRef, inputRef: this.inputRef, satRef: this.satRef,
       navRef: this.navRef, frameRef: this.frameRef, crcRef: this.crcRef, entRef: this.entRef,
       poolBarRef: this.poolBarRef, poolBitsRef: this.poolBitsRef, poolHexRef: this.poolHexRef, poolGenRef: this.poolGenRef,
+      skyRef: this.skyRef, watchRef: this.watchRef, watchCanvasRef: this.watchCanvasRef,
       onMove: (e) => { const r = this.heroRef.current; if (!r || !this.art) return; const b = r.getBoundingClientRect(); this.art.pointer(e.clientX - b.left, e.clientY - b.top); },
       onLeave: () => { if (this.art) this.art.pointer(null); clearTimeout(this.lpT); },
       onDown: (e) => {
