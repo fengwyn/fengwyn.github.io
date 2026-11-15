@@ -405,7 +405,7 @@
        something on the ground is already looking back. -->
   <section id="watcher" data-screen-label="08 The Watcher" style="position:relative;z-index:1;margin-top:clamp(40px,8vh,96px);">
     <div ref="{{ watchRef }}" style="position:relative;width:100%;aspect-ratio:43/18;min-height:min(54vh,430px);overflow:hidden;background:#000;">
-      <canvas ref="{{ watchCanvasRef }}" role="img" aria-label="A pixel-art eye scanning over dithered mountains" style="position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;opacity:0;"></canvas>
+      <canvas ref="{{ watchCanvasRef }}" role="img" aria-label="A pixel-art eye scanning over dithered mountains" style="position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;image-rendering:pixelated;opacity:0;"></canvas>
       <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:15%;background:linear-gradient(rgba(0,0,0,0),#000);pointer-events:none;"></div>
     </div>
   </section>
@@ -605,6 +605,7 @@ class Component extends DCLogic {
   }
   syncWatcher() {
     const want = this.props.watcher !== false;
+    this.hv = -1;
     if (want) { this.startWatcher(); return; }
     clearTimeout(this.watchT);
     if (this.watch) { this.watch.destroy(); this.watch = null; }
@@ -1024,8 +1025,13 @@ class Component extends DCLogic {
     if (!w || !sky || !c || !this.watch) return;
     const r = w.getBoundingClientRect();
     const v = Math.max(0, Math.min(1, (vh - r.top) / Math.max(1, vh * 0.72)));
-    c.style.opacity = v.toFixed(3);
-    sky.style.opacity = (0.75 * (1 - v)).toFixed(3);
+    // Quantise to 2% steps: writing opacity on a fixed, full-viewport layer every
+    // scroll frame forces the compositor to redo it even where the value is pinned.
+    const q = Math.round(v * 50) / 50;
+    if (q === this.hv) return;
+    this.hv = q;
+    c.style.opacity = String(q);
+    sky.style.opacity = String(0.75 * (1 - q));
   }
   paint() {
     this.secs.forEach((s) => {
