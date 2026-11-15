@@ -21,7 +21,6 @@
       this.vis = true;
       this.onPtr = (e) => { this.ptr.x = e.clientX; this.ptr.y = e.clientY; this.ptr.t = this.t; };
       window.addEventListener('pointermove', this.onPtr, { passive: true });
-      if (window.ResizeObserver && this.wrap) { this.ro = new ResizeObserver(() => this.fit()); this.ro.observe(this.wrap); }
       // the per-pixel loop is expensive; idle it whenever the scene is off screen
       if (window.IntersectionObserver && this.wrap) {
         this.io = new IntersectionObserver((es) => { this.vis = es[0].isIntersecting; }, { rootMargin: '240px' });
@@ -40,7 +39,6 @@
       this.dead = true;
       cancelAnimationFrame(this.raf);
       window.removeEventListener('pointermove', this.onPtr);
-      if (this.ro) this.ro.disconnect();
       if (this.io) this.io.disconnect();
     }
 
@@ -49,23 +47,25 @@
     setup() {
       this.W = RES[this.o.resolution] || 430; this.H = Math.round(this.W * 18 / 43);
       this.build();
-      this.off = document.createElement('canvas'); this.off.width = this.W; this.off.height = this.H;
-      this.octx = this.off.getContext('2d'); this.img = this.octx.createImageData(this.W, this.H); this.u32 = new Uint32Array(this.img.data.buffer);
+      this.fit();
+      this.img = this.ctx.createImageData(this.W, this.H); this.u32 = new Uint32Array(this.img.data.buffer);
       const N = this.W * this.H; this.buf = new Uint8Array(N); this.tmp = new Uint8Array(N); this.reg = new Uint8Array(N);
       const t = this.t;
       this.gz = { yaw: 0, pitch: 0, fy: 0, fp: 0, ty: 0, tp: 0, t0: t, dur: 0.01, ease: 0, holdUntil: t + 1.2, focus: 0, tracking: false };
       this.bl = { next: t + 2.5 + Math.random() * 3, start: -9, dur: 0.2 };
       this.gl = { next: t + 1.6, active: false, end: 0, nextStep: 0, ops: [], eyeDx: 0, dyaw: 0, dpitch: 0, pupilScale: 1, ghost: null, phiJ: 0 };
       this.parts = []; this.emitAcc = 0; this._palName = null; this.lastDraw = 0;
-      this.fit();
     }
 
     fit() {
-      const c = this.cv, w = this.wrap; if (!c || !w || !this.W) return;
-      const px = Math.max(1, w.clientWidth * (window.devicePixelRatio || 1));
-      const m = Math.max(1, Math.min(Math.ceil(px / this.W), Math.floor(4096 / this.W)));
-      if (c.width !== this.W * m || c.height !== this.H * m) { c.width = this.W * m; c.height = this.H * m; }
-      this.m = m; this.ctx = c.getContext('2d'); this.lastDraw = 0;
+      const c = this.cv; if (!c || !this.W) return;
+      // The backing store stays at the art's own resolution, matching orbit.js and
+      // sanctuary.js; CSS plus image-rendering:pixelated does the upscale on the GPU
+      // for free. Sizing it to devicePixelRatio instead made this canvas ~50x larger
+      // than every other canvas on the site and starved the compositor.
+      if (c.width !== this.W || c.height !== this.H) { c.width = this.W; c.height = this.H; }
+      this.ctx = c.getContext('2d');
+      this.lastDraw = 0;
     }
 
     build() {
@@ -278,9 +278,7 @@
       this.applyGlitch(buf);
       const pal = this.pal32(), u32 = this.u32;
       for (let i = 0; i < W * H; i++) u32[i] = pal[buf[i]];
-      this.octx.putImageData(this.img, 0, 0);
-      this.ctx.imageSmoothingEnabled = false;
-      this.ctx.drawImage(this.off, 0, 0, W * this.m, H * this.m);
+      this.ctx.putImageData(this.img, 0, 0);
     }
 
     drawEye(buf) {
