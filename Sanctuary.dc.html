@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Same as index.html: a <link rel=stylesheet> to fonts.googleapis.com is
+// render-blocking, so a host that is slow or filtered stalls the whole page.
+// media=print makes it non-blocking; it is swapped in once loaded.
+(function () {
+  var l = document.createElement('link');
+  l.rel = 'stylesheet'; l.media = 'print';
+  l.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap';
+  l.onload = function () { this.media = 'all'; };
+  document.head.appendChild(l);
+})();
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -11,7 +23,6 @@
   <title>☧</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     html,body{margin:0;padding:0;background:#000;color:#A8B4F5;}
     a{color:#A8B4F5;text-decoration:none;} a:hover{color:#E8E2CF;}
