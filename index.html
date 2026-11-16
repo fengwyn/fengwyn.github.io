@@ -3,6 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Webfont, loaded so that it can never block first paint. A <link rel=stylesheet>
+// is render-blocking even when inserted by script, so on a machine where
+// fonts.googleapis.com is slow or filtered the page stays blank while JS timers
+// keep running -- the boot log then plays out unseen and the terminal appears
+// already full. media=print makes it non-blocking; it is swapped in once loaded.
+(function () {
+  var l = document.createElement('link');
+  l.rel = 'stylesheet'; l.media = 'print';
+  l.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap';
+  l.onload = function () { this.media = 'all'; };
+  document.head.appendChild(l);
+})();
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -11,7 +25,6 @@
   <title>FENGWYN · fw 2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     html,body{margin:0;padding:0;background:#000;color:#A8B4F5;}
     html{scroll-behavior:smooth;}
@@ -30,7 +43,6 @@
       [data-pin] [data-ln]>span:last-child{flex:1 1 100%!important;}
     }
   </style>
-  <script src="creed.js"></script>
   <script src="orbit.js?v=8"></script>
   <script src="diagrams.js?v=1"></script>
   <script src="watcher.js?v=1"></script>
@@ -86,7 +98,7 @@
           <span data-tok="">fengwyn@fw2: ~</span>
           <span>tty0 · downlink</span>
         </div>
-        <div ref="{{ bodyRef }}" onClick="{{ focusTerm }}" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:2px;font-size:clamp(11.5px,0.9vw,13.5px);line-height:1.6;scrollbar-width:thin;scrollbar-color:#1F3BFF #000;cursor:text;">
+        <div ref="{{ bodyRef }}" onClick="{{ focusTerm }}" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:2px;font-size:clamp(11.5px,0.9vw,13.5px);line-height:1.6;scrollbar-width:thin;scrollbar-color:#1F3BFF #000;cursor:text;text-shadow:none;">
           <div ref="{{ bootRef }}" style="display:flex;flex-direction:column;gap:2px;">
             <div data-ln="90" style="margin-bottom:8px;color:#6a74b0;letter-spacing:0.03em;">fengwyn-boot 2.0 · downlink capture · vcid 03 · <span data-tok="" data-sess="">1ACF539D</span></div>
             <div data-ln="70" style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2ch;">
@@ -582,7 +594,9 @@ class Component extends DCLogic {
     let n = 0;
     const go = () => {
       if (this.dead) return;
-      if (!window.OrbitArt || !this.canvasRef.current || (!window.CREED_HEX && n++ < 40)) { this.artT = setTimeout(go, 50); return; }
+      // No longer waits on CREED_HEX: creed.js is not in the repo, so that guard
+      // just stalled the hero art 2 s on every load. orbit.js has its own fallback.
+      if (!window.OrbitArt || !this.canvasRef.current) { if (n++ < 60) this.artT = setTimeout(go, 50); return; }
       this.art = window.OrbitArt.create(this.canvasRef.current, { mood: 'intercept', gap: this.gap(), hex: window.CREED_HEX, onFrame: (f) => this.place(f), onBurst: (on, info) => this.burst(on, info) });
       this.syncBg();
       this.anchor();
@@ -682,7 +696,9 @@ class Component extends DCLogic {
     if (now - (this.lastStir || 0) < 55) return;
     this.lastStir = now;
     this.pool.stir(a, b);
-    this.poolPaint();
+    // No repaint here. The 4 Hz pool tick owns the readout; repainting once per
+    // pointer sample meant ~18 DOM write batches a second, and every one of them
+    // dirtied layout for anything that then read geometry.
   }
   burst(on, info) {
     const win = this.winRef.current;
@@ -753,7 +769,7 @@ class Component extends DCLogic {
     }
     row.appendChild(rest);
     out.appendChild(row);
-    while (out.children.length > 160) out.removeChild(out.firstChild);
+    while (out.children.length > 70) out.removeChild(out.firstChild);
     this.tail();
     return row;
   }

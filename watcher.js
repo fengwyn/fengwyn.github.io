@@ -184,7 +184,13 @@
 
     ptrTarget() {
       const w = this.wrap; if (!w) return null;
-      const r = w.getBoundingClientRect(); if (!r.width) return null;
+      // Cache the rect. Reading it every frame forced a synchronous layout on a
+      // page whose DOM changes constantly (streaming log, entropy readout), which
+      // is why this only ever bit desktops -- touch devices never fire pointermove
+      // and so never reached this path at all.
+      const n = performance.now();
+      if (!this.rc || n - this.rcT > 250) { this.rc = w.getBoundingClientRect(); this.rcT = n; }
+      const r = this.rc; if (!r.width) return null;
       const ex = r.left + r.width * (this.eye.cx / this.W), ey = r.top + r.height * (this.eye.cy / this.H);
       return [0.78 * Math.tanh((this.ptr.x - ex) / r.width * 2.4), -0.36 * Math.tanh((this.ptr.y - ey) / r.width * 3.2)];
     }
